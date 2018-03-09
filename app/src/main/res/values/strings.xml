@@ -1,0 +1,51 @@
+<resources>
+    <string name="app_name">马拉兹检测</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_account">账号</string>
+    <string name="prompt_password">密码</string>
+    <string name="action_sign_in">登录</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_empty_password">This password is empty</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
+    <string name="search">搜索</string>
+    <string name="check_list">检测列表</string>
+    <string name="check_detail">检测详情</string>
+    <string name="not_start_check_product">未开始检验单:</string>
+    <string name="process_check_product">进行中检验单:</string>
+    <string name="finished_check_product">已完成检验单:</string>
+    <string name="income_check">来料检(%1$d)</string>
+    <string name="process_check">过程检(%1$d)</string>
+    <string name="shipments_check">出货检(%1$d)</string>
+    <string name="nc_check">NC检(%1$d)</string>
+    <string name="purchase_order_id">采购订单号:</string>
+    <string name="material_id_append">物料号:</string>
+    <string name="material_name_append">物料名称:</string>
+    <string name="income_material_count_append">来料数量:</string>
+    <string name="check_date">检验日期:</string>
+    <string name="supplier_append">供应商:</string>
+    <string name="check_order_id">检验单号: %1$s</string>
+    <string name="completion">完成度: %1$s</string>
+    <string name="purchase_order">采购订单</string>
+    <string name="supplier">供应商</string>
+    <string name="material_id">物料号</string>
+    <string name="material_name">物料名称</string>
+    <string name="qm_no">QM NO</string>
+    <string name="income_material_count">来料数量</string>
+    <string name="sample_plan">抽样方案</string>
+    <string name="inspector">检查员</string>
+    <string name="start_time">开始时间</string>
+    <string name="end_time">结束时间</string>
+    <string name="surface">外观</string>
+    <string name="dimension">尺寸</string>
+    <string name="performance">性能</string>
+    
+    <string name="start_check">开始检查</string>
+    <string name="revocation_check">撤销检查</string>
+    <string name="submit">提交</string>
+
+</resources>

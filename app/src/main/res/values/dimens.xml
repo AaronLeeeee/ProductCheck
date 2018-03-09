@@ -1,0 +1,38 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- 常用字体大小 ts = text_size -->
+    <dimen name="ts_much_smaller">9sp</dimen>
+    <dimen name="ts_smaller">10sp</dimen>
+    <dimen name="ts_bigger_than_smaller">11sp</dimen>
+    <dimen name="ts_small">12sp</dimen>
+    <dimen name="ts_normaler">13sp</dimen>
+    <dimen name="ts_normal">14sp</dimen>
+    <dimen name="ts_big">15sp</dimen>
+    <dimen name="ts_bigger">16sp</dimen>
+    <dimen name="ts_large">17sp</dimen>
+    <dimen name="ts_larger">18sp</dimen>
+    <dimen name="ts_huge">20sp</dimen>
+    <dimen name="ts_huge_middle">22sp</dimen>
+    <dimen name="ts_huger">24sp</dimen>
+    <dimen name="ts_25">25sp</dimen>
+
+
+    <dimen name="ts_very_huge">40sp</dimen>
+    <dimen name="ts_very_huger">45sp</dimen>
+    <dimen name="ts_header_title">@dimen/ts_large</dimen>
+    <dimen name="ts_header_subtitle">@dimen/ts_small</dimen>
+    <dimen name="ts_header_back">@dimen/ts_large</dimen>
+
+    <!-- 常用空间高度 h = height -->
+    <dimen name="h_header">50dp</dimen>
+    <dimen name="h_header_nearby">55dp</dimen>
+    <dimen name="h_footer">50dp</dimen>
+    <dimen name="h_divider">0.5dp</dimen>
+
+    <dimen name="h_indicator">40dp</dimen>
+
+    <dimen name="h_start_city_item">42dp</dimen>
+</resources>
