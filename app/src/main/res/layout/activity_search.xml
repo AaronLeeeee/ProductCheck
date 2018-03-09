@@ -1,121 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/blue_confirm">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue_confirm">
 
-    <com.check.gf.gfapplication.view.HeaderView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <com.check.gf.gfapplication.view.HeaderView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/view_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        app:header="@string/search"/>
+        app:header="@string/search" />
 
     <Button
         android:id="@+id/bt_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
         android:layout_below="@id/view_header"
+        android:layout_margin="15dp"
         android:text="@string/search"
-        android:textSize="@dimen/ts_normal"/>
+        android:textSize="@dimen/ts_normal" />
 
     <LinearLayout
         android:id="@+id/ll_unStart"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="15dp"
         android:layout_below="@id/bt_search"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="15dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/not_start_check_product"
-            android:textSize="@dimen/ts_big"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:textSize="@dimen/ts_big" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="15dp"
-            android:src="@mipmap/icon_show_more_data"/>
+            android:src="@mipmap/icon_show_more_data" />
 
         <TextView
             android:id="@+id/tv_unStart_check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="15dp"
-            android:textSize="@dimen/ts_big"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:textSize="@dimen/ts_big" />
 
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ll_process"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="15dp"
         android:layout_below="@id/ll_unStart"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="15dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/not_start_check_product"
-            android:textSize="@dimen/ts_big"
-            android:textColor="@color/gray"/>
+            android:textColor="@color/gray"
+            android:textSize="@dimen/ts_big" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="15dp"
-            android:src="@mipmap/icon_show_more_data"/>
+            android:src="@mipmap/icon_show_more_data" />
 
         <TextView
             android:id="@+id/tv_process_check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="15dp"
-            android:textSize="@dimen/ts_big"
-            android:textColor="@color/gray"/>
+            android:textColor="@color/gray"
+            android:textSize="@dimen/ts_big" />
 
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ll_finished"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="15dp"
         android:layout_below="@id/ll_process"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="15dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/finished_check_product"
-            android:textSize="@dimen/ts_big"
-            android:textColor="@color/gray"/>
+            android:textColor="@color/gray"
+            android:textSize="@dimen/ts_big" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="15dp"
-            android:src="@mipmap/icon_show_more_data"/>
+            android:src="@mipmap/icon_show_more_data" />
 
         <TextView
             android:id="@+id/tv_finished_check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="15dp"
-            android:textSize="@dimen/ts_big"
-            android:textColor="@color/gray"/>
+            android:textColor="@color/gray"
+            android:textSize="@dimen/ts_big" />
     </LinearLayout>
 
     <com.check.gf.gfapplication.view.SearchView
@@ -123,6 +122,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/view_header"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 </RelativeLayout>

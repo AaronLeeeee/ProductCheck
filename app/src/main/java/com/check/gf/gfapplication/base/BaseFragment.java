@@ -1,10 +1,6 @@
-package com.check.gf.gfapplication;
+package com.check.gf.gfapplication.base;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.support.v4.app.Fragment;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -13,43 +9,17 @@ import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
+ * Fragment基类
+ *
  * @author nEdAy
  */
-public abstract class BaseActivity extends AppCompatActivity {
+public class BaseFragment extends Fragment {
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getIntentData(savedInstanceState);
-        View layoutView = LayoutInflater.from(this).inflate(getContentLayout(), null);
-        setContentView(layoutView);
-        getIntentData();
-        initHeaderView();
-        initContentView();
-        initFooterView();
-        initData();
-    }
-
-    protected abstract int getContentLayout();
-
-
-    protected void getIntentData(Bundle outState) {
-    }
-
-    protected void getIntentData() {
-    }
-
-    protected void initHeaderView() {
-    }
-
-    protected void initContentView() {
-    }
-
-    protected void initFooterView() {
-    }
-
-    protected void initData() {
-
+    /**
+     * 获取共通操作机能
+     */
+    protected BaseOperation getOperation() {
+        return new BaseOperation(getActivity());
     }
 
     /**
@@ -85,4 +55,5 @@ public abstract class BaseActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(onNext, onError);
     }
+
 }

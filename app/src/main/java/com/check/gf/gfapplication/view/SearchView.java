@@ -1,8 +1,7 @@
 package com.check.gf.gfapplication.view;
 
-import java.util.List;
-
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.animation.Animation;
@@ -10,10 +9,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import com.blankj.utilcode.util.StringUtils;
 import com.check.gf.gfapplication.R;
 import com.check.gf.gfapplication.adapter.SearchViewAdapter;
 import com.check.gf.gfapplication.model.SearchInfo;
+
+import java.util.List;
 
 /**
  * 搜索视图
@@ -71,7 +71,7 @@ public class SearchView extends LinearLayout implements SearchFooterView.OnSearc
         }
 
         for (SearchInfo searchInfo : searchInfoList) {
-            if (searchInfo == null || StringUtils.isEmpty(searchInfo.content)) {
+            if (searchInfo == null || TextUtils.isEmpty(searchInfo.content)) {
                 continue;
             }
 

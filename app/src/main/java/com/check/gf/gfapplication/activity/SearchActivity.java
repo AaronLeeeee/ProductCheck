@@ -1,15 +1,10 @@
 package com.check.gf.gfapplication.activity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import org.litepal.crud.DataSupport;
 
 import com.check.gf.gfapplication.BaseActivity;
 import com.check.gf.gfapplication.R;
@@ -17,22 +12,20 @@ import com.check.gf.gfapplication.model.IncomeCheck;
 import com.check.gf.gfapplication.utils.ExtendUtils;
 import com.check.gf.gfapplication.view.SearchView;
 
+import org.litepal.crud.DataSupport;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 搜索页
- *
+ * <p>
  * Created by wqd on 2017/12/18.
  */
 public class SearchActivity extends BaseActivity implements View.OnClickListener {
 
     private SearchView mSearchView;
-    private Button mSearchBt;
-    private LinearLayout mUnStartCheckLl;
-    private TextView mUnStartCheckCountTv;
-    private LinearLayout mProcessCheckLl;
-    private TextView mProcessCheckCountTv;
-    private LinearLayout mFinishedCheckLl;
-    private TextView mFinishedCheckCountTv;
-
+    private TextView mUnStartCheckCountTv, mProcessCheckCountTv, mFinishedCheckCountTv;
 
     @Override
     protected int getContentLayout() {
@@ -42,21 +35,23 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void initContentView() {
         super.initContentView();
-        mSearchBt = (Button) findViewById(R.id.bt_search);
-        mSearchView = (SearchView) findViewById(R.id.search_view);
-        mUnStartCheckLl = (LinearLayout) findViewById(R.id.ll_unStart);
-        mUnStartCheckCountTv = (TextView) findViewById(R.id.tv_unStart_check);
-        mProcessCheckLl = (LinearLayout) findViewById(R.id.ll_process);
-        mProcessCheckCountTv = (TextView) findViewById(R.id.tv_process_check);
-        mFinishedCheckLl = (LinearLayout) findViewById(R.id.ll_finished);
-        mFinishedCheckCountTv = (TextView) findViewById(R.id.tv_finished_check);
+        Button mSearchBt = findViewById(R.id.bt_search);
+        mSearchView = findViewById(R.id.search_view);
+        LinearLayout mUnStartCheckLl = findViewById(R.id.ll_unStart);
+        mUnStartCheckCountTv = findViewById(R.id.tv_unStart_check);
+        LinearLayout mProcessCheckLl = findViewById(R.id.ll_process);
+        mProcessCheckCountTv = findViewById(R.id.tv_process_check);
+        LinearLayout mFinishedCheckLl = findViewById(R.id.ll_finished);
+        mFinishedCheckCountTv = findViewById(R.id.tv_finished_check);
         ExtendUtils.setOnClickListener(this, mSearchBt, mUnStartCheckLl, mProcessCheckLl, mFinishedCheckLl);
     }
 
     @Override
     protected void initData() {
         super.initData();
-//        initTestDb();
+        mUnStartCheckCountTv.setText("10");
+        mProcessCheckCountTv.setText("20");
+        mFinishedCheckCountTv.setText("30");
     }
 
     private void initTestDb() {

@@ -2,99 +2,56 @@ package com.check.gf.gfapplication.activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.app.LoaderManager.LoaderCallbacks;
-
-import android.content.CursorLoader;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
-
-import android.os.Build;
-import android.os.Bundle;
-import android.provider.ContactsContract;
+import android.graphics.Color;
 import android.text.TextUtils;
-import android.util.TypedValue;
-import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
+import com.bigkoo.pickerview.OptionsPickerView;
 import com.check.gf.gfapplication.BaseActivity;
 import com.check.gf.gfapplication.R;
-import com.check.gf.gfapplication.adapter.PackAdapter;
-import com.check.gf.gfapplication.config.AppConfig;
-import com.franmontiel.persistentcookiejar.ClearableCookieJar;
-import com.franmontiel.persistentcookiejar.PersistentCookieJar;
-import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
-import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
-import com.yyydjk.library.DropDownMenu;
+import com.check.gf.gfapplication.entity.GroupData;
+import com.check.gf.gfapplication.entity.PostData;
+import com.check.gf.gfapplication.entity.User;
+import com.check.gf.gfapplication.network.RxFactory;
+import com.check.gf.gfapplication.utils.CommonUtils;
+import com.check.gf.gfapplication.utils.ExtendUtils;
+import com.orhanobut.logger.Logger;
 
-import okhttp3.Cache;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import net.nashlegend.anypref.AnyPref;
 
-import static android.Manifest.permission.READ_CONTACTS;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * A login screen that offers login via email/password.
+ * A login screen that offers login via username/password.
+ *
+ * @author nEdAy
  */
-public class LoginActivity extends BaseActivity implements LoaderCallbacks<Cursor> {
-
-//    private File cache = getExternalCacheDir();
-    private int cacheSize = 10 * 1024 * 1024;
-    /**
-     * Id to identity READ_CONTACTS permission request.
-     */
-    private static final int REQUEST_READ_CONTACTS = 0;
-
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
+public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
     private String packStation[] = {"工位一期", "工位二期", "工位三期", "工位四期"};
     private String packGroup[] = {"班组A", "班组B", "班组C", "班组D"};
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private UserLoginTask mAuthTask = null;
+
+    private ArrayList<PostData> postDatas = new ArrayList<>();
+    private ArrayList<GroupData> groupDatas = new ArrayList<>();
 
     // UI references.
-    private AutoCompleteTextView mEmailView;
+    private EditText mUsernameView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    private DropDownMenu mPackStationDropMenu;
-    private DropDownMenu mPackGroupDropMenu;
+
+    private TextView tv_pack_station_text;
+    private TextView tv_pack_group_text;
+
+    private OptionsPickerView optionsPickerView;
 
     @Override
     protected int getContentLayout() {
@@ -102,129 +59,109 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initContentView() {
+        super.initContentView();
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        populateAutoComplete();
-
-        mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        mUsernameView = findViewById(R.id.username);
+        mPasswordView = findViewById(R.id.password);
+        mPasswordView.setOnEditorActionListener((textView, actionId, keyEvent) -> {
+            if (actionId == EditorInfo.IME_NULL) {
                 attemptLogin();
+                return true;
             }
+            return false;
         });
+
+        Button mSignInButton = findViewById(R.id.sign_in_button);
+        mSignInButton.setOnClickListener(view -> attemptLogin());
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-        initPackStationView();
-        initPackGroupView();
+
+        tv_pack_station_text = findViewById(R.id.tv_pack_station_text);
+        tv_pack_group_text = findViewById(R.id.tv_pack_group_text);
+        ExtendUtils.setOnClickListener(this, tv_pack_station_text, tv_pack_group_text);
     }
 
-    private void initPackStationView() {
-        final ListView packStationLv = new ListView(this);
-        mPackStationDropMenu = (DropDownMenu) findViewById(R.id.dd_menu);
-        final PackAdapter packAdapter = new PackAdapter(this);
-        packAdapter.bindDate(Arrays.asList(packStation));
-        packStationLv.setAdapter(packAdapter);
-        List<View> popupViews = new ArrayList<>();
-
-        popupViews.add(packStationLv);
-
-        packStationLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                packAdapter.setCheckItem(position);
-                mPackStationDropMenu.setTabText(packStation[position]);
-                mPackStationDropMenu.closeMenu();
-                AppConfig.mUserStation = packStation[position];
+    @Override
+    public void onClick(View view) {
+        int viewId = view.getId();
+        if (viewId == R.id.tv_pack_station_text || viewId == R.id.tv_pack_group_text) {
+            if (optionsPickerView != null) {
+                optionsPickerView.show(); //弹出条件选择器
             }
-        });
-
-        String headers[] = {"工位"};
-        mPackStationDropMenu.setDropDownMenu(Arrays.asList(headers), popupViews, new View(this));
-
+        }
     }
 
-    private void initPackGroupView() {
-        final ListView packGroupLv = new ListView(this);
-        mPackGroupDropMenu = (DropDownMenu) findViewById(R.id.dd_menu_group);
-        final PackAdapter packAdapter = new PackAdapter(this);
-        packAdapter.bindDate(Arrays.asList(packGroup));
-        packGroupLv.setAdapter(packAdapter);
-        List<View> popupViews = new ArrayList<>();
-
-        popupViews.add(packGroupLv);
-
-        packGroupLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                packAdapter.setCheckItem(position);
-                mPackGroupDropMenu.setTabText(packGroup[position]);
-                mPackGroupDropMenu.closeMenu();
-                AppConfig.mUserTeam = packGroup[position];
-            }
-        });
-
-        String headers[] = {"班组"};
-        mPackGroupDropMenu.setDropDownMenu(Arrays.asList(headers), popupViews, new View(this));
-
-    }
-
-    private void populateAutoComplete() {
-        if (!mayRequestContacts()) {
-            return;
-        }
-
-        getLoaderManager().initLoader(0, null, this);
-    }
-
-    private boolean mayRequestContacts() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return true;
-        }
-        if (checkSelfPermission(READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        }
-        if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(mEmailView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(android.R.string.ok, new View.OnClickListener() {
-                        @Override
-                        @TargetApi(Build.VERSION_CODES.M)
-                        public void onClick(View v) {
-                            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-                        }
-                    });
-        } else {
-            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-        }
-        return false;
+    @Override
+    protected void initData() {
+        // 等数据加载完毕再初始化并显示Picker,以免还未加载完数据就显示,造成APP崩溃。
+        toSubscribe(RxFactory.getUserServiceInstance()
+                        .postQuery(),
+                () -> showProgress(true),
+                teamGroupResult -> {
+                    if (teamGroupResult.getResult() == 0) {
+                        showProgress(false);
+                        List<PostData> postDatas = teamGroupResult.getData();
+                        initOptionData(postDatas);
+                    } else {
+                        postQueryTeamGroupError(teamGroupResult.getDesc());
+                    }
+                },
+                throwable -> postQueryTeamGroupError(throwable.getMessage()));
     }
 
     /**
-     * Callback received when a permissions request has been completed.
+     * 添加JavaBean实体数据，则实体类需要实现 IPickerViewData 接口
+     *
+     * @param postDatas 实体数据
      */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_READ_CONTACTS) {
-            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                populateAutoComplete();
-            }
+    private void initOptionData(List<PostData> postDatas) {
+        // 选项1
+        this.postDatas.addAll(postDatas);
+        // 选项2
+        for (int i = 0; i < postDatas.size(); i++) {
+            this.groupDatas.addAll(postDatas.get(i).getGroups());
         }
+
+        /*--------数据源添加完毕---------*/
+    }
+
+
+    private void initOptionPicker() {//条件选择器初始化
+
+        /**
+         * 注意 ：如果是三级联动的数据(省市区等)，请参照 JsonDataActivity 类里面的写法。
+         */
+
+        optionsPickerView = new OptionsPickerView.Builder(this, (options1, options2, options3, v) -> {
+            //返回的分别是三个级别的选中位置
+            String tx = postDatas.get(options1).getPickerViewText()
+                    + groupDatas.get(options2).getPickerViewText();
+
+            //btn_Options.setText(tx);
+        })
+                .setTitleText("城市选择")
+                .setContentTextSize(20)//设置滚轮文字大小
+                .setDividerColor(Color.LTGRAY)//设置分割线的颜色
+                .setSelectOptions(0, 1)//默认选中项
+                .setBgColor(Color.BLACK)
+                .setTitleBgColor(Color.DKGRAY)
+                .setTitleColor(Color.LTGRAY)
+                .setCancelColor(Color.YELLOW)
+                .setSubmitColor(Color.YELLOW)
+                .setTextColorCenter(Color.LTGRAY)
+                .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
+                .setLabels("省", "市", "区")
+                .setBackgroundId(0x66000000) //设置外部遮罩颜色
+                .build();
+
+        optionsPickerView.setPicker(postDatas, groupDatas);//二级选择器
+    }
+
+    private void postQueryTeamGroupError(String errorMessage) {
+        showProgress(false);
+        Logger.e(errorMessage);
     }
 
 
@@ -234,62 +171,56 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
-        }
-
         // Reset errors.
-        mEmailView.setError(null);
+        mUsernameView.setError(null);
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        String username = mUsernameView.getText().toString().trim();
+        String password = mPasswordView.getText().toString().trim();
 
-        boolean cancel = false;
-        View focusView = null;
-
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        // Check for a valid username and password.
+        // if error, don't attempt login and focus the first form field with an error.
+        if (TextUtils.isEmpty(username)) {
+            mUsernameView.setError(getString(R.string.error_empty_username));
+            mUsernameView.findFocus();
+            return;
+        }
+        if (TextUtils.isEmpty(password)) {
+            mPasswordView.setError(getString(R.string.error_empty_password));
+            mPasswordView.findFocus();
+            return;
+        }
+        if (!isUsernameValid(username)) {
+            mUsernameView.setError(getString(R.string.error_invalid_username));
+            mUsernameView.findFocus();
+            return;
+        }
+        if (!isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        } else {
-            if (TextUtils.isEmpty(password)) {
-                mPasswordView.setError(getString(R.string.error_empty_password));
-                focusView = mPasswordView;
-                cancel = true;
+            mPasswordView.findFocus();
+            return;
+        }
+        // 隐藏软键盘
+        View peekDecorView = getWindow().peekDecorView();
+        if (peekDecorView != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (inputMethodManager != null) {
+                inputMethodManager.hideSoftInputFromWindow(peekDecorView.getWindowToken(), 0);
             }
         }
-
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
-            cancel = true;
+        if (!CommonUtils.isNetworkAvailable()) {
+            CommonUtils.showToast(R.string.network_tips);
+            return;
         }
-
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
-        }
+        // Show a progress spinner, and kick off a background task to
+        // perform the user login attempt.
+        userLogin(username, password);
     }
 
-    private boolean isEmailValid(String email) {
+    private boolean isUsernameValid(String username) {
         //TODO: Replace this with your own logic
-        //return email.contains("@");
-        return true;
+        return username.length() > 4;
     }
 
     private boolean isPasswordValid(String password) {
@@ -297,177 +228,67 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         return password.length() > 4;
     }
 
-    /**
-     * Shows the progress UI and hides the login form.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
-
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(this,
-                // Retrieve data rows for the device user's 'profile' contact.
-                Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI,
-                        ContactsContract.Contacts.Data.CONTENT_DIRECTORY), ProfileQuery.PROJECTION,
-
-                // Select only email addresses.
-                ContactsContract.Contacts.Data.MIMETYPE +
-                        " = ?", new String[]{ContactsContract.CommonDataKinds.Email
-                .CONTENT_ITEM_TYPE},
-
-                // Show primary email addresses first. Note that there won't be
-                // a primary email address if the user hasn't specified one.
-                ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> emails = new ArrayList<>();
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            emails.add(cursor.getString(ProfileQuery.ADDRESS));
-            cursor.moveToNext();
-        }
-
-        addEmailsToAutoComplete(emails);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-
-    }
-
-    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(LoginActivity.this,
-                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-
-        mEmailView.setAdapter(adapter);
-    }
-
-
-    private interface ProfileQuery {
-        String[] PROJECTION = {
-                ContactsContract.CommonDataKinds.Email.ADDRESS,
-                ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
-        };
-
-        int ADDRESS = 0;
-        int IS_PRIMARY = 1;
-    }
-
-//    ClearableCookieJar cookieJar = new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(this));
 
     /**
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
+     *
+     * @param username 用户名
+     * @param password 密码
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mEmail;
-        private final String mPassword;
-
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                String url = "http://58.216.170.2:88/";
-                OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
-                        .connectTimeout(15, TimeUnit.SECONDS)//连接超时(单位:秒)
-                        .writeTimeout(20, TimeUnit.SECONDS)//写入超时(单位:秒)
-                        .readTimeout(20, TimeUnit.SECONDS)//读取超时(单位:秒)
-                        .pingInterval(20, TimeUnit.SECONDS) //websocket轮训间隔(单位:秒)
-//                        .cache(new Cache(cache.getAbsoluteFile(), cacheSize))//设置缓存
-//                        .cookieJar(cookieJar)
-                        .build(); //Cookies持久化;
-                Request request = new Request.Builder().url(url).build();
-                okHttpClient.newCall(request).enqueue(new Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-
+    private void userLogin(String username, String password) {
+        toSubscribe(RxFactory.getUserServiceInstance()
+                        .login(username, password),
+                () -> showProgress(true),
+                resultObject -> {
+                    if (resultObject.getResult() == 0) {
+                        showProgress(false);
+                        User user = new User();
+                        user.setUsername(username);
+                        user.setPassword(password);
+                        AnyPref.put(user, "_CurrentUser");// 将私有token保存
+                        startActivity(new Intent(LoginActivity.this, SearchActivity.class));
+                    } else {
+                        userLoginError(resultObject.getDesc());
                     }
+                },
+                throwable -> userLoginError(throwable.getMessage()));
+    }
 
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        //登录成功回调
-                        System.out.println(response.body().string());
+    private void userLoginError(String errorMessage) {
+        showProgress(false);
+        CommonUtils.showToast("你输入的密码和账户名不匹配，请重新输入后重试");
+        mPasswordView.setError(getString(R.string.error_incorrect_password));
+        mPasswordView.requestFocus();
+        Logger.e(errorMessage);
+    }
 
-                    }
-                });
-            } catch (Exception e) {
-                return false;
+    /**
+     * Shows the progress UI and hides the login form.
+     */
+    private void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+        mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+        mLoginFormView.animate().setDuration(shortAnimTime).alpha(
+                show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
             }
+        });
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
+        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+        mProgressView.animate().setDuration(shortAnimTime).alpha(
+                show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             }
-
-            // TODO: register the new account here.
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                AppConfig.mUserName = mEmailView.getText().toString();
-                startActivity(new Intent(LoginActivity.this, SearchActivity.class));
-                finish();
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
+        });
     }
 }
 

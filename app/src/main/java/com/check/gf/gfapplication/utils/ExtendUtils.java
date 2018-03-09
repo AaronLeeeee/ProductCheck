@@ -3,9 +3,8 @@ package com.check.gf.gfapplication.utils;
 import android.view.View;
 
 /**
- * Created by wqd on 2018/1/1.
+ * @author nEdAy
  */
-
 public class ExtendUtils {
 
     public static void setOnClickListener(View.OnClickListener listener, View... views) {

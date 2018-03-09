@@ -1,8 +1,5 @@
 package com.check.gf.gfapplication.activity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Intent;
 import android.view.View;
 import android.widget.ListView;
@@ -15,12 +12,14 @@ import com.check.gf.gfapplication.config.GlobalConstant;
 import com.check.gf.gfapplication.model.IncomeCheck;
 import com.check.gf.gfapplication.utils.ExtendUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 检测列表页
  *
- * Created by wqd on 2017/12/18.
+ * @author nEdAy
  */
-
 public class CheckListActivity extends BaseActivity implements View.OnClickListener, CheckListAdapter.GoDetailClickListener {
 
     private TextView mIncomeCheckTv;
@@ -45,11 +44,11 @@ public class CheckListActivity extends BaseActivity implements View.OnClickListe
     @Override
     protected void initContentView() {
         super.initContentView();
-        mIncomeCheckTv = (TextView) findViewById(R.id.tv_income_check);
-        mProcessCheckTv = (TextView) findViewById(R.id.tv_process_check);
-        mShipmentsCheckTv = (TextView) findViewById(R.id.tv_shipments_check);
-        mNcCheckTv = (TextView) findViewById(R.id.tv_NC_check);
-        ListView checkListLv = (ListView) findViewById(R.id.lv_check_list);
+        mIncomeCheckTv = findViewById(R.id.tv_income_check);
+        mProcessCheckTv = findViewById(R.id.tv_process_check);
+        mShipmentsCheckTv = findViewById(R.id.tv_shipments_check);
+        mNcCheckTv = findViewById(R.id.tv_NC_check);
+        ListView checkListLv = findViewById(R.id.lv_check_list);
         mCheckListAdapter = new CheckListAdapter(this);
         mCheckListAdapter.setGoDetailClickListener(this);
         checkListLv.setAdapter(mCheckListAdapter);

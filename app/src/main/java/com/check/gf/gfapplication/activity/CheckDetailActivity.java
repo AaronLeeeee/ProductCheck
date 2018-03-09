@@ -13,9 +13,8 @@ import com.check.gf.gfapplication.model.IncomeCheck;
 /**
  * 检测详情页
  *
- * Created by wqd on 2017/12/18.
+ * @author nEdAy
  */
-
 public class CheckDetailActivity extends BaseActivity {
 
     private IncomeCheck mIncomeCheck;
@@ -38,8 +37,8 @@ public class CheckDetailActivity extends BaseActivity {
     @Override
     protected void initContentView() {
         super.initContentView();
-        mTabLayout = (TabLayout) findViewById(R.id.tab_title);
-        mViewPager = (ViewPager) findViewById(R.id.vp_detail);
+        mTabLayout = findViewById(R.id.tab_title);
+        mViewPager = findViewById(R.id.vp_detail);
         mCheckDetailFragmentAdapter = new CheckDetailFragmentAdapter(getSupportFragmentManager(), this);
         mCheckDetailFragmentAdapter.setBaseInfoData(mIncomeCheck);
         mViewPager.setAdapter(mCheckDetailFragmentAdapter);
