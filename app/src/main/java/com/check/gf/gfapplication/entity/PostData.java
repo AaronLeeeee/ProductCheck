@@ -23,11 +23,8 @@ public class PostData implements IPickerViewData {
     private String postName;
     private List<GroupData> groups;
 
-    public PostData(int id, String postCode, String postName, List<GroupData> groups) {
-        this.id = id;
-        this.postCode = postCode;
-        this.postName = postName;
-        this.groups = groups;
+    public PostData() {
+
     }
 
     public int getId() {
@@ -62,9 +59,34 @@ public class PostData implements IPickerViewData {
         this.groups = groups;
     }
 
-    // 显示在PickerView上面的字符串,PickerView会通过getPickerViewText方法获取字符串显示出来。
     @Override
     public String getPickerViewText() {
         return postName;
     }
+
+    public class GroupData {
+        /**
+         * groupCode : 001
+         * groupName : 一期一班
+         */
+        private List<String> groupCodes;
+        private List<String> groupNames;
+
+        public List<String> getGroupCodes() {
+            return groupCodes;
+        }
+
+        public void setGroupCodes(List<String> groupCodes) {
+            this.groupCodes = groupCodes;
+        }
+
+        public List<String> getGroupNames() {
+            return groupNames;
+        }
+
+        public void setGroupNames(List<String> groupNames) {
+            this.groupNames = groupNames;
+        }
+    }
+
 }

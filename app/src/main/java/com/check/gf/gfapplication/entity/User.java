@@ -16,8 +16,6 @@ public class User implements Parcelable {
     public String username;
     // 登录密码 持久化
     public String password;
-    // Token 持久化
-    public String sessionToken;
 
     public static User getCurrentUser() {
         User user = AnyPref.get(User.class, "_CurrentUser", true);
@@ -51,11 +49,6 @@ public class User implements Parcelable {
         this.password = password;
     }
 
-    public String getSessionToken() {
-        return sessionToken;
-    }
-
-
     @Override
     public int describeContents() {
         return 0;
@@ -64,17 +57,16 @@ public class User implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.username);
-        dest.writeString(this.sessionToken);
         dest.writeString(this.password);
     }
 
-    public User() {
-
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
     protected User(Parcel in) {
         this.username = in.readString();
-        this.sessionToken = in.readString();
         this.password = in.readString();
     }
 

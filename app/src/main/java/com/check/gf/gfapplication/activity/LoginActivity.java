@@ -16,8 +16,8 @@ import android.widget.TextView;
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.check.gf.gfapplication.BaseActivity;
 import com.check.gf.gfapplication.R;
-import com.check.gf.gfapplication.entity.GroupData;
 import com.check.gf.gfapplication.entity.PostData;
+import com.check.gf.gfapplication.entity.TeamGroupResult;
 import com.check.gf.gfapplication.entity.User;
 import com.check.gf.gfapplication.network.RxFactory;
 import com.check.gf.gfapplication.utils.CommonUtils;
@@ -39,8 +39,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private String packStation[] = {"工位一期", "工位二期", "工位三期", "工位四期"};
     private String packGroup[] = {"班组A", "班组B", "班组C", "班组D"};
 
-    private ArrayList<PostData> postDatas = new ArrayList<>();
-    private ArrayList<GroupData> groupDatas = new ArrayList<>();
+    private ArrayList<TeamGroupResult.PostData> postDatas = new ArrayList<>();
+    private ArrayList<String> groupDatas = new ArrayList<>();
 
     // UI references.
     private EditText mUsernameView;
@@ -102,7 +102,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 teamGroupResult -> {
                     if (teamGroupResult.getResult() == 0) {
                         showProgress(false);
-                        List<PostData> postDatas = teamGroupResult.getData();
+                        List<TeamGroupResult.PostData> postDatas = teamGroupResult.getData();
                         initOptionData(postDatas);
                     } else {
                         postQueryTeamGroupError(teamGroupResult.getDesc());
@@ -116,14 +116,20 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
      *
      * @param postDatas 实体数据
      */
-    private void initOptionData(List<PostData> postDatas) {
+    private void initOptionData(List<TeamGroupResult.PostData> postDatas) {
         // 选项1
         this.postDatas.addAll(postDatas);
         // 选项2
         for (int i = 0; i < postDatas.size(); i++) {
-            this.groupDatas.addAll(postDatas.get(i).getGroups());
+            List<TeamGroupResult.PostData.GroupData> groupDatas = postDatas.get(i).getGroups();
+            for (int j = 0; j < groupDatas.size(); j++) {
+                groupDatas.get(j).getGroupCode();
+            }
         }
+        PostData postData = new PostData();
 
+        //this.groupDatas.add();
+        initOptionPicker();
         /*--------数据源添加完毕---------*/
     }
 
@@ -135,11 +141,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
          */
 
         optionsPickerView = new OptionsPickerView.Builder(this, (options1, options2, options3, v) -> {
-            //返回的分别是三个级别的选中位置
-            String tx = postDatas.get(options1).getPickerViewText()
-                    + groupDatas.get(options2).getPickerViewText();
+//            //返回的分别是三个级别的选中位置
+//            String tx = postDatas.get(options1).getPickerViewText()
+//                    + postDatas.get(options1).getPostName()
+//                    + groupDatas.get(options1).get;
 
             //btn_Options.setText(tx);
+
         })
                 .setTitleText("城市选择")
                 .setContentTextSize(20)//设置滚轮文字大小
@@ -182,21 +190,25 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         // Check for a valid username and password.
         // if error, don't attempt login and focus the first form field with an error.
         if (TextUtils.isEmpty(username)) {
+            CommonUtils.showToast(getString(R.string.error_empty_username));
             mUsernameView.setError(getString(R.string.error_empty_username));
             mUsernameView.findFocus();
             return;
         }
         if (TextUtils.isEmpty(password)) {
+            CommonUtils.showToast(getString(R.string.error_empty_password));
             mPasswordView.setError(getString(R.string.error_empty_password));
             mPasswordView.findFocus();
             return;
         }
         if (!isUsernameValid(username)) {
+            CommonUtils.showToast(getString(R.string.error_invalid_username));
             mUsernameView.setError(getString(R.string.error_invalid_username));
             mUsernameView.findFocus();
             return;
         }
         if (!isPasswordValid(password)) {
+            CommonUtils.showToast(getString(R.string.error_invalid_password));
             mPasswordView.setError(getString(R.string.error_invalid_password));
             mPasswordView.findFocus();
             return;
@@ -230,22 +242,20 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
 
     /**
-     * Represents an asynchronous login/registration task used to authenticate
+     * Represents an asynchronous login task used to authenticate
      * the user.
      *
      * @param username 用户名
      * @param password 密码
      */
     private void userLogin(String username, String password) {
+        User user = new User(username, password);
         toSubscribe(RxFactory.getUserServiceInstance()
-                        .login(username, password),
+                        .login(user),
                 () -> showProgress(true),
                 resultObject -> {
                     if (resultObject.getResult() == 0) {
                         showProgress(false);
-                        User user = new User();
-                        user.setUsername(username);
-                        user.setPassword(password);
                         AnyPref.put(user, "_CurrentUser");// 将私有token保存
                         startActivity(new Intent(LoginActivity.this, SearchActivity.class));
                     } else {
