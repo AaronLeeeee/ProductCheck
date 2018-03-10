@@ -3,6 +3,7 @@ package com.check.gf.gfapplication.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 
 import com.check.gf.gfapplication.CustomApplication;
@@ -40,12 +41,11 @@ public class SplashActivity extends AppCompatActivity {
     private int initAndChoosePath() {
         CustomApplication customApplication = CustomApplication.getInstance();
         String username = customApplication.getSpHelper().getUsername();
-        return GO_LOGIN;
-//        if (TextUtils.isEmpty(username)) {
-//            return GO_LOGIN;
-//        } else {
-//            return GO_MAIN;
-//        }
+        if (TextUtils.isEmpty(username)) {
+            return GO_LOGIN;
+        } else {
+            return GO_MAIN;
+        }
     }
 
     /**

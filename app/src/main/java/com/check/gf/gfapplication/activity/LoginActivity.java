@@ -1,11 +1,9 @@
 package com.check.gf.gfapplication.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -90,8 +88,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public void onClick(View view) {
         int viewId = view.getId();
         if (viewId == R.id.tv_pack_station_text || viewId == R.id.tv_pack_group_text) {
+            hideSoftInputFromWindow();
             if (optionsPickerView != null) {
                 optionsPickerView.show(); //弹出条件选择器
+            } else {
+                showLoading("条件选择器配置异常");
             }
         }
     }
@@ -215,14 +216,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             CommonUtils.showToast(getString(R.string.error_empty_team_group));
             return;
         }
-        // 隐藏软键盘
-        View peekDecorView = getWindow().peekDecorView();
-        if (peekDecorView != null) {
-            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (inputMethodManager != null) {
-                inputMethodManager.hideSoftInputFromWindow(peekDecorView.getWindowToken(), 0);
-            }
-        }
+        hideSoftInputFromWindow();
         if (!CommonUtils.isNetworkAvailable()) {
             CommonUtils.showToast(R.string.network_tips);
             return;

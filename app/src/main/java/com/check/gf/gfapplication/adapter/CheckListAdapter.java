@@ -3,30 +3,39 @@ package com.check.gf.gfapplication.adapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.check.gf.gfapplication.R;
-import com.check.gf.gfapplication.model.IncomeCheck;
+import com.check.gf.gfapplication.entity.CheckOrder;
 
 import java.util.List;
 
 /**
- * Created by wqd on 2018/1/1.
+ * CheckListAdapter
+ *
+ * @author nEdAy
  */
+public class CheckListAdapter extends BaseQuickAdapter<CheckOrder.DataBean, BaseViewHolder> {
 
-public class CheckListAdapter extends BaseQuickAdapter<IncomeCheck, BaseViewHolder> {
-
-    public CheckListAdapter(List<IncomeCheck> items) {
+    public CheckListAdapter(List<CheckOrder.DataBean> items) {
         super(R.layout.list_item_check_list, items);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, IncomeCheck incomeCheck) {
-        helper.setText(R.id.tv_purchase_order, incomeCheck.purchaseOrderId)
-                .setText(R.id.tv_material_id, incomeCheck.materialId)
-                .setText(R.id.tv_material_name, incomeCheck.materialName)
-                .setText(R.id.tv_income_count, incomeCheck.incomeCount)
-                .setText(R.id.tv_check_date, incomeCheck.checkDate)
-                .setText(R.id.tv_supplier, incomeCheck.supplier)
-                .setText(R.id.tv_check_id, mContext.getString(R.string.check_order_id, incomeCheck.checkSingleId))
-                .setText(R.id.tv_completion, mContext.getString(R.string.completion, String.valueOf(incomeCheck.totalCheckNum - incomeCheck.needCheckNum) + " / " + String.valueOf(incomeCheck.totalCheckNum)))
+    protected void convert(BaseViewHolder helper, CheckOrder.DataBean incomeCheck) {
+        helper.setText(R.id.tv_purchase_order,
+                mContext.getString(R.string.purchase_order_id, incomeCheck.getCustomerCode()))
+                .setText(R.id.tv_material_id,
+                        mContext.getString(R.string.material_id_append, incomeCheck.getItemCode()))
+                .setText(R.id.tv_material_name,
+                        mContext.getString(R.string.material_name_append, incomeCheck.getItemName()))
+                .setText(R.id.tv_income_count,
+                        mContext.getString(R.string.income_material_count_append, String.valueOf(incomeCheck.getPlanQtyTU())))
+                .setText(R.id.tv_check_date,
+                        mContext.getString(R.string.check_date, incomeCheck.getRequireDate()))
+                .setText(R.id.tv_supplier,
+                        mContext.getString(R.string.supplier_append, incomeCheck.getCustomerName()))
+                .setText(R.id.tv_check_id,
+                        mContext.getString(R.string.check_order_id, incomeCheck.getEquipmentNo()))
+                .setText(R.id.tv_completion,
+                        mContext.getString(R.string.completion, String.valueOf(incomeCheck.getFinishCheckNum()) + " / " + String.valueOf(incomeCheck.getTotalCheckNum())))
                 .addOnClickListener(R.id.ll_go_detail);
     }
 

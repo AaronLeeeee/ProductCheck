@@ -14,22 +14,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.SimpleClickListener;
-import com.check.gf.gfapplication.base.BaseActivity;
 import com.check.gf.gfapplication.R;
 import com.check.gf.gfapplication.adapter.CheckListAdapter;
+import com.check.gf.gfapplication.base.BaseActivity;
 import com.check.gf.gfapplication.base.IBaseListFragment;
-import com.check.gf.gfapplication.config.StaticConfig;
-import com.check.gf.gfapplication.model.IncomeCheck;
+import com.check.gf.gfapplication.entity.CheckOrder;
+import com.check.gf.gfapplication.utils.CommonUtils;
 import com.check.gf.gfapplication.utils.ExtendUtils;
 import com.check.gf.gfapplication.view.HidingScrollListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * 检测列表页
@@ -44,16 +39,12 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
     private TextView mNcCheckTv;
     private CheckListAdapter mQuickAdapter;
 
-    private List<IncomeCheck> mIncomeCheckList = new ArrayList<>();
+    private List<CheckOrder.DataBean> mCheckOrders = new ArrayList<>();
 
     protected RecyclerView mRecyclerView;
     protected SwipeRefreshLayout mSwipeRefreshLayout;
     protected LinearLayout rl_no_data, rl_no_network;
     protected TextView tv_total;
-    protected int mCurrentCounter;
-    protected View notLoadingView;
-    protected int curPage;
-    protected int mCurIndex = -1;
     private TextView tv_now;
     private RelativeLayout rl_top_bar;
     private ImageView fab;
@@ -97,31 +88,19 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
         initAdapter();
         // 主动刷新数据
         onRefresh();
-        mQuickAdapter.setNewData(mIncomeCheckList);
     }
+
 
     @Override
     protected void initData() {
         super.initData();
-        mIncomeCheckList = new ArrayList<>(10);
-        for (int i = 0; i < 10; i++) {
-            IncomeCheck incomeCheck = new IncomeCheck();
-            incomeCheck.checkSingleId = "IQC_00450569";
-            incomeCheck.needCheckNum = 10;
-            incomeCheck.totalCheckNum = 13;
-            incomeCheck.materialId = "1046000014";
-            incomeCheck.materialName = "导轨总成";
-            incomeCheck.purchaseOrderId = "E/300442276.003";
-            incomeCheck.incomeCount = 1;
-            incomeCheck.checkDate = "2017-9-3";
-            incomeCheck.supplier = "马拉兹(江苏)电梯导轨有限公司";
-            mIncomeCheckList.add(incomeCheck);
-        }
+        mCheckOrders = getIntent().getParcelableArrayListExtra(SearchActivity.getExtra());
+        mQuickAdapter.setNewData(mCheckOrders);
         initCheckContent();
     }
 
     private void initCheckContent() {
-        mIncomeCheckTv.setText(getString(R.string.income_check, mIncomeCheckList.size()));
+        mIncomeCheckTv.setText(getString(R.string.income_check, mCheckOrders.size()));
         mProcessCheckTv.setText(getString(R.string.process_check, 0));
         mShipmentsCheckTv.setText(getString(R.string.shipments_check, 0));
         mNcCheckTv.setText(getString(R.string.nc_check, 0));
@@ -204,7 +183,7 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
      */
     @Override
     public void onLoadMoreRequested() {
-        mRecyclerView.post(this::LoadMoreItem);
+        LoadMoreItem();
     }
 
     /**
@@ -215,74 +194,10 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
         RefreshItem();
     }
 
-    /**
-     * 点击时修改子控件背景样式并在0.5s后恢复
-     *
-     * @param view       要修改的子控件
-     * @param bg         要恢复的背景
-     * @param bg_pressed 要变化的背景
-     */
-    protected void changePressedViewBg(View view, int bg, int bg_pressed) {
-        view.setPressed(true);
-        view.setBackgroundResource(bg_pressed);
-        Observable.timer(500, TimeUnit.MILLISECONDS) //延迟SHOW_TIME_MIN秒跳转
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aLong -> {
-                    view.setPressed(false);
-                    view.setBackgroundResource(bg);
-                });
-    }
-
-    private final SimpleClickListener SimpleClickListener = new SimpleClickListener() {
-        @Override
-        public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-//            Intent item = new Intent(getActivity(),
-//                    PortItemDetailsActivity.class);
-//            item.putExtra(PortItemDetailsActivity.getExtra(), (PortItem) baseQuickAdapter.getItem(i));
-//            startActivity(item);
-        }
-
-        @Override
-        public void onItemLongClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-//            PortItem item = mQuickAdapter.getItem(i);
-//            AliTradeHelper aliTradeUtils = new AliTradeHelper(getActivity());
-//            aliTradeUtils.addToCart(item.getGoodsID());
-        }
-
-        @Override
-        public void onItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-//            PortItem item = mQuickAdapter.getItem(i);
-//            AliTradeHelper aliTradeUtils = new AliTradeHelper(getActivity());
-//            switch (view.getId()) {
-//                case R.id.ll_get:
-//                    aliTradeUtils.showItemURLPage(item.getQuan_link());
-//                    changePressedViewBg(view, R.drawable.ll_get_bg, R.drawable.ll_get_bg_pressed);
-//                    break;
-//                case R.id.tx_buy_url:
-//                    if (item.isCommission_check()) {
-//                        aliTradeUtils.showItemURLPage("http://www.neday.cn/index_.php?r=p/d&id=" + item.getID());
-//                    } else {
-//                        aliTradeUtils.showItemDetailPage(item.getGoodsID());
-//                    }
-//                    changePressedViewBg(view, R.drawable.ll_buy_bg, R.drawable.ll_buy_bg_pressed);
-//                    break;
-//                default:
-//                    break;
-//            }
-        }
-
-        @Override
-        public void onItemChildLongClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-        }
-    };
-
     public void initAdapter() {
         mQuickAdapter = new CheckListAdapter(new ArrayList<>());
         //mQuickAdapter.addHeaderView(getView());
         mRecyclerView.setAdapter(mQuickAdapter);
-        mQuickAdapter.setOnLoadMoreListener(this);
-        //mQuickAdapter.openLoadMore(StaticConfig.PAGE_SIZE);
-        mQuickAdapter.setAutoLoadMoreSize(StaticConfig.AUTO_SIZE);
         //条目子控件点击事件
         mQuickAdapter.setOnItemChildClickListener((adapter, view, position) -> {
 //                Intent intent = new Intent(CheckListActivity.this, CheckDetailActivity.class);
@@ -300,42 +215,13 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
 
     }
 
-    /**
-     * 当SwipeRefreshLayout下拉刷新时触发
-     */
+    @Override
     public void RefreshItem() {
-//        Map<String, Object> queryMap = new HashMap<>();
-//        toSubscribe(RxFactory.getCheckServiceInstance()
-//                        .queryPortItem(queryMap)
-//                        .map(PortItem::getResult),
-//                () -> {
-//                    //隐藏无网络和无数据界面
-//                    rl_no_network.setVisibility(View.GONE);
-//                    rl_no_data.setVisibility(View.GONE);
-//                    curPage = 0;//重置页码
-//                    queryMap.put("where", "[{\"key\":\"Title\",\"value\":\"" + searchWhat + "\",\"operation\":\"LIKE\",\"relation\":\"\"}]");
-//                    queryMap.put("page", curPage);
-//                },
-//                portItems -> {
-//                    if (portItems.isEmpty()) {
-//                        rl_no_data.setVisibility(View.VISIBLE);
-//                    } else {
-//                        curPage++;
-//                    }
-//                    mQuickAdapter.setNewData(portItems);
-//                    mQuickAdapter.removeAllFooterView();
-//                    mCurrentCounter = mQuickAdapter.getData().size();
-//                    mSwipeRefreshLayout.setRefreshing(false);
-//                },
-//                throwable -> {
-//                    rl_no_network.setVisibility(View.VISIBLE);
-//                    rl_no_network.setOnClickListener(v -> RefreshItem());
-//                    mQuickAdapter.getData().clear();
-//                    mQuickAdapter.removeAllFooterView();
-//                    mCurrentCounter = 0;
-//                    mSwipeRefreshLayout.setRefreshing(false);
-//                    Logger.e(throwable.getMessage());
-//                });
+        CommonUtils.showToast("暂不支持下拉刷新");
     }
 
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
 }

@@ -33,7 +33,9 @@
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
 
-    <string name="search">搜索</string>
+    <string name="tx_search">搜索</string>
+    <string name="tx_filter">筛选</string>
+    <string name="tx_not_begin_search">请点击右上角开启搜索</string>
 
     <string name="search_customerName">客户</string>
     <string name="search_requireDate">发货日期</string>
@@ -50,12 +52,12 @@
     <string name="process_check">过程检(%1$d)</string>
     <string name="shipments_check">出货检(%1$d)</string>
     <string name="nc_check">NC检(%1$d)</string>
-    <string name="purchase_order_id">采购订单号:</string>
-    <string name="material_id_append">物料号:</string>
-    <string name="material_name_append">物料名称:</string>
-    <string name="income_material_count_append">来料数量:</string>
-    <string name="check_date">检验日期:</string>
-    <string name="supplier_append">供应商:</string>
+    <string name="purchase_order_id">采购订单号: %1$s</string>
+    <string name="material_id_append">物料号: %1$s</string>
+    <string name="material_name_append">物料名称: %1$s</string>
+    <string name="income_material_count_append">来料数量: %1$s</string>
+    <string name="check_date">检验日期: %1$s</string>
+    <string name="supplier_append">供应商: %1$s</string>
     <string name="check_order_id">检验单号: %1$s</string>
     <string name="completion">完成度: %1$s</string>
     <string name="purchase_order">采购订单</string>

@@ -37,8 +37,8 @@ public class TitleContentTextView extends LinearLayout {
 
     private void initView() {
         LayoutInflater.from(getContext()).inflate(R.layout.view_title_content_view, this);
-        mTitleTv = (TextView) findViewById(R.id.tv_title);
-        mContentTv = (TextView) findViewById(R.id.tv_content);
+        mTitleTv = findViewById(R.id.tv_title);
+        mContentTv = findViewById(R.id.tv_content);
     }
 
     public void setContentTv(String str) {

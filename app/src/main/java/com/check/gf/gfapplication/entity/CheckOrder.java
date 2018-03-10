@@ -1,5 +1,9 @@
 package com.check.gf.gfapplication.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,7 +11,7 @@ import java.util.List;
  * time   : 2018/3/9
  * desc   : 检验单
  */
-public class CheckOrder extends ResultObject {
+public class CheckOrder extends ResultObject implements Parcelable {
 
     private List<DataBean> data;
 
@@ -19,7 +23,7 @@ public class CheckOrder extends ResultObject {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Parcelable {
         /**
          * id : 1
          * docNo : 0001
@@ -153,5 +157,88 @@ public class CheckOrder extends ResultObject {
         public void setFinishState(int finishState) {
             this.finishState = finishState;
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(this.id);
+            dest.writeString(this.docNo);
+            dest.writeString(this.equipmentNo);
+            dest.writeString(this.itemCode);
+            dest.writeString(this.itemName);
+            dest.writeInt(this.PlanQtyTU);
+            dest.writeInt(this.PackgNum);
+            dest.writeString(this.requireDate);
+            dest.writeString(this.customerName);
+            dest.writeString(this.customerCode);
+            dest.writeInt(this.totalCheckNum);
+            dest.writeInt(this.finishCheckNum);
+            dest.writeInt(this.finishState);
+        }
+
+        public DataBean() {
+        }
+
+        protected DataBean(Parcel in) {
+            this.id = in.readInt();
+            this.docNo = in.readString();
+            this.equipmentNo = in.readString();
+            this.itemCode = in.readString();
+            this.itemName = in.readString();
+            this.PlanQtyTU = in.readInt();
+            this.PackgNum = in.readInt();
+            this.requireDate = in.readString();
+            this.customerName = in.readString();
+            this.customerCode = in.readString();
+            this.totalCheckNum = in.readInt();
+            this.finishCheckNum = in.readInt();
+            this.finishState = in.readInt();
+        }
+
+        public static final Creator<DataBean> CREATOR = new Creator<DataBean>() {
+            @Override
+            public DataBean createFromParcel(Parcel source) {
+                return new DataBean(source);
+            }
+
+            @Override
+            public DataBean[] newArray(int size) {
+                return new DataBean[size];
+            }
+        };
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeList(this.data);
+    }
+
+    public CheckOrder() {
+    }
+
+    protected CheckOrder(Parcel in) {
+        this.data = new ArrayList<DataBean>();
+        in.readList(this.data, DataBean.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<CheckOrder> CREATOR = new Parcelable.Creator<CheckOrder>() {
+        @Override
+        public CheckOrder createFromParcel(Parcel source) {
+            return new CheckOrder(source);
+        }
+
+        @Override
+        public CheckOrder[] newArray(int size) {
+            return new CheckOrder[size];
+        }
+    };
 }

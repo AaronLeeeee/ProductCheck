@@ -9,7 +9,9 @@ import com.check.gf.gfapplication.entity.ResultObject;
 import com.check.gf.gfapplication.entity.StartCheckResult;
 
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -29,8 +31,8 @@ public interface CheckApi {
      * @param custNo       否	string	客户订单号
      * @return 检验单
      */
-    @POST("Check/CheckOrderQuery")
-    Observable<CheckOrder> CheckOrderQuery(@Body CheckOrder userSignInfo);
+    @GET("Check/CheckOrderQuery")
+    Observable<CheckOrder> CheckOrderQuery(@Query("customerName") String customerName, @Query("requireDate") String requireDate, @Query("equipmentNo") String equipmentNo, @Query("docNo") String docNo, @Query("custNo") String custNo);
 
 
     /**

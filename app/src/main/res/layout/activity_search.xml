@@ -16,20 +16,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/bt_search"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/top_title_bar"
-        android:layout_margin="15dp"
-        android:text="@string/search"
-        android:textSize="@dimen/ts_normal" />
-
     <LinearLayout
         android:id="@+id/ll_unStart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/bt_search"
+        android:layout_below="@id/top_title_bar"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="15dp">
@@ -52,10 +43,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="15dp"
+            android:text="@string/tx_not_begin_search"
             android:textColor="@color/black"
             android:textSize="@dimen/ts_big" />
-
-
     </LinearLayout>
 
     <LinearLayout
@@ -85,10 +75,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="15dp"
+            android:text="@string/tx_not_begin_search"
             android:textColor="@color/black"
             android:textSize="@dimen/ts_big" />
-
-
     </LinearLayout>
 
     <LinearLayout
@@ -118,6 +107,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="15dp"
+            android:text="@string/tx_not_begin_search"
             android:textColor="@color/black"
             android:textSize="@dimen/ts_big" />
     </LinearLayout>

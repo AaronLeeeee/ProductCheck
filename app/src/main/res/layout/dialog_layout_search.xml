@@ -64,13 +64,14 @@
                 android:layout_marginTop="15dp"
                 android:text="请点击选择 发货日期"
                 android:textColor="@android:color/holo_red_dark"
-                android:textSize="14sp" />
+                android:textSize="18sp" />
 
         </LinearLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp">
 
             <EditText
                 android:id="@+id/et_equipmentNo"
@@ -122,7 +123,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/search"
+            android:text="@string/tx_search"
             android:textStyle="bold" />
 
     </LinearLayout>
