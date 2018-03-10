@@ -1,35 +1,20 @@
 package com.check.gf.gfapplication.activity;
 
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 
 import com.check.gf.gfapplication.R;
 import com.check.gf.gfapplication.base.BaseActivity;
-import com.check.gf.gfapplication.entity.CheckOrderInfo;
-import com.check.gf.gfapplication.fragment.BaseInfoFragment;
-import com.check.gf.gfapplication.fragment.DimensionFragment;
-import com.check.gf.gfapplication.fragment.PerformanceFragment;
-import com.check.gf.gfapplication.fragment.SurfaceFragment;
-import com.check.gf.gfapplication.view.GuardViewPager;
-import com.flyco.tablayout.SlidingTabLayout;
-
-import java.util.ArrayList;
 
 /**
- * 检测详情页
+ * 检测条目页
  *
  * @author nEdAy
  */
 public class CheckDetailItemActivity extends BaseActivity {
 
-    private final ArrayList<Fragment> mFragments = new ArrayList<>();
-    private CheckOrderInfo.DataBean mCheckOrderInfo;
-
     @Override
     protected void getIntentData() {
         super.getIntentData();
-        Intent intent = getIntent();
-        mCheckOrderInfo = intent.getParcelableExtra(CheckListActivity.getExtra());
     }
 
     @Override
@@ -40,15 +25,6 @@ public class CheckDetailItemActivity extends BaseActivity {
     @Override
     protected void initContentView() {
         super.initContentView();
-        GuardViewPager vp_paper = findViewById(R.id.vpItemLeftPaper);
-        vp_paper.setSlidingEnable(false);
-        vp_paper.setOffscreenPageLimit(4);
-        mFragments.add(BaseInfoFragment.newInstance(mCheckOrderInfo));
-        mFragments.add(DimensionFragment.newInstance());
-        mFragments.add(PerformanceFragment.newInstance());
-        mFragments.add(SurfaceFragment.newInstance());
-        ((SlidingTabLayout) findViewById(R.id.tl_library))
-                .setViewPager(vp_paper, getResources().getStringArray(R.array.inspect_type_name), this, mFragments);
     }
 
     @Override

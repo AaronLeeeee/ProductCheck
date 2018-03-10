@@ -1,17 +1,11 @@
 package com.check.gf.gfapplication.activity;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -24,7 +18,6 @@ import com.check.gf.gfapplication.entity.CheckOrderInfo;
 import com.check.gf.gfapplication.network.RxFactory;
 import com.check.gf.gfapplication.utils.CommonUtils;
 import com.check.gf.gfapplication.utils.ExtendUtils;
-import com.check.gf.gfapplication.view.HidingScrollListener;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
@@ -48,10 +41,6 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
     protected RecyclerView mRecyclerView;
     protected SwipeRefreshLayout mSwipeRefreshLayout;
     protected LinearLayout rl_no_data, rl_no_network;
-    protected TextView tv_total;
-    private TextView tv_now;
-    private RelativeLayout rl_top_bar;
-    private ImageView fab;
 
     public static String getExtra() {
         return "CheckOrder";
@@ -82,12 +71,6 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
         mSwipeRefreshLayout.setColorSchemeResources(R.color.red, R.color.orange, R.color.green, R.color.blue);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        fab = findViewById(R.id.fab);
-        fab.setOnClickListener(v -> mRecyclerView.scrollToPosition(0));
-        rl_top_bar = findViewById(R.id.rl_top_bar);
-        tv_now = findViewById(R.id.tv_now);
-        tv_total = findViewById(R.id.tv_total);
-        mRecyclerView.addOnScrollListener(hidingScrollListener);
         initAdapter();
     }
 
@@ -122,62 +105,6 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
                 break;
         }
     }
-
-
-    /**
-     * RecyclerView滑动监听
-     */
-    private final HidingScrollListener hidingScrollListener = new HidingScrollListener() {
-        @Override
-        public void onStart() {
-            rl_top_bar.setVisibility(View.VISIBLE);
-            rl_top_bar.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
-        }
-
-        @Override
-        public void onRemoveAll() {
-            Resources resources = getResources();
-            DisplayMetrics dm = resources.getDisplayMetrics();
-            fab.animate()
-                    .translationY(dm.heightPixels - fab.getHeight())
-                    .setInterpolator(new AccelerateInterpolator(2))
-                    .start();
-            rl_top_bar.animate()
-                    .translationY(dm.heightPixels - rl_top_bar.getHeight())
-                    .setInterpolator(new AccelerateInterpolator(2))
-                    .start();
-        }
-
-        @Override
-        public void onMove(int visibleItemNum) {
-            tv_now.setText(String.valueOf(visibleItemNum));
-        }
-
-        @Override
-        public void onHide() {
-            rl_top_bar.setVisibility(View.VISIBLE);
-            rl_top_bar.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
-            Resources resources = getResources();
-            DisplayMetrics dm = resources.getDisplayMetrics();
-            fab.animate()
-                    .translationY(dm.heightPixels - fab.getHeight())
-                    .setInterpolator(new AccelerateInterpolator(2))
-                    .start();
-        }
-
-        @Override
-        public void onShow() {
-            fab.setVisibility(View.VISIBLE);
-            fab.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
-            Resources resources = getResources();
-            DisplayMetrics dm = resources.getDisplayMetrics();
-            rl_top_bar.animate()
-                    .translationY(dm.heightPixels - rl_top_bar.getHeight())
-                    .setInterpolator(new AccelerateInterpolator(2))
-                    .start();
-        }
-    };
-
 
     /**
      * 当mRecyclerView上拉加载时触发，具体实现在子类

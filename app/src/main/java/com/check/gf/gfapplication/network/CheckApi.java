@@ -45,13 +45,13 @@ public interface CheckApi {
     Observable<CheckOrderInfo> CheckOrderInfoQuery(@Query("equipmentNo") String equipmentNo);
 
 
-    /**
-     * 检验类别查询接口
-     *
-     * @return 检验类别
-     */
-    @GET("Check/InspectTypeQuery")
-    Observable<InspectType> InspectTypeQuery();
+//    /**
+//     * 检验类别查询接口
+//     *
+//     * @return 检验类别
+//     */
+//    @GET("Check/InspectTypeQuery")
+//    Observable<InspectType> InspectTypeQuery();
 
 
     /**
@@ -61,8 +61,8 @@ public interface CheckApi {
      * @param equipmentNo 是		string	检验单号
      * @return 检验条目信息
      */
-    @GET("Check/CheckOrderInfoQuery")
-    Observable<InspectItem> InspectItemListQuery(@Body CheckOrder userSignInfo);
+    @GET("Check/InspectItemListQuery")
+    Observable<InspectItem> InspectItemListQuery(@Query("inspectCode") String inspectCode, @Query("equipmentNo") String equipmentNo);
 
 
     /**

@@ -14,8 +14,6 @@ import java.util.List;
  */
 public class InspectListAdapter extends BaseQuickAdapter<InspectItem.DataBean, BaseViewHolder> {
 
-    private int checkedImgRes;
-
     public InspectListAdapter(List<InspectItem.DataBean> items) {
         super(R.layout.list_item_check_result, items);
     }
