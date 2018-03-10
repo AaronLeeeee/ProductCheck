@@ -1,8 +1,5 @@
 package com.check.gf.gfapplication.fragment;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -20,10 +17,14 @@ import android.widget.ListView;
 import com.check.gf.gfapplication.R;
 import com.check.gf.gfapplication.adapter.CheckResultAdapter;
 import com.check.gf.gfapplication.loader.FrescoImageLoader;
+import com.check.gf.gfapplication.model.IncomeCheck;
 import com.check.gf.gfapplication.model.SurfaceInfo;
 import com.yancy.gallerypick.config.GalleryConfig;
 import com.yancy.gallerypick.config.GalleryPick;
 import com.yancy.gallerypick.inter.IHandlerCallBack;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 外观
@@ -48,7 +49,7 @@ public class SurfaceFragment extends Fragment {
     private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE2 = 7;
 
 
-    public static SurfaceFragment newInstance() {
+    public static SurfaceFragment newInstance(IncomeCheck incomeCheck) {
 
         Bundle args = new Bundle();
 

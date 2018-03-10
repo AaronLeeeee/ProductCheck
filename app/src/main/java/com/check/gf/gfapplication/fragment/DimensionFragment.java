@@ -8,23 +8,23 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.check.gf.gfapplication.R;
+import com.check.gf.gfapplication.model.IncomeCheck;
 
 /**
  * 尺寸
- *
+ * <p>
  * Created by wqd on 2018/1/10.
  */
 
 public class DimensionFragment extends Fragment {
 
-    public static DimensionFragment newInstance() {
-
+    public static DimensionFragment newInstance(IncomeCheck incomeCheck) {
         Bundle args = new Bundle();
-
         DimensionFragment fragment = new DimensionFragment();
         fragment.setArguments(args);
         return fragment;
     }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

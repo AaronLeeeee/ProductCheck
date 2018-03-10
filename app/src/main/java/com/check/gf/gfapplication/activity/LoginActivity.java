@@ -38,8 +38,8 @@ import java.util.List;
  */
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
-    private String packStation[] = {"工位一期", "工位二期", "工位三期", "工位四期"};
-    private String packGroup[] = {"班组A", "班组B", "班组C", "班组D"};
+//    private String packStation[] = {"工位一期", "工位二期", "工位三期", "工位四期"};
+//    private String packGroup[] = {"班组A", "班组B", "班组C", "班组D"};
 
     private ArrayList<TeamGroupResult.PostData> postDatas = new ArrayList<>();
     private ArrayList<String> groupDatas = new ArrayList<>();
@@ -262,16 +262,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
      * @param password 密码
      */
     private void userLogin(String username, String password) {
-        User user = new User(username, password);
         toSubscribe(RxFactory.getUserServiceInstance()
-                        .login(user),
+                        .login(username, password),
                 () -> showProgress(true),
                 resultObject -> {
                     if (resultObject.getResult() == 0) {
                         showProgress(false);
-                        AnyPref.put(user, "_CurrentUser");// 将私有token保存
+                        // 将私有token保存
+                        AnyPref.put(new User(username, password), "_CurrentUser");
                         sharedPreferencesHelper.setUsername(username);
                         startActivity(new Intent(LoginActivity.this, SearchActivity.class));
+                        finish();
                     } else {
                         userLoginError(resultObject.getDesc());
                     }

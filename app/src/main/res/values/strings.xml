@@ -21,6 +21,13 @@
     <string name="tx_no_data_search">暂无数据，轻触屏幕返回</string>
     <string name="tx_reload">轻触屏幕刷新</string>
 
+    <string-array name="inspect_type_name">
+        <item> 基本信息 </item>
+        <item> 尺寸 </item>
+        <item> 性能 </item>
+        <item> 外观 </item>
+    </string-array>
+
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
 

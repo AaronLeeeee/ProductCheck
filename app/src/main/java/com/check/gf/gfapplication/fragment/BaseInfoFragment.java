@@ -58,28 +58,28 @@ public class BaseInfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_base_info, container, false);
-        mPurchaseIdTv = (TextView) layout.findViewById(R.id.tv_purchase_order_id);
-        mSupplierTv = (TextView) layout.findViewById(R.id.tv_supplier);
-        mMaterialIdTv = (TextView) layout.findViewById(R.id.tv_material_id);
-        mMaterialNameTv = (TextView) layout.findViewById(R.id.tv_material_name);
-        mQMNOTv = (TextView) layout.findViewById(R.id.tv_qm_no);
-        mIncomeCountTv = (TextView) layout.findViewById(R.id.tv_income_count);
-        mSamplePlanTv = (TextView) layout.findViewById(R.id.tv_sample_plan);
-        mInspectorTv = (TextView) layout.findViewById(R.id.tv_inspector);
-        mStartTimeTv = (TextView) layout.findViewById(R.id.tv_start_time);
-        mEndTimeTv = (TextView) layout.findViewById(R.id.tv_end_time);
-        mSurfaceTv = (TextView) layout.findViewById(R.id.tv_surface);
-        mDimensionTv = (TextView) layout.findViewById(R.id.tv_dimension);
-        mPerformanceTv = (TextView) layout.findViewById(R.id.tv_performance);
+        mPurchaseIdTv = layout.findViewById(R.id.tv_purchase_order_id);
+        mSupplierTv = layout.findViewById(R.id.tv_supplier);
+        mMaterialIdTv = layout.findViewById(R.id.tv_material_id);
+        mMaterialNameTv = layout.findViewById(R.id.tv_material_name);
+        mQMNOTv = layout.findViewById(R.id.tv_qm_no);
+        mIncomeCountTv = layout.findViewById(R.id.tv_income_count);
+        mSamplePlanTv = layout.findViewById(R.id.tv_sample_plan);
+        mInspectorTv = layout.findViewById(R.id.tv_inspector);
+        mStartTimeTv = layout.findViewById(R.id.tv_start_time);
+        mEndTimeTv = layout.findViewById(R.id.tv_end_time);
+        mSurfaceTv = layout.findViewById(R.id.tv_surface);
+        mDimensionTv = layout.findViewById(R.id.tv_dimension);
+        mPerformanceTv = layout.findViewById(R.id.tv_performance);
 
-        mStartCheckBt = (TextView) layout.findViewById(R.id.tv_start_check);
-        mSubmitCheckBt = (TextView) layout.findViewById(R.id.tv_submit);
+        mStartCheckBt = layout.findViewById(R.id.tv_start_check);
+        mSubmitCheckBt = layout.findViewById(R.id.tv_submit);
 
         mStartCheckBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (mStartTimeTv.getText() != null && !mStartTimeTv.getText().equals("") ) {
+                if (mStartTimeTv.getText() != null && !mStartTimeTv.getText().equals("")) {
                     Toast.makeText(getActivity(), "已经开始检测，请勿重复检查！", Toast.LENGTH_SHORT).show();
                     return;
                 }

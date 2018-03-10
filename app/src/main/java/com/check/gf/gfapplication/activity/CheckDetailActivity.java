@@ -1,14 +1,20 @@
 package com.check.gf.gfapplication.activity;
 
 import android.content.Intent;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
+import android.support.v4.app.Fragment;
 
 import com.check.gf.gfapplication.BaseActivity;
 import com.check.gf.gfapplication.R;
-import com.check.gf.gfapplication.adapter.CheckDetailFragmentAdapter;
 import com.check.gf.gfapplication.config.GlobalConstant;
+import com.check.gf.gfapplication.fragment.BaseInfoFragment;
+import com.check.gf.gfapplication.fragment.DimensionFragment;
+import com.check.gf.gfapplication.fragment.PerformanceFragment;
+import com.check.gf.gfapplication.fragment.SurfaceFragment;
 import com.check.gf.gfapplication.model.IncomeCheck;
+import com.check.gf.gfapplication.view.GuardViewPager;
+import com.flyco.tablayout.SlidingTabLayout;
+
+import java.util.ArrayList;
 
 /**
  * 检测详情页
@@ -16,11 +22,12 @@ import com.check.gf.gfapplication.model.IncomeCheck;
  * @author nEdAy
  */
 public class CheckDetailActivity extends BaseActivity {
-
+    private final static int INFO_FRAGMENT = 0;
+    private final static int DIMENSION_FRAGMENT = 1;
+    private final static int PERFORMANCE_FRAGMENT = 2;
+    private final static int SURFACE_FRAGMENT = 3;
+    private final ArrayList<Fragment> mFragments = new ArrayList<>();
     private IncomeCheck mIncomeCheck;
-    private TabLayout mTabLayout;
-    private ViewPager mViewPager;
-    private CheckDetailFragmentAdapter mCheckDetailFragmentAdapter;
 
     @Override
     protected void getIntentData() {
@@ -37,13 +44,14 @@ public class CheckDetailActivity extends BaseActivity {
     @Override
     protected void initContentView() {
         super.initContentView();
-        mTabLayout = findViewById(R.id.tab_title);
-        mViewPager = findViewById(R.id.vp_detail);
-        mCheckDetailFragmentAdapter = new CheckDetailFragmentAdapter(getSupportFragmentManager(), this);
-        mCheckDetailFragmentAdapter.setBaseInfoData(mIncomeCheck);
-        mViewPager.setAdapter(mCheckDetailFragmentAdapter);
-        mTabLayout.setupWithViewPager(mViewPager);
-        mTabLayout.setTabMode(TabLayout.MODE_FIXED);
+        GuardViewPager vp_paper = findViewById(R.id.vpItemLeftPaper);
+        vp_paper.setOffscreenPageLimit(10);
+        mFragments.add(BaseInfoFragment.newInstance(mIncomeCheck));
+        mFragments.add(DimensionFragment.newInstance(mIncomeCheck));
+        mFragments.add(PerformanceFragment.newInstance(mIncomeCheck));
+        mFragments.add(SurfaceFragment.newInstance(mIncomeCheck));
+        ((SlidingTabLayout) findViewById(R.id.tl_library))
+                .setViewPager(vp_paper, getResources().getStringArray(R.array.inspect_type_name), this, mFragments);
     }
 
     @Override

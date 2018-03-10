@@ -72,6 +72,7 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
     @Override
     protected void initContentView() {
         super.initContentView();
+        initTopBarForLeft("检测列表", getString(R.string.tx_back));
 
         mIncomeCheckTv = findViewById(R.id.tv_income_check);
         mProcessCheckTv = findViewById(R.id.tv_process_check);
@@ -96,8 +97,7 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
         initAdapter();
         // 主动刷新数据
         onRefresh();
-
-
+        mQuickAdapter.setNewData(mIncomeCheckList);
     }
 
     @Override
@@ -118,7 +118,6 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
             mIncomeCheckList.add(incomeCheck);
         }
         initCheckContent();
-        //mCheckListAdapter.bindData(mIncomeCheckList);
     }
 
     private void initCheckContent() {
@@ -279,11 +278,17 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
 
     public void initAdapter() {
         mQuickAdapter = new CheckListAdapter(new ArrayList<>());
+        //mQuickAdapter.addHeaderView(getView());
         mRecyclerView.setAdapter(mQuickAdapter);
         mQuickAdapter.setOnLoadMoreListener(this);
         //mQuickAdapter.openLoadMore(StaticConfig.PAGE_SIZE);
         mQuickAdapter.setAutoLoadMoreSize(StaticConfig.AUTO_SIZE);
-        mRecyclerView.addOnItemTouchListener(SimpleClickListener);
+        //条目子控件点击事件
+        mQuickAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+//                Intent intent = new Intent(CheckListActivity.this, CheckDetailActivity.class);
+//                intent.putExtra(GlobalConstant.IntentConstant.INCOME_CHECK_INFO, incomeCheck);
+//                startActivity(intent);
+        });
         // 一行代码搞定（默认为渐显效果）
         mQuickAdapter.openLoadAnimation();
         // 默认提供5种方法（渐显、缩放、从下到上，从左到右、从右到左）
@@ -333,11 +338,4 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
 //                });
     }
 
-
-//    @Override
-//    public void goDetail(IncomeCheck incomeCheck) {
-//        Intent intent = new Intent(this, CheckDetailActivity.class);
-//        intent.putExtra(GlobalConstant.IntentConstant.INCOME_CHECK_INFO, incomeCheck);
-//        startActivity(intent);
-//    }
 }
