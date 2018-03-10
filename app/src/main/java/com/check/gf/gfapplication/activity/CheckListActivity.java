@@ -21,6 +21,7 @@ import com.check.gf.gfapplication.adapter.CheckListAdapter;
 import com.check.gf.gfapplication.base.IBaseListFragment;
 import com.check.gf.gfapplication.config.StaticConfig;
 import com.check.gf.gfapplication.model.IncomeCheck;
+import com.check.gf.gfapplication.utils.ExtendUtils;
 import com.check.gf.gfapplication.view.HidingScrollListener;
 
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ import rx.android.schedulers.AndroidSchedulers;
  *
  * @author nEdAy
  */
-public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener, IBaseListFragment {
+public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener, IBaseListFragment, View.OnClickListener {
 
     private TextView mIncomeCheckTv;
     private TextView mProcessCheckTv;
@@ -53,7 +54,6 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
     protected View notLoadingView;
     protected int curPage;
     protected int mCurIndex = -1;
-    private View parentView;
     private TextView tv_now;
     private RelativeLayout rl_top_bar;
     private ImageView fab;
@@ -66,39 +66,38 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
 
     @Override
     protected int getContentLayout() {
-        return R.layout.include_anything_list;
+        return R.layout.activity_check_list;
     }
 
     @Override
     protected void initContentView() {
         super.initContentView();
-        rl_no_data = parentView.findViewById(R.id.rl_no_data);
-        rl_no_network = parentView.findViewById(R.id.rl_no_network);
-        mRecyclerView = parentView.findViewById(R.id.recycler_view);
-        mSwipeRefreshLayout = parentView.findViewById(R.id.swipe_container);
+
+        mIncomeCheckTv = findViewById(R.id.tv_income_check);
+        mProcessCheckTv = findViewById(R.id.tv_process_check);
+        mShipmentsCheckTv = findViewById(R.id.tv_shipments_check);
+        mNcCheckTv = findViewById(R.id.tv_NC_check);
+
+        ExtendUtils.setOnClickListener(this, mIncomeCheckTv, mProcessCheckTv, mShipmentsCheckTv, mNcCheckTv);
+
+        rl_no_data = findViewById(R.id.rl_no_data);
+        rl_no_network = findViewById(R.id.rl_no_network);
+        mRecyclerView = findViewById(R.id.recycler_view);
+        mSwipeRefreshLayout = findViewById(R.id.swipe_container);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.red, R.color.orange, R.color.green, R.color.blue);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        fab = parentView.findViewById(R.id.fab);
+        fab = findViewById(R.id.fab);
         fab.setOnClickListener(v -> mRecyclerView.scrollToPosition(0));
-        rl_top_bar = parentView.findViewById(R.id.rl_top_bar);
-        tv_now = parentView.findViewById(R.id.tv_now);
-        tv_total = parentView.findViewById(R.id.tv_total);
+        rl_top_bar = findViewById(R.id.rl_top_bar);
+        tv_now = findViewById(R.id.tv_now);
+        tv_total = findViewById(R.id.tv_total);
         mRecyclerView.addOnScrollListener(hidingScrollListener);
         initAdapter();
         // 主动刷新数据
         onRefresh();
 
 
-//        mIncomeCheckTv = findViewById(R.id.tv_income_check);
-//        mProcessCheckTv = findViewById(R.id.tv_process_check);
-//        mShipmentsCheckTv = findViewById(R.id.tv_shipments_check);
-//        mNcCheckTv = findViewById(R.id.tv_NC_check);
-//        ListView checkListLv = findViewById(R.id.lv_check_list);
-//        mCheckListAdapter = new CheckListAdapter(this);
-//        mCheckListAdapter.setGoDetailClickListener(this);
-//        checkListLv.setAdapter(mCheckListAdapter);
-//        ExtendUtils.setOnClickListener(this, mIncomeCheckTv, mProcessCheckTv, mShipmentsCheckTv, mNcCheckTv);
     }
 
     @Override
@@ -129,22 +128,22 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
         mNcCheckTv.setText(getString(R.string.nc_check, 0));
     }
 
-//    @Override
-//    public void onClick(View v) {
-//        switch (v.getId()) {
-//            case R.id.tv_income_check:
-//                break;
-//            case R.id.tv_process_check:
-//                break;
-//            case R.id.tv_shipments_check:
-//                break;
-//            case R.id.tv_NC_check:
-//                break;
-//            default:
-//                break;
-//        }
-//    }
-//
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tv_income_check:
+                break;
+            case R.id.tv_process_check:
+                break;
+            case R.id.tv_shipments_check:
+                break;
+            case R.id.tv_NC_check:
+                break;
+            default:
+                break;
+        }
+    }
+
 
     /**
      * RecyclerView滑动监听

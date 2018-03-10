@@ -13,7 +13,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="34dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="5dp"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -54,13 +54,6 @@
             android:textColor="@color/white" />
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/lv_check_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:divider="@color/transparent"
-        android:dividerHeight="0dp"
-        android:listSelector="@color/transparent"
-        android:scrollbars="none" />
+    <include layout="@layout/include_anything_list" />
 
 </LinearLayout>
