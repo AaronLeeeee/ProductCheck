@@ -1,10 +1,13 @@
 package com.check.gf.gfapplication;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+
+import com.check.gf.gfapplication.view.HeaderLayout;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -16,10 +19,13 @@ import rx.schedulers.Schedulers;
  * @author nEdAy
  */
 public abstract class BaseActivity extends AppCompatActivity {
+    protected Context mContext;
+    private HeaderLayout mHeaderLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = this;
         getIntentData(savedInstanceState);
         View layoutView = LayoutInflater.from(this).inflate(getContentLayout(), null);
         setContentView(layoutView);
@@ -34,21 +40,65 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 
     protected void getIntentData(Bundle outState) {
+
     }
 
     protected void getIntentData() {
+
     }
 
     protected void initHeaderView() {
+
     }
 
     protected void initContentView() {
+
     }
 
     protected void initFooterView() {
+
     }
 
     protected void initData() {
+
+    }
+
+    /**
+     * back+title
+     */
+    protected void initTopBarForLeft(String titleName, String leftText) {
+        mHeaderLayout = (HeaderLayout) findViewById(R.id.top_title_bar);
+        mHeaderLayout.init(HeaderLayout.HeaderStyle.TITLE_LIFT_IMAGE_BUTTON);
+        mHeaderLayout.setTitleAndLeftImageButton(titleName,
+                R.drawable.ic_back, leftText,
+                this::finish);
+    }
+
+    /**
+     * back+title+右文字
+     */
+    protected void initTopBarForBoth(String titleName, String leftText, String rightText,
+                                     HeaderLayout.onRightButtonClickListener onRightButtonClickListener) {
+        mHeaderLayout = (HeaderLayout) findViewById(R.id.top_title_bar);
+        mHeaderLayout.init(HeaderLayout.HeaderStyle.TITLE_DOUBLE_IMAGE_BUTTON);
+        mHeaderLayout.setTitleAndLeftImageButton(titleName,
+                R.drawable.ic_back, leftText,
+                this::finish);
+        mHeaderLayout.setTitleAndRightTextButton(titleName, rightText,
+                onRightButtonClickListener);
+    }
+
+    /**
+     * back**+title+右文字
+     */
+    protected void initTopBarForBoth(String titleName, String leftText, HeaderLayout.onLeftButtonClickListener onLeftButtonClickListener, String rightText,
+                                     HeaderLayout.onRightButtonClickListener onRightButtonClickListener) {
+        mHeaderLayout = (HeaderLayout) findViewById(R.id.top_title_bar);
+        mHeaderLayout.init(HeaderLayout.HeaderStyle.TITLE_DOUBLE_IMAGE_BUTTON);
+        mHeaderLayout.setTitleAndLeftImageButton(titleName,
+                R.drawable.ic_back, leftText, onLeftButtonClickListener);
+        mHeaderLayout.setTitleAndRightTextButton(titleName, rightText,
+                onRightButtonClickListener);
 
     }
 
@@ -85,4 +135,5 @@ public abstract class BaseActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(onNext, onError);
     }
+
 }

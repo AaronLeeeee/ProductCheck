@@ -9,9 +9,4 @@
         <attr name="contentSize" format="dimension"/>
     </declare-styleable>
 
-    <declare-styleable name="HeaderView">
-        <attr name="header" format="string"/>
-    </declare-styleable>
-
-
 </resources>

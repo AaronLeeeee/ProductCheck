@@ -17,11 +17,10 @@ public final class SharedPreferencesHelper {
     private static final String SETTING_VOICE = "setting_voice";
     private static final String SETTING_VIBRATE = "setting_vibrate";
     private static final String SETTING_QUIET = "setting_quiet";
-    private static final String SETTING_QUIET_PERIOD = "setting_quiet_period";
-    private static final String SETTING_SHAKE_VOICE = "setting_shake_voice";
     private static final String SETTING_PROVINCE_FLOW_MODEL = "setting_province_flow_model ";
-    private static final String USER_PHONE = "user_phone";
-    private static final String CENTER_BG = "center_bg";
+    private static final String USERNAME = "username";
+    private static final String USER_POST_CODE = "user_post_code";
+    private static final String USER_GROUP_CODE = "user_group_code";
     private static SharedPreferences.Editor editor;
     private final SharedPreferences mSharedPreferences;
 
@@ -99,30 +98,6 @@ public final class SharedPreferencesHelper {
     }
 
     /**
-     * 靜音時段
-     */
-    public String getQuitePeriod() {
-        return mSharedPreferences.getString(SETTING_QUIET_PERIOD, "[0,0,6,0]");
-    }
-
-    public void setQuitePeriod(String quitePeriod) {
-        editor.putString(SETTING_QUIET_PERIOD, quitePeriod);
-        editor.commit();
-    }
-
-    /**
-     * 是否允许摇一摇声音
-     */
-    public boolean isAllowShakeVoice() {
-        return mSharedPreferences.getBoolean(SETTING_SHAKE_VOICE, false);
-    }
-
-    public void setAllowShakeVoiceEnable(boolean isChecked) {
-        editor.putBoolean(SETTING_SHAKE_VOICE, isChecked);
-        editor.commit();
-    }
-
-    /**
      * 是否开启省流模式
      */
     public boolean isAllowProvinceFlowModel() {
@@ -135,26 +110,38 @@ public final class SharedPreferencesHelper {
     }
 
     /**
-     * 上一次登录用户的手机号码
+     * 上一次登录用户的用户名
      */
-    public String getUserPhone() {
-        return mSharedPreferences.getString(USER_PHONE, "");
+    public String getUsername() {
+        return mSharedPreferences.getString(USERNAME, "");
     }
 
-    public void setUserPhone(String userPhone) {
-        editor.putString(USER_PHONE, userPhone);
+    public void setUsername(String userPhone) {
+        editor.putString(USERNAME, userPhone);
         editor.commit();
     }
 
     /**
-     * 用户选择设置的背景图片序数
+     * 登录用户的工位编码
      */
-    public int getCenterBg() {
-        return mSharedPreferences.getInt(CENTER_BG, 2);
+    public String getUserPostCode() {
+        return mSharedPreferences.getString(USER_POST_CODE, "");
     }
 
-    public void setCenterBg(int centerBg) {
-        editor.putInt(CENTER_BG, centerBg);
+    public void setUserPostCode(String userPostCode) {
+        editor.putString(USER_POST_CODE, userPostCode);
+        editor.commit();
+    }
+
+    /**
+     * 登录用户的班组编码
+     */
+    public String getUserGroupCode() {
+        return mSharedPreferences.getString(USER_GROUP_CODE, "");
+    }
+
+    public void setUserGroupCode(String userGroupCode) {
+        editor.putString(USER_GROUP_CODE, userGroupCode);
         editor.commit();
     }
 }

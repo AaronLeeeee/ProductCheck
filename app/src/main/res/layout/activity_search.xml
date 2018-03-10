@@ -2,20 +2,18 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue_confirm">
+    android:background="@color/white">
 
-    <com.check.gf.gfapplication.view.HeaderView xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/view_header"
+    <com.check.gf.gfapplication.view.HeaderLayout
+        android:id="@+id/top_title_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        app:header="@string/search" />
+        android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/bt_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/view_header"
+        android:layout_below="@id/top_title_bar"
         android:layout_margin="15dp"
         android:text="@string/search"
         android:textSize="@dimen/ts_normal" />
@@ -33,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/not_start_check_product"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="@dimen/ts_big" />
 
         <ImageView
@@ -47,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="15dp"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="@dimen/ts_big" />
 
 
@@ -66,7 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/not_start_check_product"
-            android:textColor="@color/gray"
+            android:textColor="@color/black"
             android:textSize="@dimen/ts_big" />
 
         <ImageView
@@ -80,7 +78,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="15dp"
-            android:textColor="@color/gray"
+            android:textColor="@color/black"
             android:textSize="@dimen/ts_big" />
 
 
@@ -99,7 +97,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/finished_check_product"
-            android:textColor="@color/gray"
+            android:textColor="@color/black"
             android:textSize="@dimen/ts_big" />
 
         <ImageView
@@ -113,15 +111,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="15dp"
-            android:textColor="@color/gray"
+            android:textColor="@color/black"
             android:textSize="@dimen/ts_big" />
     </LinearLayout>
-
-    <com.check.gf.gfapplication.view.SearchView
-        android:id="@+id/search_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/view_header"
-        android:visibility="gone" />
 
 </RelativeLayout>

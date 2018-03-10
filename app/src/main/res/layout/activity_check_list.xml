@@ -1,35 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/blue_confirm">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue_confirm"
+    android:orientation="vertical">
 
-    <com.check.gf.gfapplication.view.HeaderView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/view_header"
+    <com.check.gf.gfapplication.view.HeaderLayout
+        android:id="@+id/top_title_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        app:header="@string/check_list"/>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-    </LinearLayout>
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="34dp"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/tv_income_check"
@@ -38,7 +24,7 @@
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:text="@string/income_check"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/tv_process_check"
@@ -47,7 +33,7 @@
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:text="@string/process_check"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/tv_shipments_check"
@@ -56,7 +42,7 @@
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:text="@string/shipments_check"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/tv_NC_check"
@@ -65,16 +51,16 @@
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:text="@string/nc_check"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white" />
     </LinearLayout>
 
     <ListView
         android:id="@+id/lv_check_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:listSelector="@color/transparent"
         android:divider="@color/transparent"
         android:dividerHeight="0dp"
-        android:scrollbars="none"/>
+        android:listSelector="@color/transparent"
+        android:scrollbars="none" />
 
 </LinearLayout>

@@ -15,10 +15,12 @@ import android.widget.TextView;
 
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.check.gf.gfapplication.BaseActivity;
+import com.check.gf.gfapplication.CustomApplication;
 import com.check.gf.gfapplication.R;
 import com.check.gf.gfapplication.entity.PostData;
 import com.check.gf.gfapplication.entity.TeamGroupResult;
 import com.check.gf.gfapplication.entity.User;
+import com.check.gf.gfapplication.helper.SharedPreferencesHelper;
 import com.check.gf.gfapplication.network.RxFactory;
 import com.check.gf.gfapplication.utils.CommonUtils;
 import com.check.gf.gfapplication.utils.ExtendUtils;
@@ -52,6 +54,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private TextView tv_pack_group_text;
 
     private OptionsPickerView optionsPickerView;
+    private SharedPreferencesHelper sharedPreferencesHelper;
 
     @Override
     protected int getContentLayout() {
@@ -61,6 +64,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @Override
     protected void initContentView() {
         super.initContentView();
+        sharedPreferencesHelper = CustomApplication.getInstance().getSpHelper();
         // Set up the login form.
         mUsernameView = findViewById(R.id.username);
         mPasswordView = findViewById(R.id.password);
@@ -72,10 +76,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             return false;
         });
 
-        Button mSignInButton = findViewById(R.id.sign_in_button);
+        Button mSignInButton = findViewById(R.id.btn_search);
         mSignInButton.setOnClickListener(view -> attemptLogin());
 
-        mLoginFormView = findViewById(R.id.login_form);
+        mLoginFormView = findViewById(R.id.search_form);
         mProgressView = findViewById(R.id.login_progress);
 
         tv_pack_station_text = findViewById(R.id.tv_pack_station_text);
@@ -95,6 +99,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     @Override
     protected void initData() {
+        String lastUsername = sharedPreferencesHelper.getUsername();
+        if (!TextUtils.isEmpty(lastUsername)) {
+            mUsernameView.setText(lastUsername);
+            mPasswordView.setFocusable(true);
+            mPasswordView.setFocusableInTouchMode(true);
+            mPasswordView.requestFocus();
+            mPasswordView.requestFocusFromTouch();
+        }
         // 等数据加载完毕再初始化并显示Picker,以免还未加载完数据就显示,造成APP崩溃。
         toSubscribe(RxFactory.getUserServiceInstance()
                         .postQuery(),
@@ -141,12 +153,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
          */
 
         optionsPickerView = new OptionsPickerView.Builder(this, (options1, options2, options3, v) -> {
+            sharedPreferencesHelper.setUserPostCode("");
+            sharedPreferencesHelper.setUserGroupCode("");
 //            //返回的分别是三个级别的选中位置
 //            String tx = postDatas.get(options1).getPickerViewText()
 //                    + postDatas.get(options1).getPostName()
 //                    + groupDatas.get(options1).get;
 
-            //btn_Options.setText(tx);
 
         })
                 .setTitleText("城市选择")
@@ -232,12 +245,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private boolean isUsernameValid(String username) {
         //TODO: Replace this with your own logic
-        return username.length() > 4;
+        return true;// username.length() > 4;
     }
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return true;// password.length() > 4;
     }
 
 
@@ -257,6 +270,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     if (resultObject.getResult() == 0) {
                         showProgress(false);
                         AnyPref.put(user, "_CurrentUser");// 将私有token保存
+                        sharedPreferencesHelper.setUsername(username);
                         startActivity(new Intent(LoginActivity.this, SearchActivity.class));
                     } else {
                         userLoginError(resultObject.getDesc());
