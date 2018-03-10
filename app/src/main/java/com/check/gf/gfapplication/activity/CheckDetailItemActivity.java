@@ -1,7 +1,5 @@
 package com.check.gf.gfapplication.activity;
 
-import android.content.Intent;
-
 import com.check.gf.gfapplication.R;
 import com.check.gf.gfapplication.base.BaseActivity;
 

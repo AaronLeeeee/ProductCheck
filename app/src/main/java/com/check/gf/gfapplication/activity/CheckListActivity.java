@@ -146,7 +146,7 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
                         hideLoading();
                         CheckOrderInfo.DataBean checkOrderInfo = checkOrderInfoResult.getData();
                         Intent intent = new Intent(
-                                CheckListActivity.this, CheckDetailItemActivity.class);
+                                CheckListActivity.this, CheckDetailActivity.class);
                         intent.putExtra(CheckListActivity.getExtra(), checkOrderInfo);
                         startActivity(intent);
                     } else {
