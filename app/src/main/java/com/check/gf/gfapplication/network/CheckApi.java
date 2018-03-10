@@ -8,6 +8,7 @@ import com.check.gf.gfapplication.entity.ItemPic;
 import com.check.gf.gfapplication.entity.ResultObject;
 import com.check.gf.gfapplication.entity.StartCheckResult;
 
+import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -101,7 +102,7 @@ public interface CheckApi {
      * @return 示例返回
      */
     @GET("Check/SaveItemChkCnt")
-    Observable<ResultObject> SaveItemChkCnt(@Body CheckOrder userSignInfo);
+    Observable<ResultObject> SaveItemChkCnt(@Query("equipmentNo") String equipmentNo, @Query("inspectCode") String inspectCode, @Query("itemCode") String itemCode, @Query("checkContent") String checkContent);
 
 
     /**
@@ -113,8 +114,8 @@ public interface CheckApi {
      * @param uploadImg   是	数据流	图片数据流
      * @return 示例返回
      */
-    @GET("Check/ItemChkUploadImg")
-    Observable<ResultObject> ItemChkUploadImg(@Body CheckOrder userSignInfo);
+    @POST("Check/ItemChkUploadImg")
+    Observable<ResultObject> ItemChkUploadImg(@Query("equipmentNo") String equipmentNo, @Query("inspectCode") String inspectCode, @Query("itemCode") String itemCode, @Body RequestBody uploadImg);
 
 
     /**

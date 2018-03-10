@@ -78,6 +78,9 @@
     <string name="dimension">尺寸</string>
     <string name="performance">性能</string>
 
+    <string name="pick_from_capture">拍照</string>
+    <string name="pick_from_gallery">从相册选择</string>
+
     <string name="start_check">开始检查</string>
     <string name="revocation_check">撤销检查</string>
     <string name="submit">提交</string>
