@@ -42,7 +42,7 @@ public class CheckDetailActivity extends BaseActivity {
     protected void initContentView() {
         super.initContentView();
         GuardViewPager vp_paper = findViewById(R.id.vpItemLeftPaper);
-        vp_paper.setOffscreenPageLimit(10);
+        vp_paper.setOffscreenPageLimit(1);
         mFragments.add(BaseInfoFragment.newInstance(mCheckOrderInfo));
         mFragments.add(InspectListFragment.newInstance(DIMENSION_FRAGMENT, mCheckOrderInfo.getEquipmentNo()));
         mFragments.add(InspectListFragment.newInstance(PERFORMANCE_FRAGMENT, mCheckOrderInfo.getEquipmentNo()));
