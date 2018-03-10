@@ -154,7 +154,7 @@ public class SurfaceFragment extends BaseFragment implements TakePhoto.TakeResul
     }
 
     /**
-     * 显示获取头像选择菜单
+     * 获取图片选择菜单
      */
     private void showActionSheet() {
         final String[] stringItems = {getString(R.string.pick_from_capture), getString(R.string.pick_from_gallery)};
