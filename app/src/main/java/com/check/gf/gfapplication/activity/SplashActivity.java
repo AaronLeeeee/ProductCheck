@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 
-import com.check.gf.gfapplication.entity.User;
+import com.check.gf.gfapplication.CustomApplication;
 
 import java.util.concurrent.TimeUnit;
 
@@ -30,7 +30,6 @@ public class SplashActivity extends AppCompatActivity {
         Observable.timer(SHOW_TIME_MIN, TimeUnit.MILLISECONDS) //延迟SHOW_TIME_MIN秒跳转
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> doStartActivity(initAndChoosePath()));
-
     }
 
     /**
@@ -39,11 +38,14 @@ public class SplashActivity extends AppCompatActivity {
      * @return 页面序数
      */
     private int initAndChoosePath() {
-        if (User.getCurrentUser() == null) {
-            return GO_LOGIN;
-        } else {
-            return GO_MAIN;
-        }
+        CustomApplication customApplication = CustomApplication.getInstance();
+        String username = customApplication.getSpHelper().getUsername();
+        return GO_LOGIN;
+//        if (TextUtils.isEmpty(username)) {
+//            return GO_LOGIN;
+//        } else {
+//            return GO_MAIN;
+//        }
     }
 
     /**

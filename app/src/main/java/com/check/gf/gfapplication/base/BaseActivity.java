@@ -1,4 +1,4 @@
-package com.check.gf.gfapplication;
+package com.check.gf.gfapplication.base;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -7,7 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.check.gf.gfapplication.R;
 import com.check.gf.gfapplication.view.HeaderLayout;
+import com.mingle.widget.LoadingView;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -21,6 +23,7 @@ import rx.schedulers.Schedulers;
 public abstract class BaseActivity extends AppCompatActivity {
     protected Context mContext;
     private HeaderLayout mHeaderLayout;
+    protected LoadingView mLoadingView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -136,4 +139,19 @@ public abstract class BaseActivity extends AppCompatActivity {
                 .subscribe(onNext, onError);
     }
 
+    /**
+     * Show/hide the loading UI .
+     */
+    protected void showLoading(String loadingText) {
+        if (mLoadingView != null) {
+            mLoadingView.setLoadingText(loadingText);
+            mLoadingView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    protected void hideLoading() {
+        if (mLoadingView != null) {
+            mLoadingView.setVisibility(View.GONE);
+        }
+    }
 }

@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.SimpleClickListener;
-import com.check.gf.gfapplication.BaseActivity;
+import com.check.gf.gfapplication.base.BaseActivity;
 import com.check.gf.gfapplication.R;
 import com.check.gf.gfapplication.adapter.CheckListAdapter;
 import com.check.gf.gfapplication.base.IBaseListFragment;

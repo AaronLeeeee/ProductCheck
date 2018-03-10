@@ -4,34 +4,14 @@ package com.check.gf.gfapplication.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import net.nashlegend.anypref.AnyPref;
-import net.nashlegend.anypref.annotations.PrefModel;
-
 /**
  * 用户
  */
-@PrefModel("User")
 public class User implements Parcelable {
-    // 账户 持久化
-    public String username;
-    // 登录密码 持久化
-    public String password;
-
-    public static User getCurrentUser() {
-        User user = AnyPref.get(User.class, "_CurrentUser", true);
-        if (user != null) {
-            return user;
-        }
-        return null;
-    }
-
-    /**
-     * 退出登录,清空缓存数据
-     */
-    public static void logout() {
-        //清除本地账户记录
-        AnyPref.clear(User.class, "_CurrentUser");
-    }
+    // 账户
+    private String username;
+    // 登录密码
+    private String password;
 
     public String getUsername() {
         return username;

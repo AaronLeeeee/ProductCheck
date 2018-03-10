@@ -11,6 +11,8 @@
     <string name="error_invalid_password">密码格式不正确</string>
     <string name="error_incorrect_password">密码和账户名不匹配</string>
 
+    <string name="error_empty_team_group">尚未选择工位/班组</string>
+
     <string name="tx_back">返回</string>
     <string name="tx_exit">退出</string>
 

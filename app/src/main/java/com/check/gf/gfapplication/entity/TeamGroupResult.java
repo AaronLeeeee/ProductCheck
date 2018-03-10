@@ -1,5 +1,7 @@
 package com.check.gf.gfapplication.entity;
 
+import com.bigkoo.pickerview.model.IPickerViewData;
+
 import java.util.List;
 
 /**
@@ -19,7 +21,7 @@ public class TeamGroupResult extends ResultObject {
         this.data = data;
     }
 
-    public class PostData {
+    public class PostData implements IPickerViewData {
 
         /**
          * id : 1
@@ -70,6 +72,11 @@ public class TeamGroupResult extends ResultObject {
 
         public void setGroups(List<GroupData> groups) {
             this.groups = groups;
+        }
+
+        @Override
+        public String getPickerViewText() {
+            return postName;
         }
 
         public class GroupData {

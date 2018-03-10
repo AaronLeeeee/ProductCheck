@@ -14,8 +14,6 @@ import com.squareup.leakcanary.LeakCanary;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
 
-import net.nashlegend.anypref.AnyPref;
-
 import org.litepal.LitePalApplication;
 
 /**
@@ -76,8 +74,6 @@ public class CustomApplication extends LitePalApplication {
             initBugly(false);
             Thread.setDefaultUncaughtExceptionHandler(new MyUnCaughtExceptionHandler());
         }
-        // 初始化SharedPreferences工具类
-        AnyPref.init(this);
         // 初始化Fresco
         Fresco.initialize(this, StaticConfig.getOkHttpImagePipelineConfig(this));
     }

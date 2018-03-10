@@ -10,19 +10,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.check.gf.gfapplication.BaseActivity;
 import com.check.gf.gfapplication.R;
+import com.check.gf.gfapplication.base.BaseActivity;
 import com.check.gf.gfapplication.entity.CheckOrder;
-import com.check.gf.gfapplication.model.IncomeCheck;
 import com.check.gf.gfapplication.network.RxFactory;
 import com.check.gf.gfapplication.utils.CommonUtils;
 import com.check.gf.gfapplication.utils.ExtendUtils;
 import com.orhanobut.logger.Logger;
-
-import org.litepal.crud.DataSupport;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import me.shaohui.bottomdialog.BottomDialog;
 
@@ -65,26 +59,26 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         mFinishedCheckCountTv.setText("30");
     }
 
-    private void initTestDb() {
-        List<IncomeCheck> incomeCheckList = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            IncomeCheck incomeCheck = new IncomeCheck();
-            incomeCheck.setId(i);
-            incomeCheck.setClient("测试公司" + i);
-            incomeCheck.setCheckSingleId("IQC_00450569");
-            incomeCheck.setNeedCheckNum(10);
-            incomeCheck.setTotalCheckNum(13);
-            incomeCheck.setMaterialId("1046000014");
-            incomeCheck.setMaterialName("导轨总成");
-            incomeCheck.setPurchaseOrderId("E/300442276.003");
-            incomeCheck.setIncomeCount(1);
-            incomeCheck.setCheckDate("2017-9-3");
-            incomeCheck.setSupplier("马拉兹(江苏)电梯导轨有限公司");
-            incomeCheckList.add(incomeCheck);
-        }
-
-        DataSupport.saveAll(incomeCheckList);
-    }
+//    private void initTestDb() {
+//        List<IncomeCheck> incomeCheckList = new ArrayList<>();
+//        for (int i = 0; i < 20; i++) {
+//            IncomeCheck incomeCheck = new IncomeCheck();
+//            incomeCheck.setId(i);
+//            incomeCheck.setClient("测试公司" + i);
+//            incomeCheck.setCheckSingleId("IQC_00450569");
+//            incomeCheck.setNeedCheckNum(10);
+//            incomeCheck.setTotalCheckNum(13);
+//            incomeCheck.setMaterialId("1046000014");
+//            incomeCheck.setMaterialName("导轨总成");
+//            incomeCheck.setPurchaseOrderId("E/300442276.003");
+//            incomeCheck.setIncomeCount(1);
+//            incomeCheck.setCheckDate("2017-9-3");
+//            incomeCheck.setSupplier("马拉兹(江苏)电梯导轨有限公司");
+//            incomeCheckList.add(incomeCheck);
+//        }
+//
+//        DataSupport.saveAll(incomeCheckList);
+//    }
 
     @Override
     public void onClick(View v) {
@@ -113,9 +107,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void bindView(View view) {
-        mSearchFormView = view.findViewById(R.id.search_form);
-        mProgressView = view.findViewById(R.id.login_progress);
-
+        mLoadingView = view.findViewById(R.id.loadView);
         EditText et_customerName = view.findViewById(R.id.et_customerName);
         TextView tv_requireDate_text = view.findViewById(R.id.tv_requireDate_text);
         EditText et_equipmentNo = view.findViewById(R.id.et_equipmentNo);
@@ -201,5 +193,21 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             }
         });
+    }
+
+    // 连续按两次返回键就退出标记位
+    private long firstTime;
+
+    /**
+     * 截获Back键动作
+     */
+    @Override
+    public void onBackPressed() {
+        if (firstTime + 2000 > System.currentTimeMillis()) {
+            super.onBackPressed();
+        } else {
+            CommonUtils.showToast("再按一次退出程序");
+        }
+        firstTime = System.currentTimeMillis();
     }
 }

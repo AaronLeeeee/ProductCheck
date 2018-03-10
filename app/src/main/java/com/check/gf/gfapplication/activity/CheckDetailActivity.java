@@ -3,7 +3,7 @@ package com.check.gf.gfapplication.activity;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 
-import com.check.gf.gfapplication.BaseActivity;
+import com.check.gf.gfapplication.base.BaseActivity;
 import com.check.gf.gfapplication.R;
 import com.check.gf.gfapplication.config.GlobalConstant;
 import com.check.gf.gfapplication.fragment.BaseInfoFragment;

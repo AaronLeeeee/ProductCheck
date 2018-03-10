@@ -57,3 +57,10 @@
 
 -keep class com.soundcloud.android.crop.** { *; }
 -dontwarn com.soundcloud.android.crop.**
+
+# https://github.com/NashLegend/AnyPref
+-keepattributes Signature
+-keep class net.nashlegend.anypref.annotations.PrefModel
+-keepclasseswithmembernames @net.nashlegend.anypref.annotations.PrefModel class * {
+    public <fields>;
+}
