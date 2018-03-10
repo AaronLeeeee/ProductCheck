@@ -13,7 +13,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.check.gf.gfapplication.R;
-import com.check.gf.gfapplication.adapter.CheckResultAdapter;
 import com.check.gf.gfapplication.base.BaseFragment;
 import com.check.gf.gfapplication.model.SurfaceInfo;
 import com.check.gf.gfapplication.network.RxFactory;
@@ -45,7 +44,6 @@ import okhttp3.RequestBody;
  *
  * @author nEdAy
  */
-
 public class SurfaceFragment extends BaseFragment implements TakePhoto.TakeResultListener, InvokeListener {
 
     private static final String TAG = SurfaceFragment.class.getSimpleName();
@@ -59,7 +57,6 @@ public class SurfaceFragment extends BaseFragment implements TakePhoto.TakeResul
 
     private ListView mListView;
     private CheckResultAdapter mCheckResultAdapter;
-
 
     public static SurfaceFragment newInstance() {
         Bundle args = new Bundle();

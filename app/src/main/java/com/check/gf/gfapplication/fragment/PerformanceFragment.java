@@ -12,9 +12,8 @@ import com.check.gf.gfapplication.R;
 /**
  * 性能
  *
- * Created by wqd on 2018/1/10.
+ * @author nEdAy
  */
-
 public class PerformanceFragment extends Fragment{
 
     public static PerformanceFragment newInstance() {
@@ -26,7 +25,6 @@ public class PerformanceFragment extends Fragment{
         return fragment;
     }
 
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 

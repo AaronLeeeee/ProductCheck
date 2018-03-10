@@ -3,7 +3,6 @@ package com.check.gf.gfapplication.network;
 import com.check.gf.gfapplication.entity.CheckOrder;
 import com.check.gf.gfapplication.entity.CheckOrderInfo;
 import com.check.gf.gfapplication.entity.InspectItem;
-import com.check.gf.gfapplication.entity.InspectType;
 import com.check.gf.gfapplication.entity.ItemPic;
 import com.check.gf.gfapplication.entity.ResultObject;
 import com.check.gf.gfapplication.entity.StartCheckResult;

@@ -20,7 +20,7 @@ import rx.android.schedulers.AndroidSchedulers;
  */
 public class SplashActivity extends AppCompatActivity {
     private static final int SHOW_TIME_MIN = 0; //0s
-    private static final int GO_LOGIN = 0; //导航页
+    private static final int GO_LOGIN = 0; //登录页
     private static final int GO_MAIN = 1; //主页面
 
     @Override

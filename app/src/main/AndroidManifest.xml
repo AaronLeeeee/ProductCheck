@@ -62,6 +62,10 @@
 
         <activity
             android:name=".activity.CheckDetailActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".activity.CheckDetailItemActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
 

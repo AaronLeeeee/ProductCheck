@@ -1,115 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
-    <LinearLayout
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/ll_pic"
-        android:orientation="vertical">
+        android:background="@color/background_color">
 
-        <LinearLayout
-            android:id="@+id/ll_list_title"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/blue_confirm"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp"
-            android:paddingTop="8dp">
+            android:layout_height="match_parent" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="1"
-                android:layout_weight="1"
-                android:text="序号"
-                android:textColor="@color/white"
-                android:textSize="@dimen/ts_big"
-                android:textStyle="bold" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="3"
-                android:layout_weight="8"
-                android:text="检查内容"
-                android:textColor="@color/white"
-                android:textSize="@dimen/ts_big"
-                android:textStyle="bold" />
+    <include
+        android:id="@+id/rl_no_data"
+        layout="@layout/include_no_data"
+        android:visibility="gone" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="1"
-                android:layout_weight="1"
-                android:text="结果"
-                android:textColor="@color/white"
-                android:textSize="@dimen/ts_big"
-                android:textStyle="bold" />
-        </LinearLayout>
+    <include
+        android:id="@+id/rl_no_network"
+        layout="@layout/include_no_network"
+        android:visibility="gone" />
 
-        <ListView
-            android:id="@+id/lv_view"
+    <ImageView
+        android:id="@+id/fab"
+        android:layout_width="@dimen/global_title_banner_height"
+        android:layout_height="@dimen/global_title_banner_height"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
+        android:src="@drawable/ic_top"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/rl_top_bar"
+        android:layout_width="@dimen/global_title_banner_height"
+        android:layout_height="@dimen/global_title_banner_height"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/ic_top_bar"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_now"
+            android:layout_width="wrap_content"
+            android:layout_height="15dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="4dp"
+            android:text="0000"
+            android:textSize="@dimen/global_small_text_size" />
+
+        <View
+            android:id="@+id/paddingView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/ll_list_title"
-            android:divider="@color/transparent"
-            android:dividerHeight="0dp"
-            android:listSelector="@color/transparent"
-            android:scrollbars="none" />
-    </LinearLayout>
+            android:layout_height="0.3dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:background="@color/text_color" />
 
-    <LinearLayout
-        android:id="@+id/ll_pic"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/ll_msg"
-        android:layout_marginTop="10dp"
-        android:gravity="center">
-
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/riv_pic"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            fresco:failureImage="@drawable/icon_error"
-            fresco:placeholderImage="@drawable/icon_stub"
-            fresco:roundAsCircle="true" />
-
-        <Button
-            android:id="@+id/bt_take_picture"
+        <TextView
+            android:id="@+id/tv_total"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
-            android:text="拍照" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_msg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="10dp"
-        android:gravity="center">
-
-        <EditText
-            android:id="@+id/et_msg"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:id="@+id/bt_commit_msg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:text="提交" />
-    </LinearLayout>
+            android:layout_height="15dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="4dp"
+            android:text="0000"
+            android:textSize="@dimen/global_small_text_size" />
+    </RelativeLayout>
 
     <com.mingle.widget.LoadingView
         android:id="@+id/loadView"
@@ -117,4 +83,4 @@
         android:layout_height="fill_parent"
         android:background="@color/white"
         android:visibility="gone" />
-</RelativeLayout>
+</FrameLayout>

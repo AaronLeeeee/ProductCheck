@@ -18,7 +18,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.check.gf.gfapplication.R;
 import com.check.gf.gfapplication.adapter.CheckListAdapter;
 import com.check.gf.gfapplication.base.BaseActivity;
-import com.check.gf.gfapplication.base.IBaseListFragment;
+import com.check.gf.gfapplication.base.IBaseList;
 import com.check.gf.gfapplication.entity.CheckOrder;
 import com.check.gf.gfapplication.entity.CheckOrderInfo;
 import com.check.gf.gfapplication.network.RxFactory;
@@ -35,7 +35,7 @@ import java.util.List;
  *
  * @author nEdAy
  */
-public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener, IBaseListFragment, View.OnClickListener {
+public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener, IBaseList, View.OnClickListener {
 
     private TextView mIncomeCheckTv;
     private TextView mProcessCheckTv;
@@ -219,7 +219,7 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
                         hideLoading();
                         CheckOrderInfo.DataBean checkOrderInfo = checkOrderInfoResult.getData();
                         Intent intent = new Intent(
-                                CheckListActivity.this, CheckDetailActivity.class);
+                                CheckListActivity.this, CheckDetailItemActivity.class);
                         intent.putExtra(CheckListActivity.getExtra(), checkOrderInfo);
                         startActivity(intent);
                     } else {

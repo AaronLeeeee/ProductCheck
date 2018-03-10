@@ -5,7 +5,7 @@ package com.check.gf.gfapplication.base;
  *
  * @author nEdAy
  */
-public interface IBaseListFragment {
+public interface IBaseList {
     /**
      * 绑定渲染适配器
      */

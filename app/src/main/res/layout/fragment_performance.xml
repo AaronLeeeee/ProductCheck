@@ -1,15 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-
-    <TextView
-        android:layout_width="wrap_content"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_container"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/performance"
-        android:textSize="@dimen/ts_big"
-        android:textColor="@color/white"/>
+        android:background="@color/background_color">
 
-</LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <include
+        android:id="@+id/rl_no_data"
+        layout="@layout/include_no_data"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/rl_no_network"
+        layout="@layout/include_no_network"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/fab"
+        android:layout_width="@dimen/global_title_banner_height"
+        android:layout_height="@dimen/global_title_banner_height"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
+        android:src="@drawable/ic_top"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/rl_top_bar"
+        android:layout_width="@dimen/global_title_banner_height"
+        android:layout_height="@dimen/global_title_banner_height"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/ic_top_bar"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_now"
+            android:layout_width="wrap_content"
+            android:layout_height="15dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="4dp"
+            android:text="0000"
+            android:textSize="@dimen/global_small_text_size" />
+
+        <View
+            android:id="@+id/paddingView"
+            android:layout_width="match_parent"
+            android:layout_height="0.3dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:background="@color/text_color" />
+
+        <TextView
+            android:id="@+id/tv_total"
+            android:layout_width="wrap_content"
+            android:layout_height="15dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="4dp"
+            android:text="0000"
+            android:textSize="@dimen/global_small_text_size" />
+    </RelativeLayout>
+
+    <com.mingle.widget.LoadingView
+        android:id="@+id/loadView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/white"
+        android:visibility="gone" />
+</FrameLayout>
