@@ -41,8 +41,8 @@ public interface CheckApi {
      * @param equipmentNo 是		string	检验单号
      * @return 检验单详情
      */
-    @POST("Check/CheckOrderInfoQuery")
-    Observable<CheckOrderInfo> CheckOrderInfoQuery(@Body String equipmentNo);
+    @GET("Check/CheckOrderInfoQuery")
+    Observable<CheckOrderInfo> CheckOrderInfoQuery(@Query("equipmentNo") String equipmentNo);
 
 
     /**
@@ -50,7 +50,7 @@ public interface CheckApi {
      *
      * @return 检验类别
      */
-    @POST("Check/InspectTypeQuery")
+    @GET("Check/InspectTypeQuery")
     Observable<InspectType> InspectTypeQuery();
 
 
@@ -61,18 +61,18 @@ public interface CheckApi {
      * @param equipmentNo 是		string	检验单号
      * @return 检验条目信息
      */
-    @POST("Check/CheckOrderInfoQuery")
+    @GET("Check/CheckOrderInfoQuery")
     Observable<InspectItem> InspectItemListQuery(@Body CheckOrder userSignInfo);
 
 
     /**
      * 开始检查接口
      *
-     * @param inspectCode 是		string	检验类别编码
+     * @param equipmentNo 是		string	检验类别编码
      * @return 返回时间信息
      */
-    @POST("Check/StartCheck")
-    Observable<StartCheckResult> StartCheck(@Body String inspectCode);
+    @GET("Check/StartCheck")
+    Observable<StartCheckResult> StartCheck(@Query("equipmentNo") String equipmentNo);
 
 
     /**
@@ -87,7 +87,7 @@ public interface CheckApi {
      * @param groupCode   是	    string	用户班组编码
      * @return 示例返回
      */
-    @POST("Check/SaveCheckResult")
+    @GET("Check/SaveCheckResult")
     Observable<ResultObject> SaveCheckResult(@Body CheckOrder userSignInfo);
 
 
@@ -100,7 +100,7 @@ public interface CheckApi {
      * @param checkContent 是	string	检验备注信息
      * @return 示例返回
      */
-    @POST("Check/SaveItemChkCnt")
+    @GET("Check/SaveItemChkCnt")
     Observable<ResultObject> SaveItemChkCnt(@Body CheckOrder userSignInfo);
 
 
@@ -113,7 +113,7 @@ public interface CheckApi {
      * @param uploadImg   是	数据流	图片数据流
      * @return 示例返回
      */
-    @POST("Check/ItemChkUploadImg")
+    @GET("Check/ItemChkUploadImg")
     Observable<ResultObject> ItemChkUploadImg(@Body CheckOrder userSignInfo);
 
 
@@ -125,6 +125,6 @@ public interface CheckApi {
      * @param itemCode    是	string	检验条目编码
      * @return 示例返回
      */
-    @POST("Check/ItemPicListQuery")
+    @GET("Check/ItemPicListQuery")
     Observable<ItemPic> ItemPicListQuery(@Body CheckOrder userSignInfo);
 }

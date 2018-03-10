@@ -3,25 +3,31 @@ package com.check.gf.gfapplication.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.check.gf.gfapplication.CustomApplication;
 import com.check.gf.gfapplication.R;
-import com.check.gf.gfapplication.config.AppConfig;
-import com.check.gf.gfapplication.model.IncomeCheck;
-import com.check.gf.gfapplication.utils.TimeUtils;
+import com.check.gf.gfapplication.base.BaseFragment;
+import com.check.gf.gfapplication.entity.CheckOrderInfo;
+import com.check.gf.gfapplication.network.RxFactory;
+import com.check.gf.gfapplication.utils.CommonUtils;
+import com.orhanobut.logger.Logger;
+
+import java.util.List;
+
 
 /**
- * Created by wqd on 2018/1/3.
+ * 基本信息页
+ *
+ * @author nEdAy
  */
+public class BaseInfoFragment extends BaseFragment {
 
-public class BaseInfoFragment extends Fragment {
-
-    private static final String INCOME_CHECK = "income_check";
+    private static final String BASE_INFO = "base_info";
     private TextView mPurchaseIdTv;
     private TextView mSupplierTv;
     private TextView mMaterialIdTv;
@@ -38,14 +44,13 @@ public class BaseInfoFragment extends Fragment {
     private TextView mStartCheckBt;
     private TextView mSubmitCheckBt;
 
-    private IncomeCheck mIncomeCheck;
+    private CheckOrderInfo.DataBean checkOrderInfo;
 
-    public static BaseInfoFragment newInstance(IncomeCheck incomeCheck) {
-
-        Bundle args = new Bundle();
-        args.putSerializable(INCOME_CHECK, incomeCheck);
+    public static BaseInfoFragment newInstance(CheckOrderInfo.DataBean checkOrderInfo) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(BASE_INFO, checkOrderInfo);
         BaseInfoFragment fragment = new BaseInfoFragment();
-        fragment.setArguments(args);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -54,10 +59,12 @@ public class BaseInfoFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_base_info, container, false);
+
+        mLoadingView = layout.findViewById(R.id.loadView);
+
         mPurchaseIdTv = layout.findViewById(R.id.tv_purchase_order_id);
         mSupplierTv = layout.findViewById(R.id.tv_supplier);
         mMaterialIdTv = layout.findViewById(R.id.tv_material_id);
@@ -75,25 +82,38 @@ public class BaseInfoFragment extends Fragment {
         mStartCheckBt = layout.findViewById(R.id.tv_start_check);
         mSubmitCheckBt = layout.findViewById(R.id.tv_submit);
 
-        mStartCheckBt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (mStartTimeTv.getText() != null && !mStartTimeTv.getText().equals("")) {
-                    Toast.makeText(getActivity(), "已经开始检测，请勿重复检查！", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                mStartTimeTv.setText(TimeUtils.getAllFormat24Str(System.currentTimeMillis()));
+        mStartCheckBt.setOnClickListener(v -> {
+            if (mStartTimeTv.getText() != null && !mStartTimeTv.getText().equals("")) {
+                CommonUtils.showToast("已经开始检测，请勿重复检查！");
+            } else {
+                startCheck(checkOrderInfo.getEquipmentNo());
             }
         });
+        mSubmitCheckBt.setOnClickListener(v -> {
 
-        mSubmitCheckBt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
         });
         return layout;
+    }
+
+    private void startCheck(String equipmentNo) {
+        toSubscribe(RxFactory.getCheckServiceInstance()
+                        .StartCheck(equipmentNo),
+                () -> showLoading("开始检查..."),
+                checkOrderInfoResult -> {
+                    if (checkOrderInfoResult.getResult() == 0) {
+                        hideLoading();
+                        String startCheckTime = checkOrderInfoResult.getData().getStartCheckTime();
+                        mStartTimeTv.setText(startCheckTime != null ? startCheckTime : "");
+                    } else {
+                        startCheckError(checkOrderInfoResult.getDesc());
+                    }
+                },
+                throwable -> startCheckError(throwable.getMessage()));
+    }
+
+    private void startCheckError(String desc) {
+        hideLoading();
+        Logger.e(desc);
     }
 
     @Override
@@ -103,23 +123,50 @@ public class BaseInfoFragment extends Fragment {
     }
 
     private void initData() {
+        //获得索引值
         Bundle bundle = getArguments();
-        mIncomeCheck = (IncomeCheck) bundle.getSerializable(INCOME_CHECK);
-        if (mIncomeCheck == null) {
-            return;
+        if (bundle != null && bundle.containsKey(BASE_INFO)) {
+            checkOrderInfo = bundle.getParcelable(BASE_INFO);
         }
-        mPurchaseIdTv.setText(mIncomeCheck.purchaseOrderId);
-        mSupplierTv.setText(mIncomeCheck.supplier);
-        mMaterialIdTv.setText(mIncomeCheck.materialId);
-        mMaterialNameTv.setText(mIncomeCheck.materialName);
-        mQMNOTv.setText("");
-        mIncomeCountTv.setText(String.valueOf(mIncomeCheck.incomeCount));
-        mSamplePlanTv.setText("");
-        mInspectorTv.setText(AppConfig.mUserName);
+        if (checkOrderInfo != null) {
+            mPurchaseIdTv.setText(checkOrderInfo.getCustomerCode());
+            mSupplierTv.setText(checkOrderInfo.getCustomerName());
+            mMaterialIdTv.setText(checkOrderInfo.getItemCode());
+            mMaterialNameTv.setText(checkOrderInfo.getItemName());
+            mQMNOTv.setText("");
+            mIncomeCountTv.setText(String.valueOf(checkOrderInfo.getPlanQtyTU()));
+            mSamplePlanTv.setText("");
+            CustomApplication customApplication = CustomApplication.getInstance();
+            String realname = customApplication.getSpHelper().getRealname();
+            mInspectorTv.setText(realname);
+            String startCheckTime = checkOrderInfo.getStartCheckTime();
+            if (TextUtils.isEmpty(startCheckTime)) {
+                mStartCheckBt.setEnabled(true);
+            } else {
+                mStartCheckBt.setEnabled(false);
+                mStartTimeTv.setText(checkOrderInfo.getStartCheckTime());
+            }
+            mEndTimeTv.setText(checkOrderInfo.getFinishCheckTime());
+            List<CheckOrderInfo.DataBean.CheckDataBean> checkDataBeans = checkOrderInfo.getCheckData();
+            for (int i = 0; i < checkDataBeans.size(); i++) {
+                CheckOrderInfo.DataBean.CheckDataBean checkDataBean = checkDataBeans.get(i);
+                String inspectCode = checkDataBean.getInspectCode();
+                String typeName = checkDataBean.getTypeName();
+                int finishCheckNumber = checkDataBean.getFinishCheckNumber();
+                int totalCheckNumber = checkDataBean.getTotalCheckNumber();
+                String text = finishCheckNumber + "/" + totalCheckNumber;
+                if (inspectCode.equals("001") && typeName.equals("外观")) {
+                    mSurfaceTv.setText(text + " (NG;0)");
+                } else if (inspectCode.equals("002") && typeName.equals("尺寸")) {
+                    mDimensionTv.setText(text + " (NG:0)");
+                } else if (inspectCode.equals("003") && typeName.equals("性能")) {
+                    mPerformanceTv.setText(text + " (NG:0)");
+                }
+            }
+        } else {
+            CommonUtils.showToast("程序异常，请重试");
+            getActivity().finish();
+        }
 
-        mEndTimeTv.setText("");
-        mSurfaceTv.setText("0/4    (NG;0)");
-        mDimensionTv.setText("0/8    (NG:0)");
-        mPerformanceTv.setText("0/1    (NG:0)");
     }
 }

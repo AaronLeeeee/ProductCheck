@@ -1,5 +1,6 @@
 package com.check.gf.gfapplication.activity;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,9 +20,12 @@ import com.check.gf.gfapplication.adapter.CheckListAdapter;
 import com.check.gf.gfapplication.base.BaseActivity;
 import com.check.gf.gfapplication.base.IBaseListFragment;
 import com.check.gf.gfapplication.entity.CheckOrder;
+import com.check.gf.gfapplication.entity.CheckOrderInfo;
+import com.check.gf.gfapplication.network.RxFactory;
 import com.check.gf.gfapplication.utils.CommonUtils;
 import com.check.gf.gfapplication.utils.ExtendUtils;
 import com.check.gf.gfapplication.view.HidingScrollListener;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,10 +53,8 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
     private RelativeLayout rl_top_bar;
     private ImageView fab;
 
-    @Override
-    protected void getIntentData() {
-        super.getIntentData();
-
+    public static String getExtra() {
+        return "CheckOrder";
     }
 
     @Override
@@ -64,6 +66,7 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
     protected void initContentView() {
         super.initContentView();
         initTopBarForLeft("检测列表", getString(R.string.tx_back));
+        mLoadingView = findViewById(R.id.loadView);
 
         mIncomeCheckTv = findViewById(R.id.tv_income_check);
         mProcessCheckTv = findViewById(R.id.tv_process_check);
@@ -86,8 +89,6 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
         tv_total = findViewById(R.id.tv_total);
         mRecyclerView.addOnScrollListener(hidingScrollListener);
         initAdapter();
-        // 主动刷新数据
-        onRefresh();
     }
 
 
@@ -200,14 +201,38 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
         mRecyclerView.setAdapter(mQuickAdapter);
         //条目子控件点击事件
         mQuickAdapter.setOnItemChildClickListener((adapter, view, position) -> {
-//                Intent intent = new Intent(CheckListActivity.this, CheckDetailActivity.class);
-//                intent.putExtra(GlobalConstant.IntentConstant.INCOME_CHECK_INFO, incomeCheck);
-//                startActivity(intent);
+            queryCheckOrderInfo(mCheckOrders.get(position));
+
         });
         // 一行代码搞定（默认为渐显效果）
         mQuickAdapter.openLoadAnimation();
         // 默认提供5种方法（渐显、缩放、从下到上，从左到右、从右到左）
         // mQuickAdapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
+    }
+
+    private void queryCheckOrderInfo(CheckOrder.DataBean checkOrder) {
+        toSubscribe(RxFactory.getCheckServiceInstance()
+                        .CheckOrderInfoQuery(checkOrder.getEquipmentNo()),
+                () -> showLoading("查询详情中..."),
+                checkOrderInfoResult -> {
+                    if (checkOrderInfoResult.getResult() == 0) {
+                        hideLoading();
+                        CheckOrderInfo.DataBean checkOrderInfo = checkOrderInfoResult.getData();
+                        Intent intent = new Intent(
+                                CheckListActivity.this, CheckDetailActivity.class);
+                        intent.putExtra(CheckListActivity.getExtra(), checkOrderInfo);
+                        startActivity(intent);
+                    } else {
+                        queryCheckOrderInfoError(checkOrderInfoResult.getDesc());
+                    }
+                },
+                throwable -> queryCheckOrderInfoError(throwable.getMessage()));
+    }
+
+    private void queryCheckOrderInfoError(String msg) {
+        hideLoading();
+        CommonUtils.showToast("检验单基本信息查询失败，请重试：" + msg);
+        Logger.e(msg);
     }
 
     @Override

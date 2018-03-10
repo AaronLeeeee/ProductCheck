@@ -1,7 +1,7 @@
 package com.check.gf.gfapplication.network;
 
 
-import com.check.gf.gfapplication.entity.ResultObject;
+import com.check.gf.gfapplication.entity.LoginResult;
 import com.check.gf.gfapplication.entity.TeamGroupResult;
 
 import retrofit2.http.GET;
@@ -26,7 +26,7 @@ public interface UserApi {
      * }
      */
     @GET("User/Login")
-    Observable<ResultObject> login(@Query("username") String username, @Query("password") String password);
+    Observable<LoginResult> login(@Query("username") String username, @Query("password") String password);
 
     /**
      * 工位班组查询接口

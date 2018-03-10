@@ -19,6 +19,7 @@ public final class SharedPreferencesHelper {
     private static final String SETTING_QUIET = "setting_quiet";
     private static final String SETTING_PROVINCE_FLOW_MODEL = "setting_province_flow_model ";
     private static final String USERNAME = "username";
+    private static final String REALNAME = "realname";
     private static final String USER_POST_CODE = "user_post_code";
     private static final String USER_GROUP_CODE = "user_group_code";
     private static SharedPreferences.Editor editor;
@@ -118,6 +119,18 @@ public final class SharedPreferencesHelper {
 
     public void setUsername(String userPhone) {
         editor.putString(USERNAME, userPhone);
+        editor.commit();
+    }
+
+    /**
+     * 用户真名
+     */
+    public String getRealname() {
+        return mSharedPreferences.getString(REALNAME, "");
+    }
+
+    public void setRealname(String realname) {
+        editor.putString(REALNAME, realname);
         editor.commit();
     }
 

@@ -1,6 +1,9 @@
 package com.check.gf.gfapplication.base;
 
 import android.support.v4.app.Fragment;
+import android.view.View;
+
+import com.mingle.widget.LoadingView;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -14,6 +17,8 @@ import rx.schedulers.Schedulers;
  * @author nEdAy
  */
 public class BaseFragment extends Fragment {
+
+    protected LoadingView mLoadingView;
 
     /**
      * 获取共通操作机能
@@ -55,5 +60,22 @@ public class BaseFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(onNext, onError);
     }
+
+    /**
+     * Show/hide the loading UI .
+     */
+    protected void showLoading(String loadingText) {
+        if (mLoadingView != null) {
+            mLoadingView.setLoadingText(loadingText);
+            mLoadingView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    protected void hideLoading() {
+        if (mLoadingView != null) {
+            mLoadingView.setVisibility(View.GONE);
+        }
+    }
+
 
 }

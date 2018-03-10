@@ -246,14 +246,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         toSubscribe(RxFactory.getUserServiceInstance()
                         .login(username, password),
                 () -> showLoading("登录中..."),
-                resultObject -> {
-                    if (resultObject.getResult() == 0) {
+                loginResult -> {
+                    if (loginResult.getResult() == 0) {
                         hideLoading();
                         sharedPreferencesHelper.setUsername(username);
-                        startActivity(new Intent(LoginActivity.this, SearchActivity.class));
+                        String realname = loginResult.getData().getRealName();
+                        sharedPreferencesHelper.setRealname(realname != null ? realname : "");
+                        startActivity(new Intent(
+                                LoginActivity.this, SearchActivity.class));
                         finish();
                     } else {
-                        userLoginError(resultObject.getDesc());
+                        userLoginError(loginResult.getDesc());
                     }
                 },
                 throwable -> userLoginError(throwable.getMessage()));

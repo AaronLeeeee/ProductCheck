@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.check.gf.gfapplication.R;
-import com.check.gf.gfapplication.model.IncomeCheck;
 
 /**
  * 性能
@@ -18,7 +17,7 @@ import com.check.gf.gfapplication.model.IncomeCheck;
 
 public class PerformanceFragment extends Fragment{
 
-    public static PerformanceFragment newInstance(IncomeCheck incomeCheck) {
+    public static PerformanceFragment newInstance() {
 
         Bundle args = new Bundle();
 

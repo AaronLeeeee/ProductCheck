@@ -3,14 +3,13 @@ package com.check.gf.gfapplication.activity;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 
-import com.check.gf.gfapplication.base.BaseActivity;
 import com.check.gf.gfapplication.R;
-import com.check.gf.gfapplication.config.GlobalConstant;
+import com.check.gf.gfapplication.base.BaseActivity;
+import com.check.gf.gfapplication.entity.CheckOrderInfo;
 import com.check.gf.gfapplication.fragment.BaseInfoFragment;
 import com.check.gf.gfapplication.fragment.DimensionFragment;
 import com.check.gf.gfapplication.fragment.PerformanceFragment;
 import com.check.gf.gfapplication.fragment.SurfaceFragment;
-import com.check.gf.gfapplication.model.IncomeCheck;
 import com.check.gf.gfapplication.view.GuardViewPager;
 import com.flyco.tablayout.SlidingTabLayout;
 
@@ -27,13 +26,13 @@ public class CheckDetailActivity extends BaseActivity {
     private final static int PERFORMANCE_FRAGMENT = 2;
     private final static int SURFACE_FRAGMENT = 3;
     private final ArrayList<Fragment> mFragments = new ArrayList<>();
-    private IncomeCheck mIncomeCheck;
+    private CheckOrderInfo.DataBean mCheckOrderInfo;
 
     @Override
     protected void getIntentData() {
         super.getIntentData();
         Intent intent = getIntent();
-        mIncomeCheck = (IncomeCheck) intent.getSerializableExtra(GlobalConstant.IntentConstant.INCOME_CHECK_INFO);
+        mCheckOrderInfo = intent.getParcelableExtra(CheckListActivity.getExtra());
     }
 
     @Override
@@ -46,10 +45,10 @@ public class CheckDetailActivity extends BaseActivity {
         super.initContentView();
         GuardViewPager vp_paper = findViewById(R.id.vpItemLeftPaper);
         vp_paper.setOffscreenPageLimit(10);
-        mFragments.add(BaseInfoFragment.newInstance(mIncomeCheck));
-        mFragments.add(DimensionFragment.newInstance(mIncomeCheck));
-        mFragments.add(PerformanceFragment.newInstance(mIncomeCheck));
-        mFragments.add(SurfaceFragment.newInstance(mIncomeCheck));
+        mFragments.add(BaseInfoFragment.newInstance(mCheckOrderInfo));
+        mFragments.add(DimensionFragment.newInstance());
+        mFragments.add(PerformanceFragment.newInstance());
+        mFragments.add(SurfaceFragment.newInstance());
         ((SlidingTabLayout) findViewById(R.id.tl_library))
                 .setViewPager(vp_paper, getResources().getStringArray(R.array.inspect_type_name), this, mFragments);
     }

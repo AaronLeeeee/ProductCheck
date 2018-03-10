@@ -45,13 +45,16 @@
 
     <string name="check_list">检测列表</string>
     <string name="check_detail">检测详情</string>
+
     <string name="not_start_check_product">未开始检验单:</string>
     <string name="process_check_product">进行中检验单:</string>
     <string name="finished_check_product">已完成检验单:</string>
+
     <string name="income_check">来料检(%1$d)</string>
     <string name="process_check">过程检(%1$d)</string>
     <string name="shipments_check">出货检(%1$d)</string>
     <string name="nc_check">NC检(%1$d)</string>
+
     <string name="purchase_order_id">采购订单号: %1$s</string>
     <string name="material_id_append">物料号: %1$s</string>
     <string name="material_name_append">物料名称: %1$s</string>
@@ -60,6 +63,7 @@
     <string name="supplier_append">供应商: %1$s</string>
     <string name="check_order_id">检验单号: %1$s</string>
     <string name="completion">完成度: %1$s</string>
+
     <string name="purchase_order">采购订单</string>
     <string name="supplier">供应商</string>
     <string name="material_id">物料号</string>

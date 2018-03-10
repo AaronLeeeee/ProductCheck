@@ -17,7 +17,6 @@ import android.widget.ListView;
 import com.check.gf.gfapplication.R;
 import com.check.gf.gfapplication.adapter.CheckResultAdapter;
 import com.check.gf.gfapplication.loader.FrescoImageLoader;
-import com.check.gf.gfapplication.model.IncomeCheck;
 import com.check.gf.gfapplication.model.SurfaceInfo;
 import com.yancy.gallerypick.config.GalleryConfig;
 import com.yancy.gallerypick.config.GalleryPick;
@@ -49,7 +48,7 @@ public class SurfaceFragment extends Fragment {
     private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE2 = 7;
 
 
-    public static SurfaceFragment newInstance(IncomeCheck incomeCheck) {
+    public static SurfaceFragment newInstance() {
 
         Bundle args = new Bundle();
 

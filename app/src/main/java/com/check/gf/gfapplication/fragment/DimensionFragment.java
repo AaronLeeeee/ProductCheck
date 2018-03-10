@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.check.gf.gfapplication.R;
-import com.check.gf.gfapplication.model.IncomeCheck;
 
 /**
  * 尺寸
@@ -18,7 +17,7 @@ import com.check.gf.gfapplication.model.IncomeCheck;
 
 public class DimensionFragment extends Fragment {
 
-    public static DimensionFragment newInstance(IncomeCheck incomeCheck) {
+    public static DimensionFragment newInstance() {
         Bundle args = new Bundle();
         DimensionFragment fragment = new DimensionFragment();
         fragment.setArguments(args);
