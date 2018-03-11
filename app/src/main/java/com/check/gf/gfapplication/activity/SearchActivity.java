@@ -153,15 +153,15 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     /**
      * Represents an asynchronous search task
      *
-     * @param customerName
-     * @param requireDate_text
-     * @param equipmentNo
-     * @param docNo
-     * @param custNo
+     * @param customerName 否	string	客户名
+     * @param requireDate  否	string	交期限
+     * @param equipmentNo  否	string	设备号，也是检验单号
+     * @param docNo        否	string	出货计划单
+     * @param custNo       否	string	客户订单号
      */
-    private void search(String customerName, String requireDate_text, String equipmentNo, String docNo, String custNo) {
+    private void search(String customerName, String requireDate, String equipmentNo, String docNo, String custNo) {
         toSubscribe(RxFactory.getCheckServiceInstance()
-                        .CheckOrderQuery(customerName, requireDate_text,
+                        .CheckOrderQuery(customerName, requireDate,
                                 equipmentNo, docNo, custNo),
                 () -> showLoading("搜索中..."),
                 checkOrderResult -> {
@@ -188,9 +188,9 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                                 CommonUtils.showToast("存在异常数据");
                             }
                         }
-                        mUnStartCheckCountTv.setText(String.valueOf(mUnStartCheckOrders.size()));
-                        mProcessCheckCountTv.setText(String.valueOf(mProcessCheckOrders.size()));
-                        mFinishedCheckCountTv.setText(String.valueOf(mFinishedCheckOrders.size()));
+                        mUnStartCheckCountTv.setText(String.valueOf(mUnStartCheckOrders.size() + " 单"));
+                        mProcessCheckCountTv.setText(String.valueOf(mProcessCheckOrders.size() + " 单"));
+                        mFinishedCheckCountTv.setText(String.valueOf(mFinishedCheckOrders.size() + " 单"));
                     } else {
                         queryCheckOrderError(checkOrderResult.getDesc());
                     }

@@ -10,8 +10,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.check.gf.gfapplication.CustomApplication;
 import com.check.gf.gfapplication.R;
 import com.check.gf.gfapplication.base.BaseActivity;
 import com.check.gf.gfapplication.entity.InspectItemDetail;
@@ -19,7 +21,10 @@ import com.check.gf.gfapplication.fragment.InspectListFragment;
 import com.check.gf.gfapplication.network.RxFactory;
 import com.check.gf.gfapplication.utils.CommonUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.flyco.animation.BounceEnter.BounceTopEnter;
+import com.flyco.animation.SlideExit.SlideBottomExit;
 import com.flyco.dialog.widget.ActionSheetDialog;
+import com.flyco.dialog.widget.NormalDialog;
 import com.jph.takephoto.app.TakePhoto;
 import com.jph.takephoto.app.TakePhotoImpl;
 import com.jph.takephoto.compress.CompressConfig;
@@ -56,6 +61,10 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
 
     private TakePhoto takePhoto;
     private InvokeParam invokeParam;
+
+    private LinearLayout ll_check;
+    private ImageView iv_btn_correct;
+    private ImageView iv_btn_incorrect;
 
     private SimpleDraweeView riv_pic_1;
     private SimpleDraweeView riv_pic_2;
@@ -104,6 +113,11 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
         tv_num_id = findViewById(R.id.tv_num_id);
         tv_num_des = findViewById(R.id.tv_num_des);
         iv_checked = findViewById(R.id.iv_checked);
+        iv_btn_correct = findViewById(R.id.iv_btn_correct);
+        iv_btn_correct.setOnClickListener(view -> showCheckDialog(0));
+        iv_btn_incorrect = findViewById(R.id.iv_btn_incorrect);
+        iv_btn_incorrect.setOnClickListener(view -> showCheckDialog(1));
+        ll_check = findViewById(R.id.ll_check);
 
         riv_pic_1 = findViewById(R.id.riv_pic_1);
         riv_pic_2 = findViewById(R.id.riv_pic_2);
@@ -122,7 +136,8 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
         tv_num_des.setText(mInspectItemDetail.getItemName());
         int checkResult = mInspectItemDetail.getCheckResult();
         iv_checked.setVisibility(checkResult != 0 ? View.VISIBLE : View.GONE);
-        iv_checked.setImageResource(checkResult == 1 ? R.drawable.ic_open : R.drawable.ic_close);
+        iv_checked.setImageResource(checkResult == 1 ? R.drawable.ic_check : R.drawable.ic_uncheck);
+        ll_check.setVisibility(checkResult == 0 ? View.VISIBLE : View.GONE);
 
         String checkContent = mInspectItemDetail.getCheckContent();
         et_msg.setText(checkContent);
@@ -139,8 +154,54 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
         }
     }
 
-    private void refreshInfo() {
-        // TODO:上传完毕 这里刷新页面么？
+    private void showCheckDialog(int result) { // 文档 0:检验通过 1:检验失败
+        final NormalDialog dialog = new NormalDialog(this);
+        dialog.content("确认保存检验结果为: " + (result == 0 ? "通过 " : "不通过"))
+                .style(NormalDialog.STYLE_TWO)
+                .btnNum(2)
+                .btnText(getString(R.string.tx_cancel), getString(R.string.tx_determine))
+                .showAnim(new BounceTopEnter())
+                .dismissAnim(new SlideBottomExit())
+                .show();
+        dialog.setOnBtnClickL(
+                dialog::dismiss,
+                () -> {
+                    saveCheckResult(result);
+                    dialog.superDismiss();
+                });
+    }
+
+    private void saveCheckResult(int result) {
+        CustomApplication customApplication = CustomApplication.getInstance();
+        String username = customApplication.getSpHelper().getUsername();
+        String postCode = customApplication.getSpHelper().getUserPostCode();
+        String groupCode = customApplication.getSpHelper().getUserGroupCode();
+        if (TextUtils.isEmpty(username) || TextUtils.isEmpty(postCode) || TextUtils.isEmpty(groupCode)) {
+            CommonUtils.showToast(getString(R.string.error_empty_team_group));
+            return;
+        }
+        toSubscribe(RxFactory.getCheckServiceInstance()
+                        .SaveCheckResult(mInspectCode, mEquipmentNo, mInspectItemDetail.getItemCode(), result, username, postCode, groupCode),
+                () -> showLoading("保存检验结果中..."),
+                resultObject -> {
+                    if (resultObject.getResult() == 0) {
+                        hideLoading();
+                        ll_check.setVisibility(View.GONE);
+                        iv_checked.setVisibility(View.VISIBLE);
+                        iv_checked.setImageResource(
+                                result == 0 ? R.drawable.ic_check : R.drawable.ic_uncheck);
+                        refreshInfo();
+                    } else {
+                        SaveCheckResultError(resultObject.getDesc());
+                    }
+                },
+                throwable -> SaveCheckResultError(throwable.getMessage()));
+    }
+
+    private void SaveCheckResultError(String msg) {
+        hideLoading();
+        CommonUtils.showToast("提交失败");
+        Logger.e(msg);
     }
 
     private void commitMsg() {
@@ -152,8 +213,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
         }
         toSubscribe(RxFactory.getCheckServiceInstance()
                         .SaveItemChkCnt(mEquipmentNo, mInspectCode, mInspectItemDetail.getItemCode(), msg),
-                () ->
-                        showLoading("提交中..."),
+                () -> showLoading("提交中..."),
                 resultObject -> {
                     if (resultObject.getResult() == 0) {
                         hideLoading();
@@ -171,6 +231,10 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
         hideLoading();
         CommonUtils.showToast("提交失败");
         Logger.e(msg);
+    }
+
+    private void refreshInfo() {
+        // TODO:上传完毕或提交完毕 这里刷新页面么 还是只改变状态？
     }
 
     /**

@@ -24,7 +24,7 @@ public class InspectListAdapter extends BaseQuickAdapter<InspectItem.DataBean, B
         helper.setText(R.id.tv_num_id, inspectItem.getItemCode())
                 .setText(R.id.tv_num_des, inspectItem.getItemName())
                 .setVisible(R.id.iv_checked, checkResult != 0)
-                .setImageResource(R.id.iv_checked, checkResult == 1 ? R.drawable.ic_open : R.drawable.ic_close);
+                .setImageResource(R.id.iv_checked, checkResult == 1 ? R.drawable.ic_check : R.drawable.ic_uncheck);
     }
 
 }

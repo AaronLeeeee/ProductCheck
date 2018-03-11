@@ -83,6 +83,7 @@ public class BaseInfoFragment extends BaseFragment {
         mSubmitCheckBt = layout.findViewById(R.id.tv_submit);
 
         mStartCheckBt.setOnClickListener(v -> {
+            // TODO:这个文档说按钮文字 变成 撤销检查 具体逻辑不清
             if (mStartTimeTv.getText() != null && !mStartTimeTv.getText().equals("")) {
                 CommonUtils.showToast("已经开始检测，请勿重复检查！");
             } else {
@@ -90,6 +91,7 @@ public class BaseInfoFragment extends BaseFragment {
             }
         });
         mSubmitCheckBt.setOnClickListener(v -> {
+            // TODO:提交按钮 干什么用
 
         });
         return layout;
@@ -102,6 +104,7 @@ public class BaseInfoFragment extends BaseFragment {
                 checkOrderInfoResult -> {
                     if (checkOrderInfoResult.getResult() == 0) {
                         hideLoading();
+                        // TODO: 这个需要 viewPager禁止滑动和tab禁止点击
                         String startCheckTime = checkOrderInfoResult.getData().getStartCheckTime();
                         mStartTimeTv.setText(startCheckTime != null ? startCheckTime : "");
                     } else {

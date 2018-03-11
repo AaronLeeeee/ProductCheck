@@ -26,19 +26,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/ll_detail_item"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:gravity="center"
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_margin="5dp" />
+            android:id="@+id/iv_btn_correct"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:padding="10dp"
+            android:src="@drawable/ic_check" />
 
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_margin="5dp" />
+            android:id="@+id/iv_btn_incorrect"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:padding="10dp"
+            android:src="@drawable/ic_uncheck" />
     </LinearLayout>
 
     <LinearLayout
@@ -72,7 +80,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"
-            android:text="拍照" />
+            android:background="@drawable/global_blue_clickable_selector"
+            android:text="拍照"
+            android:textColor="@color/white"
+            android:textSize="@dimen/ts_big" />
 
     </LinearLayout>
 
@@ -104,7 +115,10 @@
             android:id="@+id/bt_commit_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/global_blue_clickable_selector"
             android:gravity="center"
-            android:text="提交" />
+            android:text="提交"
+            android:textColor="@color/white"
+            android:textSize="@dimen/ts_big" />
     </LinearLayout>
 </RelativeLayout>
