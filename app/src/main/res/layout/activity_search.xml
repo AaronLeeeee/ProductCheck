@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="15dp"
-            android:src="@mipmap/icon_show_more_data" />
+            android:src="@drawable/cs_arrow_right" />
 
         <TextView
             android:id="@+id/tv_unStart_check"
@@ -61,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="15dp"
-            android:src="@mipmap/icon_show_more_data" />
+            android:src="@drawable/cs_arrow_right" />
 
         <TextView
             android:id="@+id/tv_process_check"
@@ -93,7 +93,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="15dp"
-            android:src="@mipmap/icon_show_more_data" />
+            android:src="@drawable/cs_arrow_right" />
 
         <TextView
             android:id="@+id/tv_finished_check"

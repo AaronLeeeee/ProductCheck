@@ -4,7 +4,6 @@ import com.check.gf.gfapplication.entity.CheckOrder;
 import com.check.gf.gfapplication.entity.CheckOrderInfo;
 import com.check.gf.gfapplication.entity.InspectItem;
 import com.check.gf.gfapplication.entity.InspectItemDetail;
-import com.check.gf.gfapplication.entity.ItemPic;
 import com.check.gf.gfapplication.entity.ResultObject;
 import com.check.gf.gfapplication.entity.StartCheckResult;
 
@@ -89,7 +88,7 @@ public interface CheckApi {
      * @return 示例返回
      */
     @GET("Check/SaveCheckResult")
-    Observable<ResultObject> SaveCheckResult(@Body CheckOrder userSignInfo);
+    Observable<ResultObject> SaveCheckResult(@Query("inspectCode") String inspectCode, @Query("equipmentNo") String equipmentNo, @Query("itemCode") String itemCode, @Query("checkResult") int checkResult, @Query("userName") String userName, @Query("postCode") String postCode, @Query("groupCode") String groupCode);
 
 
     /**

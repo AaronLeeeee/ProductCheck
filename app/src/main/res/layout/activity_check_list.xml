@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue_confirm"
     android:orientation="vertical">
 
     <com.check.gf.gfapplication.view.HeaderLayout
@@ -15,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="34dp"
         android:layout_below="@id/top_title_bar"
-        android:layout_marginTop="5dp"
+        android:background="@color/blue_confirm"
         android:gravity="center"
         android:orientation="horizontal">
 

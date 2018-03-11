@@ -17,7 +17,7 @@
         android:background="@android:color/white"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
-        tl:tl_indicator_color="@color/red"
+        tl:tl_indicator_color="@color/blue_confirm"
         tl:tl_indicator_corner_radius="5dp"
         tl:tl_indicator_margin_left="2dp"
         tl:tl_indicator_margin_right="2dp"
@@ -35,7 +35,6 @@
     <com.check.gf.gfapplication.view.GuardViewPager
         android:id="@+id/vpItemLeftPaper"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/blue_confirm" />
+        android:layout_height="match_parent" />
 
 </LinearLayout>

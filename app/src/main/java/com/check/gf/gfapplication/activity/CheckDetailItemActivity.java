@@ -140,10 +140,11 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
     }
 
     private void refreshInfo() {
-        // TODO:刷新页面
+        // TODO:上传完毕 这里刷新页面么？
     }
 
     private void commitMsg() {
+        // TODO：返回成功 但是实际备注没有被修改 需询问下
         String msg = et_msg.getText().toString().trim();
         if (TextUtils.isEmpty(msg)) {
             CommonUtils.showToast("检验结果备注为空，无法提交");
@@ -257,7 +258,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
 
     @Override
     public void takeSuccess(TResult result) {
-        // TODO： 上传图片 数据流和其他参赛传输方式 待确定
+        // TODO： 上传图片 数据流和其他参赛传输方式 待确定姿势 最好提供样例
         File file = new File(result.getImage().getCompressPath());
         // 创建 RequestBody，用于封装 请求RequestBody
         RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), file);

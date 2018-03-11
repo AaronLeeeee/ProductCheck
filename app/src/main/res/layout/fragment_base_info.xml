@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue_confirm"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -24,8 +23,8 @@
                 android:layout_weight="1"
                 android:paddingTop="16dp"
                 android:text="@string/purchase_order"
-                android:textColor="@color/white"
-                android:textSize="@dimen/ts_normal" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/ts_bigger" />
 
             <TextView
                 android:id="@+id/tv_purchase_order_id"
@@ -34,8 +33,8 @@
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:paddingTop="16dp"
-                android:textColor="@color/white"
-                android:textSize="@dimen/ts_normal" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/ts_bigger" />
         </LinearLayout>
 
         <LinearLayout
@@ -48,8 +47,8 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp"
                 android:text="@string/supplier"
-                android:textColor="@color/white"
-                android:textSize="@dimen/ts_normal" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/ts_bigger" />
 
             <TextView
                 android:id="@+id/tv_supplier"
@@ -57,8 +56,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:paddingTop="8dp"
-                android:textColor="@color/white"
-                android:textSize="@dimen/ts_normal" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/ts_bigger" />
         </LinearLayout>
 
         <LinearLayout
@@ -72,8 +71,8 @@
                 android:layout_weight="1"
                 android:paddingTop="8dp"
                 android:text="@string/material_id"
-                android:textColor="@color/white"
-                android:textSize="@dimen/ts_normal" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/ts_bigger" />
 
             <TextView
                 android:id="@+id/tv_material_id"
@@ -82,8 +81,8 @@
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:paddingTop="8dp"
-                android:textColor="@color/white"
-                android:textSize="@dimen/ts_normal" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/ts_bigger" />
         </LinearLayout>
 
         <LinearLayout
@@ -97,8 +96,8 @@
                 android:layout_weight="1"
                 android:paddingTop="8dp"
                 android:text="@string/material_name"
-                android:textColor="@color/white"
-                android:textSize="@dimen/ts_normal" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/ts_bigger" />
 
             <TextView
                 android:id="@+id/tv_material_name"
@@ -107,8 +106,8 @@
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:paddingTop="8dp"
-                android:textColor="@color/white"
-                android:textSize="@dimen/ts_normal" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/ts_bigger" />
         </LinearLayout>
 
         <LinearLayout
@@ -122,8 +121,8 @@
                 android:layout_weight="1"
                 android:paddingTop="8dp"
                 android:text="@string/qm_no"
-                android:textColor="@color/white"
-                android:textSize="@dimen/ts_normal" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/ts_bigger" />
 
             <TextView
                 android:id="@+id/tv_qm_no"
@@ -132,8 +131,8 @@
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:paddingTop="8dp"
-                android:textColor="@color/white"
-                android:textSize="@dimen/ts_normal" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/ts_bigger" />
         </LinearLayout>
 
         <LinearLayout
@@ -147,8 +146,8 @@
                 android:layout_weight="1"
                 android:paddingTop="8dp"
                 android:text="@string/income_material_count"
-                android:textColor="@color/white"
-                android:textSize="@dimen/ts_normal" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/ts_bigger" />
 
             <TextView
                 android:id="@+id/tv_income_count"
@@ -157,8 +156,8 @@
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:paddingTop="8dp"
-                android:textColor="@color/white"
-                android:textSize="@dimen/ts_normal" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/ts_bigger" />
         </LinearLayout>
 
         <LinearLayout
@@ -172,8 +171,8 @@
                 android:layout_weight="1"
                 android:paddingTop="8dp"
                 android:text="@string/sample_plan"
-                android:textColor="@color/white"
-                android:textSize="@dimen/ts_normal" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/ts_bigger" />
 
             <TextView
                 android:id="@+id/tv_sample_plan"
@@ -182,8 +181,8 @@
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:paddingTop="8dp"
-                android:textColor="@color/white"
-                android:textSize="@dimen/ts_normal" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/ts_bigger" />
         </LinearLayout>
 
         <LinearLayout
@@ -197,8 +196,8 @@
                 android:layout_weight="1"
                 android:paddingTop="8dp"
                 android:text="@string/inspector"
-                android:textColor="@color/white"
-                android:textSize="@dimen/ts_normal" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/ts_bigger" />
 
             <TextView
                 android:id="@+id/tv_inspector"
@@ -207,8 +206,8 @@
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:paddingTop="8dp"
-                android:textColor="@color/white"
-                android:textSize="@dimen/ts_normal" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/ts_bigger" />
         </LinearLayout>
 
         <LinearLayout
@@ -222,8 +221,8 @@
                 android:layout_weight="1"
                 android:paddingTop="8dp"
                 android:text="@string/start_time"
-                android:textColor="@color/white"
-                android:textSize="@dimen/ts_normal" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/ts_bigger" />
 
             <TextView
                 android:id="@+id/tv_start_time"
@@ -232,8 +231,8 @@
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:paddingTop="8dp"
-                android:textColor="@color/white"
-                android:textSize="@dimen/ts_normal" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/ts_bigger" />
         </LinearLayout>
 
         <LinearLayout
@@ -247,8 +246,8 @@
                 android:layout_weight="1"
                 android:paddingTop="8dp"
                 android:text="@string/end_time"
-                android:textColor="@color/white"
-                android:textSize="@dimen/ts_normal" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/ts_bigger" />
 
             <TextView
                 android:id="@+id/tv_end_time"
@@ -257,8 +256,8 @@
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:paddingTop="8dp"
-                android:textColor="@color/white"
-                android:textSize="@dimen/ts_normal" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/ts_bigger" />
         </LinearLayout>
 
         <LinearLayout
@@ -272,8 +271,8 @@
                 android:layout_weight="1"
                 android:paddingTop="8dp"
                 android:text="@string/surface"
-                android:textColor="@color/white"
-                android:textSize="@dimen/ts_normal" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/ts_bigger" />
 
             <TextView
                 android:id="@+id/tv_surface"
@@ -282,8 +281,8 @@
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:paddingTop="8dp"
-                android:textColor="@color/white"
-                android:textSize="@dimen/ts_normal" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/ts_bigger" />
         </LinearLayout>
 
         <LinearLayout
@@ -297,8 +296,8 @@
                 android:layout_weight="1"
                 android:paddingTop="8dp"
                 android:text="@string/dimension"
-                android:textColor="@color/white"
-                android:textSize="@dimen/ts_normal" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/ts_bigger" />
 
             <TextView
                 android:id="@+id/tv_dimension"
@@ -307,8 +306,8 @@
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:paddingTop="8dp"
-                android:textColor="@color/white"
-                android:textSize="@dimen/ts_normal" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/ts_bigger" />
         </LinearLayout>
 
         <LinearLayout
@@ -322,8 +321,8 @@
                 android:layout_weight="1"
                 android:paddingTop="8dp"
                 android:text="@string/performance"
-                android:textColor="@color/white"
-                android:textSize="@dimen/ts_normal" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/ts_bigger" />
 
             <TextView
                 android:id="@+id/tv_performance"
@@ -332,8 +331,8 @@
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:paddingTop="8dp"
-                android:textColor="@color/white"
-                android:textSize="@dimen/ts_normal" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/ts_bigger" />
         </LinearLayout>
 
         <LinearLayout
@@ -347,7 +346,7 @@
                 android:id="@+id/tv_start_check"
                 android:layout_width="88dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/global_red_clickable_selector"
+                android:background="@drawable/global_blue_clickable_selector"
                 android:enabled="false"
                 android:gravity="center"
                 android:paddingBottom="4dp"
@@ -361,7 +360,7 @@
                 android:layout_width="88dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
-                android:background="@drawable/global_red_clickable_selector"
+                android:background="@drawable/global_blue_clickable_selector"
                 android:gravity="center"
                 android:paddingBottom="4dp"
                 android:paddingTop="4dp"
@@ -375,6 +374,6 @@
         android:id="@+id/loadView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@color/white"
+        android:background="@color/black"
         android:visibility="gone" />
 </RelativeLayout>
