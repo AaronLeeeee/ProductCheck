@@ -9,7 +9,7 @@
     <color name="dark_gray">#666666</color>
 
     <!-- function_color -->
-    <color name="text_color">#5f606d</color>
+    <color name="text_color">#333333</color>
     <color name="line_color">#d7d7d7</color>
     <color name="label_color">#999999</color>
     <color name="background_color">#f2f2f2</color>

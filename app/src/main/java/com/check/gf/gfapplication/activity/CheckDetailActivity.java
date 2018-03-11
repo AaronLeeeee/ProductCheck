@@ -41,6 +41,7 @@ public class CheckDetailActivity extends BaseActivity {
     @Override
     protected void initContentView() {
         super.initContentView();
+        initTopBarForLeft("检测单详情", getString(R.string.tx_back));
         GuardViewPager vp_paper = findViewById(R.id.vpItemLeftPaper);
         vp_paper.setOffscreenPageLimit(1);
         mFragments.add(BaseInfoFragment.newInstance(mCheckOrderInfo));

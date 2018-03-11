@@ -1,5 +1,6 @@
 package com.check.gf.gfapplication.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -12,11 +13,14 @@ import android.widget.LinearLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.check.gf.gfapplication.R;
+import com.check.gf.gfapplication.activity.CheckDetailItemActivity;
 import com.check.gf.gfapplication.adapter.InspectListAdapter;
 import com.check.gf.gfapplication.base.BaseFragment;
 import com.check.gf.gfapplication.base.IBaseList;
 import com.check.gf.gfapplication.entity.InspectItem;
+import com.check.gf.gfapplication.entity.InspectItemDetail;
 import com.check.gf.gfapplication.network.RxFactory;
+import com.check.gf.gfapplication.utils.CommonUtils;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
@@ -41,6 +45,7 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private LinearLayout rl_no_data, rl_no_network;
     private InspectListAdapter mQuickAdapter;
+    private static String extra;
 
     public static InspectListFragment newInstance(String inspectCode, String equipmentNo) {
         Bundle bundle = new Bundle();
@@ -49,6 +54,10 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
         bundle.putString(EQUIPMENT_NO, equipmentNo);
         fragment.setArguments(bundle);
         return fragment;
+    }
+
+    public static String getExtra() {
+        return "inspectItemDetail";
     }
 
     @Override
@@ -72,9 +81,46 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
         // 默认提供5种方法（渐显、缩放、从下到上，从左到右、从右到左）
         // mQuickAdapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
         mQuickAdapter.setOnItemClickListener((adapter, view, position) -> {
-            // inspectItems.get(position);
+            String itemCode = inspectItems.get(position).getItemCode();
+            queryInspectItemDetail(itemCode);
         });
+        addHeadView();
     }
+
+    /**
+     * 添加头部
+     */
+    private void addHeadView() {
+        View headView = getActivity().getLayoutInflater().inflate(R.layout.include_check_list_header,
+                (ViewGroup) mRecyclerView.getParent(), false);
+        mQuickAdapter.addHeaderView(headView);
+    }
+
+    private void queryInspectItemDetail(String itemCode) {
+        toSubscribe(RxFactory.getCheckServiceInstance()
+                        .ItemDetailQuery(mInspectCode, mEquipmentNo, itemCode),
+                () -> showLoading("查询详细信息中..."),
+                inspectItemDetailResult -> {
+                    if (inspectItemDetailResult.getResult() == 0) {
+                        hideLoading();
+                        InspectItemDetail.DataBean inspectItemDetail
+                                = inspectItemDetailResult.getData();
+                        Intent intent = new Intent(getActivity(), CheckDetailItemActivity.class);
+                        intent.putExtra(InspectListFragment.getExtra(), inspectItemDetail);
+                        startActivity(intent);
+                    } else {
+                        queryInspectItemDetailError(inspectItemDetailResult.getDesc());
+                    }
+                },
+                throwable -> queryInspectItemDetailError(throwable.getMessage()));
+    }
+
+    private void queryInspectItemDetailError(String msg) {
+        hideLoading();
+        CommonUtils.showToast("检验条目详细信息查询失败，请重试：" + msg);
+        Logger.e(msg);
+    }
+
 
     /**
      * 当SwipeRefreshLayout下拉刷新时触发

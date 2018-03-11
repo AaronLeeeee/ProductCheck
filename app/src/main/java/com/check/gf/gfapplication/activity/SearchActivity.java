@@ -40,6 +40,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     private List<CheckOrder.DataBean> mProcessCheckOrders = new ArrayList<>();
     private List<CheckOrder.DataBean> mFinishedCheckOrders = new ArrayList<>();
     private String mRequireDate;
+    private BottomDialog mBottomDialog;
 
     public static String getExtra() {
         return "CheckOrders";
@@ -53,13 +54,13 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void initContentView() {
         super.initContentView();
-        initTopBarForBoth(getString(R.string.tx_search), getString(R.string.tx_exit), getString(R.string.tx_filter), () -> BottomDialog.create(getSupportFragmentManager())
+        mBottomDialog = BottomDialog.create(getSupportFragmentManager())
                 .setViewListener(this::initView)
                 .setLayoutRes(R.layout.dialog_layout_search)
                 .setDimAmount(0.2f)   // Dialog window 背景色深度 范围：0 到 1，默认是0.2f
                 .setCancelOutside(true)     // 点击外部区域是否关闭，默认true
-                .setTag("BottomDialog")     // 设置DialogFragment的tag
-                .show());
+                .setTag("BottomDialog");
+        initTopBarForBoth(getString(R.string.tx_search), getString(R.string.tx_exit), getString(R.string.tx_filter), mBottomDialog::show);
         mLoadingView = findViewById(R.id.loadView);
         Button mSearchBt = findViewById(R.id.bt_search);
         LinearLayout mUnStartCheckLl = findViewById(R.id.ll_unStart);
@@ -169,8 +170,10 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                         hideLoading();
                         List<CheckOrder.DataBean> checkOrders = checkOrderResult.getData();
                         if (checkOrders == null || checkOrders.size() <= 0) {
+                            CommonUtils.showToast("该筛选条件下检验单不存在");
                             return;
                         }
+                        mBottomDialog.dismiss();
                         mUnStartCheckOrders.clear();
                         mProcessCheckOrders.clear();
                         mFinishedCheckOrders.clear();
@@ -184,7 +187,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                             } else if (finishState == 2) {
                                 mFinishedCheckOrders.add(checkOrder);
                             } else {
-                                //TODO:异常数据
+                                CommonUtils.showToast("存在异常数据");
                             }
                         }
                         mUnStartCheckCountTv.setText(String.valueOf(mUnStartCheckOrders.size()));

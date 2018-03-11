@@ -3,6 +3,7 @@ package com.check.gf.gfapplication.network;
 import com.check.gf.gfapplication.entity.CheckOrder;
 import com.check.gf.gfapplication.entity.CheckOrderInfo;
 import com.check.gf.gfapplication.entity.InspectItem;
+import com.check.gf.gfapplication.entity.InspectItemDetail;
 import com.check.gf.gfapplication.entity.ItemPic;
 import com.check.gf.gfapplication.entity.ResultObject;
 import com.check.gf.gfapplication.entity.StartCheckResult;
@@ -117,14 +118,27 @@ public interface CheckApi {
     Observable<ResultObject> ItemChkUploadImg(@Query("equipmentNo") String equipmentNo, @Query("inspectCode") String inspectCode, @Query("itemCode") String itemCode, @Body RequestBody uploadImg);
 
 
+//    /**
+//     * 检验条目图片查询接口
+//     *
+//     * @param inspectCode 是	string	检验类别编号
+//     * @param equipmentNo 是	string	检验单号
+//     * @param itemCode    是	string	检验条目编码
+//     * @return 示例返回
+//     */
+//    @GET("Check/ItemPicListQuery")
+//    Observable<ItemPic> ItemPicListQuery(@Query("inspectCode") String inspectCode, @Query("equipmentNo") String equipmentNo, @Query("itemCode") String itemCode);
+
+
     /**
      * 检验条目图片查询接口
      *
-     * @param equipmentNo 是	string	检验单号
      * @param inspectCode 是	string	检验类别编号
+     * @param equipmentNo 是	string	检验单号
      * @param itemCode    是	string	检验条目编码
      * @return 示例返回
      */
-    @GET("Check/ItemPicListQuery")
-    Observable<ItemPic> ItemPicListQuery(@Body CheckOrder userSignInfo);
+    @GET("Check/ItemDetailQuery")
+    Observable<InspectItemDetail> ItemDetailQuery(@Query("inspectCode") String inspectCode, @Query("equipmentNo") String equipmentNo, @Query("itemCode") String itemCode);
+
 }

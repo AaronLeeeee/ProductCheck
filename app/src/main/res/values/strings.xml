@@ -19,9 +19,8 @@
     <string name="network_tips">您已进入没有网络的异次元,请检查您的网络!</string>
     <string name="tx_no_network">无网络信号</string>
 
-    <string name="tx_no_data">暂无数据，轻触屏幕返回</string>
-    <string name="tx_no_data_search">暂无数据，轻触屏幕返回</string>
-    <string name="tx_reload">轻触屏幕刷新</string>
+    <string name="tx_no_data">暂无数据，轻触屏幕重试</string>
+    <string name="tx_reload">请求失败，轻触屏幕重试</string>
 
     <string-array name="inspect_type_name">
         <item> 基本信息 </item>
@@ -35,7 +34,7 @@
 
     <string name="tx_search">搜索</string>
     <string name="tx_filter">筛选</string>
-    <string name="tx_not_begin_search">请点击右上角开启搜索</string>
+    <string name="tx_not_begin_search">尚未筛选</string>
 
     <string name="search_customerName">客户</string>
     <string name="search_requireDate">发货日期</string>
