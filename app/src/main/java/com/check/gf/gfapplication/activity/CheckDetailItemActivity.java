@@ -5,8 +5,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.check.gf.gfapplication.R;
 import com.check.gf.gfapplication.base.BaseActivity;
@@ -29,6 +33,7 @@ import com.jph.takephoto.permission.TakePhotoInvocationHandler;
 import com.orhanobut.logger.Logger;
 
 import java.io.File;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -42,10 +47,15 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
 
     private InspectItemDetail.DataBean mInspectItemDetail;
 
+    private TextView tv_num_id;
+    private TextView tv_num_des;
+    private ImageView iv_checked;
+
     private TakePhoto takePhoto;
     private InvokeParam invokeParam;
 
-    private SimpleDraweeView riv_pic;
+    private SimpleDraweeView riv_pic_1;
+    private SimpleDraweeView riv_pic_2;
 
     private EditText et_msg;
 
@@ -86,7 +96,12 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
         initTopBarForLeft("检测条目", getString(R.string.tx_back));
         mLoadingView = findViewById(R.id.loadView);
 
-        riv_pic = findViewById(R.id.riv_pic);
+        tv_num_id = findViewById(R.id.tv_num_id);
+        tv_num_des = findViewById(R.id.tv_num_des);
+        iv_checked = findViewById(R.id.iv_checked);
+
+        riv_pic_1 = findViewById(R.id.riv_pic_1);
+        riv_pic_2 = findViewById(R.id.riv_pic_2);
         Button mTakePictureBt = findViewById(R.id.bt_take_picture);
         mTakePictureBt.setOnClickListener(v -> showActionSheet());
 
@@ -98,6 +113,25 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
     @Override
     protected void initData() {
         super.initData();
+        tv_num_id.setText(mInspectItemDetail.getItemCode());
+        tv_num_des.setText(mInspectItemDetail.getItemName());
+        int checkResult = mInspectItemDetail.getCheckResult();
+        iv_checked.setVisibility(checkResult != 0 ? View.VISIBLE : View.GONE);
+        iv_checked.setImageResource(checkResult == 1 ? R.drawable.ic_open : R.drawable.ic_close);
+
+        String checkContent = mInspectItemDetail.getCheckContent();
+        et_msg.setText(checkContent);
+        // TODO:待确定个备注是否可以修改 重新提交
+        et_msg.setEnabled(!TextUtils.isEmpty(checkContent));
+        List<InspectItemDetail.DataBean.PicturesBean> picturesBeans = mInspectItemDetail.getPictures();
+        for (int i = 0; i < picturesBeans.size(); i++) { //TODO:待确定个数，如不确定改为动态添加布局
+            String picUrl = picturesBeans.get(i).getUrl();
+            if (i == 0) {
+                riv_pic_1.setImageURI(picUrl);
+            } else {
+                riv_pic_2.setImageURI(picUrl);
+            }
+        }
     }
 
     private void refreshInfo() {
@@ -106,6 +140,10 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
 
     private void commitMsg() {
         String msg = et_msg.getText().toString().trim();
+        if (TextUtils.isEmpty(msg)) {
+            CommonUtils.showToast("检验结果备注为空，无法提交");
+            return;
+        }
         toSubscribe(RxFactory.getCheckServiceInstance()
                         .SaveItemChkCnt("0001", "001", "0001", msg),
                 () ->
@@ -206,15 +244,15 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
     private void refreshPic(String picPath) {
         if (picPath != null && !picPath.equals("")) {
             Uri uri = Uri.parse(picPath);
-            riv_pic.setImageURI(uri);
+            riv_pic_1.setImageURI(uri);
         } else {
-            riv_pic.setImageResource(R.drawable.icon_stub);
+            riv_pic_1.setImageResource(R.drawable.icon_stub);
         }
     }
 
     @Override
     public void takeSuccess(TResult result) {
-        // 上传
+        // TODO： 上传图片 数据流和其他参赛传输方式 待确定
         File file = new File(result.getImage().getCompressPath());
         // 创建 RequestBody，用于封装 请求RequestBody
         RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), file);

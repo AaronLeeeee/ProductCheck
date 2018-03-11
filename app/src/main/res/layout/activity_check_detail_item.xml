@@ -14,18 +14,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/top_title_bar"
-        android:orientation="vertical" />
+        android:orientation="vertical">
+
+        <include layout="@layout/include_check_list_header" />
+
+        <include layout="@layout/list_item_check_result" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ll_pic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/ll_detail_item"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:gravity="center">
 
         <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/riv_pic"
+            android:id="@+id/riv_pic_1"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            fresco:failureImage="@drawable/icon_error"
+            fresco:placeholderImage="@drawable/icon_stub"
+            fresco:roundAsCircle="true" />
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/riv_pic_2"
             android:layout_width="80dp"
             android:layout_height="80dp"
             fresco:failureImage="@drawable/icon_error"
