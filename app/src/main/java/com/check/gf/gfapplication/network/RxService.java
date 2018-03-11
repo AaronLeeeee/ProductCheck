@@ -1,8 +1,6 @@
 package com.check.gf.gfapplication.network;
 
 
-import android.support.annotation.NonNull;
-
 import com.check.gf.gfapplication.BuildConfig;
 import com.check.gf.gfapplication.config.StaticConfig;
 import com.google.gson.Gson;
@@ -38,7 +36,7 @@ class RxService<T> {
         return mService;
     }
 
-    @NonNull
+
     private static HttpLoggingInterceptor createHttpLoggingInterceptor() {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);

@@ -170,6 +170,7 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
     }
 
     private void setUpViews(View parentView) {
+        mLoadingView = parentView.findViewById(R.id.loadView);
         rl_no_data = parentView.findViewById(R.id.rl_no_data);
         rl_no_network = parentView.findViewById(R.id.rl_no_network);
         mRecyclerView = parentView.findViewById(R.id.recycler_view);

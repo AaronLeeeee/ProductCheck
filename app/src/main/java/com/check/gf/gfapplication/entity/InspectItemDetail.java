@@ -82,7 +82,7 @@ public class InspectItemDetail extends ResultObject implements Parcelable {
             this.pictures = pictures;
         }
 
-        public static class PicturesBean {
+        public static class PicturesBean implements Parcelable {
             /**
              * url : http://h.hiphotos.baidu.com/image/pic/item/e824b899a9014c0899ee068a067b02087af4f4cc.jpg
              */
@@ -96,6 +96,35 @@ public class InspectItemDetail extends ResultObject implements Parcelable {
             public void setUrl(String url) {
                 this.url = url;
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(this.url);
+            }
+
+            public PicturesBean() {
+            }
+
+            protected PicturesBean(Parcel in) {
+                this.url = in.readString();
+            }
+
+            public static final Creator<PicturesBean> CREATOR = new Creator<PicturesBean>() {
+                @Override
+                public PicturesBean createFromParcel(Parcel source) {
+                    return new PicturesBean(source);
+                }
+
+                @Override
+                public PicturesBean[] newArray(int size) {
+                    return new PicturesBean[size];
+                }
+            };
         }
 
         @Override

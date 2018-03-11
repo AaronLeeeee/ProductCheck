@@ -169,7 +169,8 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
 
     @Override
     public void RefreshItem() {
-        CommonUtils.showToast("暂不支持下拉刷新");
+        mSwipeRefreshLayout.setRefreshing(false);
+        CommonUtils.showToast("暂页面不支持下拉刷新");
     }
 
     @Override
