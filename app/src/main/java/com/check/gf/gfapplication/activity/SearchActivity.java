@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Parcelable;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -62,14 +61,13 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 .setTag("BottomDialog");
         initTopBarForBoth(getString(R.string.tx_search), getString(R.string.tx_exit), getString(R.string.tx_filter), mBottomDialog::show);
         mLoadingView = findViewById(R.id.loadView);
-        Button mSearchBt = findViewById(R.id.bt_search);
         LinearLayout mUnStartCheckLl = findViewById(R.id.ll_unStart);
         mUnStartCheckCountTv = findViewById(R.id.tv_unStart_check);
         LinearLayout mProcessCheckLl = findViewById(R.id.ll_process);
         mProcessCheckCountTv = findViewById(R.id.tv_process_check);
         LinearLayout mFinishedCheckLl = findViewById(R.id.ll_finished);
         mFinishedCheckCountTv = findViewById(R.id.tv_finished_check);
-        ExtendUtils.setOnClickListener(this, mSearchBt, mUnStartCheckLl, mProcessCheckLl, mFinishedCheckLl);
+        ExtendUtils.setOnClickListener(this, mUnStartCheckLl, mProcessCheckLl, mFinishedCheckLl);
     }
 
     @Override
