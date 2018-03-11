@@ -47,6 +47,8 @@ import okhttp3.RequestBody;
 public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.TakeResultListener, InvokeListener {
 
     private InspectItemDetail.DataBean mInspectItemDetail;
+    private String mInspectCode;
+    private String mEquipmentNo;
 
     private TextView tv_num_id;
     private TextView tv_num_des;
@@ -83,6 +85,8 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
         super.getIntentData();
         Intent intent = getIntent();
         mInspectItemDetail = intent.getParcelableExtra(InspectListFragment.getExtra());
+        mInspectCode = intent.getStringExtra(InspectListFragment.getInspectCodeExtra());
+        mEquipmentNo = intent.getStringExtra(InspectListFragment.getEquipmentNoExtra());
     }
 
 
@@ -146,7 +150,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
             return;
         }
         toSubscribe(RxFactory.getCheckServiceInstance()
-                        .SaveItemChkCnt("0001", "001", "0001", msg),
+                        .SaveItemChkCnt(mEquipmentNo, mInspectCode, mInspectItemDetail.getItemCode(), msg),
                 () ->
                         showLoading("提交中..."),
                 resultObject -> {
@@ -263,7 +267,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
 //        itemChkUploadImg.setItemCode("0001");
 //        itemChkUploadImg.setUploadImg(requestFile);
         toSubscribe(RxFactory.getCheckServiceInstance()
-                        .ItemChkUploadImg("0001", "001", "0001", requestFile),
+                        .ItemChkUploadImg(mEquipmentNo, mInspectCode, mInspectItemDetail.getItemCode(), requestFile),
                 () ->
                         showLoading("上传中..."),
                 resultObject -> {
@@ -275,9 +279,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
                         itemChkUploadImgError(resultObject.getDesc());
                     }
                 },
-                throwable -> {
-                    itemChkUploadImgError(throwable.getMessage());
-                });
+                throwable -> itemChkUploadImgError(throwable.getMessage()));
         Logger.i("takeSuccess：" + result.getImage().getCompressPath());
     }
 

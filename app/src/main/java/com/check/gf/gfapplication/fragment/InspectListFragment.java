@@ -59,6 +59,14 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
         return "inspectItemDetail";
     }
 
+    public static String getInspectCodeExtra() {
+        return INSPECT_CODE;
+    }
+
+    public static String getEquipmentNoExtra() {
+        return EQUIPMENT_NO;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_inspect_list, container, false);
@@ -106,6 +114,8 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
                                 = inspectItemDetailResult.getData();
                         Intent intent = new Intent(getActivity(), CheckDetailItemActivity.class);
                         intent.putExtra(InspectListFragment.getExtra(), inspectItemDetail);
+                        intent.putExtra(getInspectCodeExtra(), mInspectCode);
+                        intent.putExtra(getEquipmentNoExtra(), mEquipmentNo);
                         startActivity(intent);
                     } else {
                         queryInspectItemDetailError(inspectItemDetailResult.getDesc());
