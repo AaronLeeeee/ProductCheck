@@ -56,8 +56,8 @@ class RxService<T> {
                 .addInterceptor(chain -> {
                     Request request = chain.request()
                             .newBuilder()
-                            .addHeader("Content-Type", "application/json")
-                            .addHeader("Pragma", "no-cache")
+//                            .addHeader("Content-Type", "application/json")
+//                            .addHeader("Pragma", "no-cache")
                             .build();
                     return chain.proceed(request);
                 })
