@@ -27,7 +27,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/ll_detail_item"
         android:layout_marginTop="20dp"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/riv_pic_1"
@@ -59,21 +60,31 @@
         android:id="@+id/ll_msg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@+id/ll_pic"
-        android:layout_marginTop="10dp"
-        android:gravity="center">
+        android:layout_below="@id/ll_pic"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="检验结果备注"
+            android:textColor="@color/black"
+            android:textSize="@dimen/ts_large" />
 
         <EditText
             android:id="@+id/et_msg"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:maxLines="1"
+            android:minWidth="180dp" />
 
         <Button
             android:id="@+id/bt_commit_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
+            android:gravity="center"
             android:text="提交" />
     </LinearLayout>
 </RelativeLayout>
