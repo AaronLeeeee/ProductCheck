@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.check.gf.gfapplication.R;
 import com.check.gf.gfapplication.base.BaseActivity;
 import com.check.gf.gfapplication.entity.InspectItemDetail;
+import com.check.gf.gfapplication.fragment.InspectListFragment;
 import com.check.gf.gfapplication.network.RxFactory;
 import com.check.gf.gfapplication.utils.CommonUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -81,7 +82,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
     protected void getIntentData() {
         super.getIntentData();
         Intent intent = getIntent();
-        mInspectItemDetail = intent.getParcelableExtra(CheckListActivity.getExtra());
+        mInspectItemDetail = intent.getParcelableExtra(InspectListFragment.getExtra());
     }
 
 

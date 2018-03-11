@@ -45,7 +45,6 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private LinearLayout rl_no_data, rl_no_network;
     private InspectListAdapter mQuickAdapter;
-    private static String extra;
 
     public static InspectListFragment newInstance(String inspectCode, String equipmentNo) {
         Bundle bundle = new Bundle();
