@@ -108,6 +108,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                     && TextUtils.isEmpty(custNo)) {
                 CommonUtils.showToast("条件不允许同时为空");
             } else {
+                mBottomDialog.dismiss();
                 search(customerName, mRequireDate, equipmentNo, docNo, custNo);
             }
         });
@@ -171,7 +172,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                             CommonUtils.showToast("该筛选条件下检验单不存在");
                             return;
                         }
-                        mBottomDialog.dismiss();
                         mUnStartCheckOrders.clear();
                         mProcessCheckOrders.clear();
                         mFinishedCheckOrders.clear();
