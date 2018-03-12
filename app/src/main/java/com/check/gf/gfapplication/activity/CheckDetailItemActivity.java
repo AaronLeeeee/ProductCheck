@@ -19,6 +19,7 @@ import com.check.gf.gfapplication.entity.InspectItemDetail;
 import com.check.gf.gfapplication.fragment.InspectListFragment;
 import com.check.gf.gfapplication.network.RxFactory;
 import com.check.gf.gfapplication.utils.CommonUtils;
+import com.check.gf.gfapplication.view.common.ZoomableActivity;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.flyco.animation.BounceEnter.BounceTopEnter;
 import com.flyco.animation.SlideExit.SlideBottomExit;
@@ -38,6 +39,7 @@ import com.jph.takephoto.permission.TakePhotoInvocationHandler;
 import com.orhanobut.logger.Logger;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.MediaType;
@@ -68,6 +70,8 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
     private SimpleDraweeView riv_pic_4;
     private SimpleDraweeView riv_pic_5;
     private SimpleDraweeView riv_pic_6;
+
+    private ArrayList<String> mPaths;
 
     private EditText et_msg;
 
@@ -119,11 +123,17 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
         iv_btn_incorrect.setOnClickListener(view -> showCheckDialog(1));
 
         riv_pic_1 = findViewById(R.id.riv_pic_1);
+        riv_pic_1.setOnClickListener(view -> ZoomableActivity.goToPage(CheckDetailItemActivity.this, mPaths, 0));
         riv_pic_2 = findViewById(R.id.riv_pic_2);
+        riv_pic_2.setOnClickListener(view -> ZoomableActivity.goToPage(CheckDetailItemActivity.this, mPaths, 1));
         riv_pic_3 = findViewById(R.id.riv_pic_3);
+        riv_pic_3.setOnClickListener(view -> ZoomableActivity.goToPage(CheckDetailItemActivity.this, mPaths, 2));
         riv_pic_4 = findViewById(R.id.riv_pic_4);
+        riv_pic_4.setOnClickListener(view -> ZoomableActivity.goToPage(CheckDetailItemActivity.this, mPaths, 3));
         riv_pic_5 = findViewById(R.id.riv_pic_5);
+        riv_pic_5.setOnClickListener(view -> ZoomableActivity.goToPage(CheckDetailItemActivity.this, mPaths, 4));
         riv_pic_6 = findViewById(R.id.riv_pic_6);
+        riv_pic_6.setOnClickListener(view -> ZoomableActivity.goToPage(CheckDetailItemActivity.this, mPaths, 5));
 
         Button mTakePictureBt = findViewById(R.id.bt_take_picture);
         mTakePictureBt.setOnClickListener(v -> showActionSheet());
@@ -136,6 +146,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
     @Override
     protected void initData() {
         super.initData();
+        mPaths = new ArrayList<>();
         tv_num_id.setText(mInspectItemDetail.getItemCode());
         tv_num_des.setText(mInspectItemDetail.getItemName());
         int checkResult = mInspectItemDetail.getCheckResult();
@@ -200,6 +211,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
     }
 
     private void commitMsg() {
+        //TODO: 检查下这个参数
         String msg = et_msg.getText().toString().trim();
         if (TextUtils.isEmpty(msg)) {
             CommonUtils.showToast("检验结果备注为空，无法提交");
@@ -307,8 +319,9 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
      * 更新图片 refreshPic
      */
     private void refreshPic(String picPath) {
+        mPaths.add(picPath);
         if (picPath != null && !picPath.equals("")) {
-            Uri uri = Uri.parse(picPath); //TODO： 下面记得重构
+            Uri uri = Uri.parse(picPath);
             if (riv_pic_1.getVisibility() == View.GONE) {
                 riv_pic_1.setImageURI(uri);
                 riv_pic_1.setVisibility(View.VISIBLE);
@@ -399,6 +412,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
         // TODO: 额 这段以后重构 动态添加布局 最多6个
         for (int i = 0; i < picturesBeans.size(); i++) {
             String picUrl = picturesBeans.get(i).getUrl();
+            mPaths.add(picUrl);
             if (i == 0) {
                 riv_pic_1.setVisibility(View.VISIBLE);
                 riv_pic_1.setImageURI(picUrl);

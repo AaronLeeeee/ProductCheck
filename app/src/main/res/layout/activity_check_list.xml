@@ -65,6 +65,7 @@
         android:id="@+id/loadView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:layout_below="@id/top_title_bar"
         android:background="@color/white"
         android:visibility="gone" />
 </RelativeLayout>

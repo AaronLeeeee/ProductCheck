@@ -55,6 +55,12 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
         return fragment;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        onRefresh();
+    }
+
     public static String getExtra() {
         return "inspectItemDetail";
     }
@@ -164,7 +170,7 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
     private void inspectItemListQueryError(String message) {
         hideLoading();
         rl_no_network.setVisibility(View.VISIBLE);
-        rl_no_network.setOnClickListener(v -> RefreshItem());
+        // rl_no_network.setOnClickListener(v -> RefreshItem());
         mQuickAdapter.getData().clear();
         mQuickAdapter.removeAllFooterView();
         mSwipeRefreshLayout.setRefreshing(false);
@@ -190,8 +196,6 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         initAdapter();
-        // 主动刷新数据
-        onRefresh();
     }
 
     /**
