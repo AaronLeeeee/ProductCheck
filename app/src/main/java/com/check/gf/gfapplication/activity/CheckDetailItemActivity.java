@@ -42,6 +42,7 @@ import java.io.File;
 import java.util.List;
 
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 /**
@@ -324,15 +325,14 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
     public void takeSuccess(TResult result) {
         // TODO： 上传图片 数据流和其他参赛传输方式 待确定姿势 最好提供样例
         File file = new File(result.getImage().getCompressPath());
-        // 创建 RequestBody，用于封装 请求RequestBody
-        RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), file);
-//        ItemChkUploadImg itemChkUploadImg = new ItemChkUploadImg();
-//        itemChkUploadImg.setEquipmentNo("0001");
-//        itemChkUploadImg.setInspectCode("001");
-//        itemChkUploadImg.setItemCode("0001");
-//        itemChkUploadImg.setUploadImg(requestFile);
+        // create RequestBody instance from file
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+
+        MultipartBody.Part body =
+                MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+
         toSubscribe(RxFactory.getCheckServiceInstance()
-                        .ItemChkUploadImg(mEquipmentNo, mInspectCode, mInspectItemDetail.getItemCode(), requestFile),
+                        .ItemChkUploadImg(mEquipmentNo, mInspectCode, mInspectItemDetail.getItemCode(), body),
                 () ->
                         showLoading("上传中..."),
                 resultObject -> {

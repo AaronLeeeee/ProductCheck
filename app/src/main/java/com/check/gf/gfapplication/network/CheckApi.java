@@ -7,10 +7,11 @@ import com.check.gf.gfapplication.entity.InspectItemDetail;
 import com.check.gf.gfapplication.entity.ResultObject;
 import com.check.gf.gfapplication.entity.StartCheckResult;
 
-import okhttp3.RequestBody;
-import retrofit2.http.Body;
+import okhttp3.MultipartBody;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -110,11 +111,12 @@ public interface CheckApi {
      * @param equipmentNo 是	string	检验单号
      * @param inspectCode 是	string	检验类别编号
      * @param itemCode    是	string	检验条目编号
-     * @param uploadImg   是	数据流	图片数据流
+     * @param file        是	数据流	图片数据流
      * @return 示例返回
      */
+    @Multipart
     @POST("Check/ItemChkUploadImg")
-    Observable<ResultObject> ItemChkUploadImg(@Query("equipmentNo") String equipmentNo, @Query("inspectCode") String inspectCode, @Query("itemCode") String itemCode, @Body RequestBody uploadImg);
+    Observable<ResultObject> ItemChkUploadImg(@Query("equipmentNo") String equipmentNo, @Query("inspectCode") String inspectCode, @Query("itemCode") String itemCode, @Part MultipartBody.Part file);
 
 
 //    /**
