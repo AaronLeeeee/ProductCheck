@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.check.gf.gfapplication.CustomApplication;
@@ -63,12 +62,12 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
     private TakePhoto takePhoto;
     private InvokeParam invokeParam;
 
-    private LinearLayout ll_check;
-    private ImageView iv_btn_correct;
-    private ImageView iv_btn_incorrect;
-
     private SimpleDraweeView riv_pic_1;
     private SimpleDraweeView riv_pic_2;
+    private SimpleDraweeView riv_pic_3;
+    private SimpleDraweeView riv_pic_4;
+    private SimpleDraweeView riv_pic_5;
+    private SimpleDraweeView riv_pic_6;
 
     private EditText et_msg;
 
@@ -114,14 +113,18 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
         tv_num_id = findViewById(R.id.tv_num_id);
         tv_num_des = findViewById(R.id.tv_num_des);
         iv_checked = findViewById(R.id.iv_checked);
-        iv_btn_correct = findViewById(R.id.iv_btn_correct);
+        ImageView iv_btn_correct = findViewById(R.id.iv_btn_correct);
         iv_btn_correct.setOnClickListener(view -> showCheckDialog(0));
-        iv_btn_incorrect = findViewById(R.id.iv_btn_incorrect);
+        ImageView iv_btn_incorrect = findViewById(R.id.iv_btn_incorrect);
         iv_btn_incorrect.setOnClickListener(view -> showCheckDialog(1));
-        ll_check = findViewById(R.id.ll_check);
 
         riv_pic_1 = findViewById(R.id.riv_pic_1);
         riv_pic_2 = findViewById(R.id.riv_pic_2);
+        riv_pic_3 = findViewById(R.id.riv_pic_3);
+        riv_pic_4 = findViewById(R.id.riv_pic_4);
+        riv_pic_5 = findViewById(R.id.riv_pic_5);
+        riv_pic_6 = findViewById(R.id.riv_pic_6);
+
         Button mTakePictureBt = findViewById(R.id.bt_take_picture);
         mTakePictureBt.setOnClickListener(v -> showActionSheet());
 
@@ -138,21 +141,12 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
         int checkResult = mInspectItemDetail.getCheckResult();
         iv_checked.setVisibility(checkResult != 0 ? View.VISIBLE : View.GONE);
         iv_checked.setImageResource(checkResult == 1 ? R.drawable.ic_check : R.drawable.ic_uncheck);
-        ll_check.setVisibility(checkResult == 0 ? View.VISIBLE : View.GONE);
 
         String checkContent = mInspectItemDetail.getCheckContent();
         et_msg.setText(checkContent);
-        // TODO:待确定个备注是否可以修改 重新提交
-        et_msg.setEnabled(!TextUtils.isEmpty(checkContent));
+        // et_msg.setEnabled(!TextUtils.isEmpty(checkContent));
         List<InspectItemDetail.DataBean.PicturesBean> picturesBeans = mInspectItemDetail.getPictures();
-        for (int i = 0; i < picturesBeans.size(); i++) { //TODO:待确定个数，如不确定改为动态添加布局
-            String picUrl = picturesBeans.get(i).getUrl();
-            if (i == 0) {
-                riv_pic_1.setImageURI(picUrl);
-            } else {
-                riv_pic_2.setImageURI(picUrl);
-            }
-        }
+        showPic(picturesBeans);
     }
 
     private void showCheckDialog(int result) { // 文档 0:检验通过 1:检验失败
@@ -187,10 +181,10 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
                 resultObject -> {
                     if (resultObject.getResult() == 0) {
                         hideLoading();
-                        ll_check.setVisibility(View.GONE);
                         iv_checked.setVisibility(View.VISIBLE);
                         iv_checked.setImageResource(
                                 result == 0 ? R.drawable.ic_check : R.drawable.ic_uncheck);
+                        showLoading("保存检验结果成功！");
                         refreshInfo();
                     } else {
                         SaveCheckResultError(resultObject.getDesc());
@@ -206,7 +200,6 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
     }
 
     private void commitMsg() {
-        // TODO：返回成功 但是实际备注没有被修改 需询问下
         String msg = et_msg.getText().toString().trim();
         if (TextUtils.isEmpty(msg)) {
             CommonUtils.showToast("检验结果备注为空，无法提交");
@@ -218,6 +211,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
                 resultObject -> {
                     if (resultObject.getResult() == 0) {
                         hideLoading();
+                        CommonUtils.showToast("提交成功");
                         refreshInfo();
                     } else {
                         SaveItemChkCntError(resultObject.getDesc());
@@ -314,8 +308,26 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
      */
     private void refreshPic(String picPath) {
         if (picPath != null && !picPath.equals("")) {
-            Uri uri = Uri.parse(picPath);
-            riv_pic_1.setImageURI(uri);
+            Uri uri = Uri.parse(picPath); //TODO： 下面记得重构
+            if (riv_pic_1.getVisibility() == View.GONE) {
+                riv_pic_1.setImageURI(uri);
+                riv_pic_1.setVisibility(View.VISIBLE);
+            } else if (riv_pic_2.getVisibility() == View.GONE) {
+                riv_pic_2.setImageURI(uri);
+                riv_pic_2.setVisibility(View.VISIBLE);
+            } else if (riv_pic_3.getVisibility() == View.GONE) {
+                riv_pic_3.setImageURI(uri);
+                riv_pic_3.setVisibility(View.VISIBLE);
+            } else if (riv_pic_4.getVisibility() == View.GONE) {
+                riv_pic_4.setImageURI(uri);
+                riv_pic_4.setVisibility(View.VISIBLE);
+            } else if (riv_pic_5.getVisibility() == View.GONE) {
+                riv_pic_5.setImageURI(uri);
+                riv_pic_5.setVisibility(View.VISIBLE);
+            } else if (riv_pic_6.getVisibility() == View.GONE) {
+                riv_pic_6.setImageURI(uri);
+                riv_pic_6.setVisibility(View.VISIBLE);
+            }
         } else {
             riv_pic_1.setImageResource(R.drawable.icon_stub);
         }
@@ -323,7 +335,6 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
 
     @Override
     public void takeSuccess(TResult result) {
-        // TODO： 上传图片 数据流和其他参赛传输方式 待确定姿势 最好提供样例
         File file = new File(result.getImage().getCompressPath());
         // create RequestBody instance from file
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
@@ -339,6 +350,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
                     // 更新BmobUser对象
                     if (resultObject.getResult() == 0) {
                         hideLoading();
+                        CommonUtils.showToast("上传成功");
                         refreshPic(result.getImage().getOriginalPath());
                     } else {
                         itemChkUploadImgError(resultObject.getDesc());
@@ -380,6 +392,33 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         PermissionManager.TPermissionType type = PermissionManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
         PermissionManager.handlePermissionsResult(this, type, invokeParam, this);
+    }
+
+
+    private void showPic(List<InspectItemDetail.DataBean.PicturesBean> picturesBeans) {
+        // TODO: 额 这段以后重构 动态添加布局 最多6个
+        for (int i = 0; i < picturesBeans.size(); i++) {
+            String picUrl = picturesBeans.get(i).getUrl();
+            if (i == 0) {
+                riv_pic_1.setVisibility(View.VISIBLE);
+                riv_pic_1.setImageURI(picUrl);
+            } else if (i == 1) {
+                riv_pic_2.setVisibility(View.VISIBLE);
+                riv_pic_2.setImageURI(picUrl);
+            } else if (i == 2) {
+                riv_pic_3.setVisibility(View.VISIBLE);
+                riv_pic_3.setImageURI(picUrl);
+            } else if (i == 3) {
+                riv_pic_4.setVisibility(View.VISIBLE);
+                riv_pic_4.setImageURI(picUrl);
+            } else if (i == 4) {
+                riv_pic_5.setVisibility(View.VISIBLE);
+                riv_pic_5.setImageURI(picUrl);
+            } else if (i == 5) {
+                riv_pic_6.setVisibility(View.VISIBLE);
+                riv_pic_6.setImageURI(picUrl);
+            }
+        }
     }
 
 }
