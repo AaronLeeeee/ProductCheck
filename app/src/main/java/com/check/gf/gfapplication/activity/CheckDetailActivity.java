@@ -11,6 +11,7 @@ import com.check.gf.gfapplication.fragment.BaseInfoFragment;
 import com.check.gf.gfapplication.fragment.InspectListFragment;
 import com.check.gf.gfapplication.view.GuardViewPager;
 import com.flyco.tablayout.SlidingTabLayout;
+import com.hwangjr.rxbus.RxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
@@ -47,6 +48,7 @@ public class CheckDetailActivity extends BaseActivity {
     @Override
     protected void initContentView() {
         super.initContentView();
+        RxBus.get().register(this);
         initTopBarForLeft("检测单详情", getString(R.string.tx_back));
         vp_paper = findViewById(R.id.vpItemLeftPaper);
         vp_paper.setOffscreenPageLimit(1);
@@ -76,4 +78,10 @@ public class CheckDetailActivity extends BaseActivity {
         tl_library.setEnabled(enable);
     }
 
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        RxBus.get().unregister(this);
+    }
 }
