@@ -5,11 +5,15 @@ import android.support.v4.app.Fragment;
 
 import com.check.gf.gfapplication.R;
 import com.check.gf.gfapplication.base.BaseActivity;
+import com.check.gf.gfapplication.config.StaticConfig;
 import com.check.gf.gfapplication.entity.CheckOrderInfo;
 import com.check.gf.gfapplication.fragment.BaseInfoFragment;
 import com.check.gf.gfapplication.fragment.InspectListFragment;
 import com.check.gf.gfapplication.view.GuardViewPager;
 import com.flyco.tablayout.SlidingTabLayout;
+import com.hwangjr.rxbus.annotation.Subscribe;
+import com.hwangjr.rxbus.annotation.Tag;
+import com.hwangjr.rxbus.thread.EventThread;
 
 import java.util.ArrayList;
 
@@ -25,6 +29,8 @@ public class CheckDetailActivity extends BaseActivity {
     private final static String SURFACE_FRAGMENT = "003";
     private final ArrayList<Fragment> mFragments = new ArrayList<>();
     private CheckOrderInfo.DataBean mCheckOrderInfo;
+    private GuardViewPager vp_paper;
+    private SlidingTabLayout tl_library;
 
     @Override
     protected void getIntentData() {
@@ -42,19 +48,32 @@ public class CheckDetailActivity extends BaseActivity {
     protected void initContentView() {
         super.initContentView();
         initTopBarForLeft("检测单详情", getString(R.string.tx_back));
-        GuardViewPager vp_paper = findViewById(R.id.vpItemLeftPaper);
+        vp_paper = findViewById(R.id.vpItemLeftPaper);
         vp_paper.setOffscreenPageLimit(1);
         mFragments.add(BaseInfoFragment.newInstance(mCheckOrderInfo));
         mFragments.add(InspectListFragment.newInstance(DIMENSION_FRAGMENT, mCheckOrderInfo.getEquipmentNo()));
         mFragments.add(InspectListFragment.newInstance(PERFORMANCE_FRAGMENT, mCheckOrderInfo.getEquipmentNo()));
         mFragments.add(InspectListFragment.newInstance(SURFACE_FRAGMENT, mCheckOrderInfo.getEquipmentNo()));
-        ((SlidingTabLayout) findViewById(R.id.tl_library))
-                .setViewPager(vp_paper, getResources().getStringArray(R.array.inspect_type_name), this, mFragments);
+        tl_library = findViewById(R.id.tl_library);
+        tl_library.setViewPager(vp_paper, getResources().getStringArray(R.array.inspect_type_name), this, mFragments);
+        setTabLayoutAndViewPagerEnable(false);
     }
 
-    @Override
-    protected void initData() {
-        super.initData();
+
+    /**
+     * 接受事件，切换点击/滑动状态
+     *
+     * @param enable 是否开启点击/滑动状态
+     */
+    @Subscribe(
+            thread = EventThread.MAIN_THREAD,
+            tags = {
+                    @Tag(StaticConfig.ACTION_START_CHECK)
+            }
+    )
+    public void setTabLayoutAndViewPagerEnable(boolean enable) {
+        vp_paper.setSlidingEnable(enable);
+        tl_library.setEnabled(enable);
     }
 
 }

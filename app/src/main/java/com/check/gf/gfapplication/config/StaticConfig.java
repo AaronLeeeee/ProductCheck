@@ -23,10 +23,8 @@ public final class StaticConfig {
     public static final int PAGE_SIZE = 20;
     public static final int AUTO_SIZE = 4;
 
-    // 注册成功之后登陆页面退出
-    public static final String ACTION_REGISTER_SUCCESS_FINISH = "register.success.finish";
-    // 更新昵称之后账户页面刷新
-    public static final String ACTION_UPDATE_NICKNAME_SUCCESS_FINISH = "updateNickname.success.finish";
+    // 开启检测，开启滑动和点击
+    public static final String ACTION_START_CHECK = "action.start.check";
 
     // Bugly APP ID
     public static final String BUGLY_APP_ID = "a4415edc26";

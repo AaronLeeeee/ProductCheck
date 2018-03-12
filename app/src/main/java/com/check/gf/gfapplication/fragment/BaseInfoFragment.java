@@ -12,9 +12,11 @@ import android.widget.TextView;
 import com.check.gf.gfapplication.CustomApplication;
 import com.check.gf.gfapplication.R;
 import com.check.gf.gfapplication.base.BaseFragment;
+import com.check.gf.gfapplication.config.StaticConfig;
 import com.check.gf.gfapplication.entity.CheckOrderInfo;
 import com.check.gf.gfapplication.network.RxFactory;
 import com.check.gf.gfapplication.utils.CommonUtils;
+import com.hwangjr.rxbus.RxBus;
 import com.orhanobut.logger.Logger;
 
 import java.util.List;
@@ -104,9 +106,9 @@ public class BaseInfoFragment extends BaseFragment {
                 checkOrderInfoResult -> {
                     if (checkOrderInfoResult.getResult() == 0) {
                         hideLoading();
-                        // TODO: 这个需要 viewPager禁止滑动和tab禁止点击
                         String startCheckTime = checkOrderInfoResult.getData().getStartCheckTime();
                         mStartTimeTv.setText(startCheckTime != null ? startCheckTime : "");
+                        RxBus.get().post(StaticConfig.ACTION_START_CHECK, true);
                     } else {
                         startCheckError(checkOrderInfoResult.getDesc());
                     }
@@ -144,6 +146,7 @@ public class BaseInfoFragment extends BaseFragment {
             mInspectorTv.setText(realname);
             String startCheckTime = checkOrderInfo.getStartCheckTime();
             if (TextUtils.isEmpty(startCheckTime)) {
+                RxBus.get().post(StaticConfig.ACTION_START_CHECK, true);
                 mStartCheckBt.setEnabled(true);
             } else {
                 mStartCheckBt.setEnabled(false);
