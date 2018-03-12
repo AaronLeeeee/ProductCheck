@@ -69,6 +69,8 @@ dependencies {
 
     implementation 'com.facebook.fresco:fresco:1.8.1'
     implementation "com.facebook.fresco:imagepipeline-okhttp3:1.8.1"
+    compile 'com.vatsal.imagezoomer:image-zoomer:1.0.2'
+
 
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
     implementation 'com.jph.takephoto:takephoto_library:4.0.3'
