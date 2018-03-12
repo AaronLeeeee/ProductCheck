@@ -29,7 +29,7 @@ public final class StaticConfig {
     public static final String ACTION_UPDATE_NICKNAME_SUCCESS_FINISH = "updateNickname.success.finish";
 
     // Bugly APP ID
-    public static final String BUGLY_APP_ID = "6e86c3ff8d";
+    public static final String BUGLY_APP_ID = "a4415edc26";
 
     // Fresco 参数
     private static final int MAX_DISK_CACHE_SIZE = 40 * ByteConstants.MB;

@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://W:\WorkSpace\AndroidProjects\Inspection-Package\GfApplication.iml" filepath="W:\WorkSpace\AndroidProjects\Inspection-Package\GfApplication.iml" />
       <module fileurl="file://$PROJECT_DIR$/Inspection-Package.iml" filepath="$PROJECT_DIR$/Inspection-Package.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>

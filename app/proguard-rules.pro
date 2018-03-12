@@ -58,19 +58,9 @@
 -keep class com.soundcloud.android.crop.** { *; }
 -dontwarn com.soundcloud.android.crop.**
 
-# https://github.com/NashLegend/AnyPref
--keepattributes Signature
--keep class net.nashlegend.anypref.annotations.PrefModel
--keepclasseswithmembernames @net.nashlegend.anypref.annotations.PrefModel class * {
-    public <fields>;
-}
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}
+-keep class android.support.**{*;}
 
-# https://github.com/crazycodeboy/TakePhoto
--keep class com.jph.takephoto.** { *; }
--dontwarn com.jph.takephoto.**
 
--keep class com.darsh.multipleimageselect.** { *; }
--dontwarn com.darsh.multipleimageselect.**
 
--keep class com.soundcloud.android.crop.** { *; }
--dontwarn com.soundcloud.android.crop.**
