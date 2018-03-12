@@ -23,9 +23,6 @@ public final class StaticConfig {
     public static final int PAGE_SIZE = 20;
     public static final int AUTO_SIZE = 4;
 
-    // 开启检测，开启滑动和点击
-    public static final String ACTION_START_CHECK = "action.start.check";
-
     // Bugly APP ID
     public static final String BUGLY_APP_ID = "a4415edc26";
 

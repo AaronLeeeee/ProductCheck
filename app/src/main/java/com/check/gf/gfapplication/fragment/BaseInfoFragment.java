@@ -1,6 +1,7 @@
 package com.check.gf.gfapplication.fragment;
 
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -12,11 +13,9 @@ import android.widget.TextView;
 import com.check.gf.gfapplication.CustomApplication;
 import com.check.gf.gfapplication.R;
 import com.check.gf.gfapplication.base.BaseFragment;
-import com.check.gf.gfapplication.config.StaticConfig;
 import com.check.gf.gfapplication.entity.CheckOrderInfo;
 import com.check.gf.gfapplication.network.RxFactory;
 import com.check.gf.gfapplication.utils.CommonUtils;
-import com.hwangjr.rxbus.RxBus;
 import com.orhanobut.logger.Logger;
 
 import java.util.List;
@@ -47,6 +46,7 @@ public class BaseInfoFragment extends BaseFragment {
     private TextView mSubmitCheckBt;
 
     private CheckOrderInfo.DataBean checkOrderInfo;
+    private onTestListener mCallback;
 
     public static BaseInfoFragment newInstance(CheckOrderInfo.DataBean checkOrderInfo) {
         Bundle bundle = new Bundle();
@@ -57,8 +57,15 @@ public class BaseInfoFragment extends BaseFragment {
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+// 这个方法是用来确认当前的Activity容器是否已经继承了该接口，如果没有将抛出异常
+        try {
+            mCallback = (onTestListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
     }
 
     @Override
@@ -108,7 +115,7 @@ public class BaseInfoFragment extends BaseFragment {
                         hideLoading();
                         String startCheckTime = checkOrderInfoResult.getData().getStartCheckTime();
                         mStartTimeTv.setText(startCheckTime != null ? startCheckTime : "");
-                        RxBus.get().post(StaticConfig.ACTION_START_CHECK, true);
+                        mCallback.onTest(true);
                     } else {
                         startCheckError(checkOrderInfoResult.getDesc());
                     }
@@ -146,10 +153,10 @@ public class BaseInfoFragment extends BaseFragment {
             mInspectorTv.setText(realname);
             String startCheckTime = checkOrderInfo.getStartCheckTime();
             if (TextUtils.isEmpty(startCheckTime)) {
-                RxBus.get().post(StaticConfig.ACTION_START_CHECK, true);
                 mStartCheckBt.setEnabled(true);
             } else {
                 mStartCheckBt.setEnabled(false);
+                mCallback.onTest(true);
                 mStartTimeTv.setText(checkOrderInfo.getStartCheckTime());
             }
             mEndTimeTv.setText(checkOrderInfo.getFinishCheckTime());
@@ -174,5 +181,9 @@ public class BaseInfoFragment extends BaseFragment {
             getActivity().finish();
         }
 
+    }
+
+    public interface onTestListener {
+        void onTest(boolean enable);
     }
 }
