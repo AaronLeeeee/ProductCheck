@@ -37,6 +37,11 @@ public final class SharedPreferencesHelper {
         editor = mSharedPreferences.edit();
     }
 
+    public void clear() {
+        editor.clear();
+        editor.apply();
+    }
+
     /**
      * 是否首次导航
      */

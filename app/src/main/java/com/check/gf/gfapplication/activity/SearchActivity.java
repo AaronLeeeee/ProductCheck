@@ -10,9 +10,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.TimePickerView;
+import com.check.gf.gfapplication.CustomApplication;
 import com.check.gf.gfapplication.R;
 import com.check.gf.gfapplication.base.BaseActivity;
 import com.check.gf.gfapplication.entity.CheckOrder;
+import com.check.gf.gfapplication.helper.SharedPreferencesHelper;
 import com.check.gf.gfapplication.network.RxFactory;
 import com.check.gf.gfapplication.utils.CommonUtils;
 import com.check.gf.gfapplication.utils.ExtendUtils;
@@ -59,7 +61,14 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 .setDimAmount(0.2f)   // Dialog window 背景色深度 范围：0 到 1，默认是0.2f
                 .setCancelOutside(true)     // 点击外部区域是否关闭，默认true
                 .setTag("BottomDialog");
-        initTopBarForBoth(getString(R.string.tx_search), getString(R.string.tx_exit), getString(R.string.tx_filter), mBottomDialog::show);
+        initTopBarForBoth(getString(R.string.tx_search), getString(R.string.tx_logout), () -> {
+            SharedPreferencesHelper sharedPreferencesHelper = CustomApplication.getInstance().getSpHelper();
+            sharedPreferencesHelper.clear();
+            CommonUtils.showToast("注销成功！");
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }, getString(R.string.tx_filter), mBottomDialog::show);
         mLoadingView = findViewById(R.id.loadView);
         LinearLayout mUnStartCheckLl = findViewById(R.id.ll_unStart);
         mUnStartCheckCountTv = findViewById(R.id.tv_unStart_check);
