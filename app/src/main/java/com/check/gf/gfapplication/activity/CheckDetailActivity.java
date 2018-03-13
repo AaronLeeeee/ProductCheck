@@ -12,6 +12,7 @@ import com.check.gf.gfapplication.view.GuardViewPager;
 import com.flyco.tablayout.SlidingTabLayout;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 检测详情页
@@ -46,12 +47,21 @@ public class CheckDetailActivity extends BaseActivity implements BaseInfoFragmen
         initTopBarForLeft("检测单详情", getString(R.string.tx_back));
         vp_paper = findViewById(R.id.vpItemLeftPaper);
         vp_paper.setOffscreenPageLimit(1);
-        // todo: 动态添加tab
-        //if (mCheckOrderInfo.getCheckData().get(0).getTypeName())
+        int size = mCheckOrderInfo.getCheckData().size();
+        List<String> types = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            types.add(mCheckOrderInfo.getCheckData().get(i).getTypeName());
+        }
         mFragments.add(BaseInfoFragment.newInstance(mCheckOrderInfo));
-        mFragments.add(InspectListFragment.newInstance(DIMENSION_FRAGMENT, mCheckOrderInfo.getEquipmentNo()));
-        mFragments.add(InspectListFragment.newInstance(PERFORMANCE_FRAGMENT, mCheckOrderInfo.getEquipmentNo()));
-        mFragments.add(InspectListFragment.newInstance(SURFACE_FRAGMENT, mCheckOrderInfo.getEquipmentNo()));
+        if (types.contains("尺寸")) {
+            mFragments.add(InspectListFragment.newInstance(DIMENSION_FRAGMENT, mCheckOrderInfo.getEquipmentNo()));
+        }
+        if (types.contains("性能")) {
+            mFragments.add(InspectListFragment.newInstance(PERFORMANCE_FRAGMENT, mCheckOrderInfo.getEquipmentNo()));
+        }
+        if (types.contains("外观")) {
+            mFragments.add(InspectListFragment.newInstance(SURFACE_FRAGMENT, mCheckOrderInfo.getEquipmentNo()));
+        }
         tl_library = findViewById(R.id.tl_library);
         tl_library.setViewPager(vp_paper, getResources().getStringArray(R.array.inspect_type_name), this, mFragments);
         onTest(false);

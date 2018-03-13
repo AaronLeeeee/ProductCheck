@@ -105,6 +105,18 @@
             android:textSize="@dimen/ts_big" />
     </LinearLayout>
 
+    <Button
+        android:id="@+id/btn_search"
+        style="?android:textAppearanceSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_finished"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="27dp"
+        android:visibility="gone"
+        android:text="@string/tx_search"
+        android:textStyle="bold" />
+
     <com.mingle.widget.LoadingView
         android:id="@+id/loadView"
         android:layout_width="fill_parent"

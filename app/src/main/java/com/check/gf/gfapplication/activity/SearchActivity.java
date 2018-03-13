@@ -78,6 +78,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         mProcessCheckCountTv = findViewById(R.id.tv_process_check);
         LinearLayout mFinishedCheckLl = findViewById(R.id.ll_finished);
         mFinishedCheckCountTv = findViewById(R.id.tv_finished_check);
+        findViewById(R.id.btn_search).setOnClickListener(view -> mBottomDialog.show());
         ExtendUtils.setOnClickListener(this, mUnStartCheckLl, mProcessCheckLl, mFinishedCheckLl);
         keepAlive();
     }
@@ -266,8 +267,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         Logger.e(msg);
     }
 
-    // todo: 搜索 记录  并且刷新
-    // todo: 开始检查 loading 黑
     private void jumpCheckListActivity(List<CheckOrder.DataBean> mCheckOrders, int checkOrderState) {
         if (mCheckOrders.size() > 0) {
             Intent intent = new Intent(this, CheckListActivity.class);

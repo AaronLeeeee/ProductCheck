@@ -41,7 +41,7 @@ android {
             //不显示Log
             buildConfigField "boolean", "LOG_DEBUG", "false"
             //设置是否混淆
-            minifyEnabled false
+            minifyEnabled true
             //设置混淆配置件
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

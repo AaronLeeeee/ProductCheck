@@ -154,7 +154,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
         iv_checked.setImageResource(checkResult == 1 ? R.drawable.ic_check : R.drawable.ic_uncheck);
 
         String checkContent = mInspectItemDetail.getCheckContent();
-        et_msg.setText(checkContent);
+        et_msg.setText(TextUtils.isEmpty(checkContent) ? "" : checkContent);
         // et_msg.setEnabled(!TextUtils.isEmpty(checkContent));
         List<InspectItemDetail.DataBean.PicturesBean> picturesBeans = mInspectItemDetail.getPictures();
         showPic(picturesBeans);
@@ -210,7 +210,6 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
     }
 
     private void commitMsg() {
-        //TODO: 检查下这个参数
         String msg = et_msg.getText().toString().trim();
         if (TextUtils.isEmpty(msg)) {
             CommonUtils.showToast("检验结果备注为空，无法提交");

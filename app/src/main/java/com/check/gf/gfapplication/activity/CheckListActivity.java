@@ -79,19 +79,18 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
 
 
     @Override
-    protected void initData() {
-        super.initData();
-        // mCheckOrders
-        int state = getIntent().getIntExtra(SearchActivity.getExtra(), 0);
-        search(state);
+    protected void onResume() {
+        super.onResume();
+        search(getIntent().getIntExtra(SearchActivity.getExtra(), 0));
     }
 
     /**
      * Represents an asynchronous search task
      *
-     * @param state
+     * @param state 状态
      */
     private void search(int state) {
+        mCheckOrders.clear();
         SearchItem searchItem = CustomApplication.getInstance().getSearchItem();
         String customerName = searchItem.getCustomerName();
         String requireDate = searchItem.getmRequireDate();

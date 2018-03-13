@@ -107,10 +107,10 @@ public class BaseInfoFragment extends BaseFragment {
     private void startCheck(String equipmentNo) {
         toSubscribe(RxFactory.getCheckServiceInstance()
                         .StartCheck(equipmentNo),
-                () -> showLoading("开始检查..."),
+                () -> CommonUtils.showToast("请求开始检测..."),
                 checkOrderInfoResult -> {
                     if (checkOrderInfoResult.getResult() == 0) {
-                        hideLoading();
+                        CommonUtils.showToast("开始检测成功");
                         String startCheckTime = checkOrderInfoResult.getData().getStartCheckTime();
                         mStartTimeTv.setText(startCheckTime != null ? startCheckTime : "");
                         mCallback.onTest(true);
@@ -123,7 +123,7 @@ public class BaseInfoFragment extends BaseFragment {
     }
 
     private void startCheckError(String desc) {
-        hideLoading();
+        CommonUtils.showToast("开始检测失败");
         Logger.e(desc);
     }
 
