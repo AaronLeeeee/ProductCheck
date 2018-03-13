@@ -196,7 +196,6 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
                         iv_checked.setImageResource(
                                 result == 1 ? R.drawable.ic_check : R.drawable.ic_uncheck);
                         showLoading("保存检验结果成功！");
-                        refreshInfo();
                     } else {
                         SaveCheckResultError(resultObject.getDesc());
                     }
@@ -224,14 +223,11 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
                     if (resultObject.getResult() == 0) {
                         hideLoading();
                         CommonUtils.showToast("提交成功");
-                        refreshInfo();
                     } else {
                         SaveItemChkCntError(resultObject.getDesc());
                     }
                 },
-                throwable -> {
-                    SaveItemChkCntError(throwable.getMessage());
-                });
+                throwable -> SaveItemChkCntError(throwable.getMessage()));
     }
 
     private void SaveItemChkCntError(String msg) {
@@ -240,9 +236,6 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
         Logger.e(msg);
     }
 
-    private void refreshInfo() {
-        // TODO:上传完毕或提交完毕 这里刷新页面么 还是只改变状态？
-    }
 
     /**
      * 获取图片选择菜单

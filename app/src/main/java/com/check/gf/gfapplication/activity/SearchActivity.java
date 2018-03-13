@@ -77,7 +77,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         LinearLayout mFinishedCheckLl = findViewById(R.id.ll_finished);
         mFinishedCheckCountTv = findViewById(R.id.tv_finished_check);
         ExtendUtils.setOnClickListener(this, mUnStartCheckLl, mProcessCheckLl, mFinishedCheckLl);
-        keepalive(); // todo:fix
+        keepAlive();
     }
 
     @Override
@@ -212,7 +212,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     /**
      * Represents an asynchronous keep alive
      */
-    private void keepalive() {
+    private void keepAlive() {
         toSubscribe(RxFactory.getPublicServiceInstance()
                         .keepalive(),
                 () -> showLoading("登录中..."),
@@ -220,14 +220,17 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                     if ("forever".equals(result.getExpiration())) {
                         hideLoading();
                     } else {
-                        queryKeepalveError("error");
+                        queryKeepAliveError("error");
                     }
                 },
-                throwable -> queryKeepalveError(throwable.getMessage()));
+                throwable -> queryKeepAliveError(throwable.getMessage()));
     }
 
-    private void queryKeepalveError(String msg) {
+    private void queryKeepAliveError(String msg) {
         finish();
+        startActivity(new Intent(
+                SearchActivity.this, LoginActivity.class));
+        Logger.e(msg);
     }
 
     private void queryCheckOrderError(String msg) {
