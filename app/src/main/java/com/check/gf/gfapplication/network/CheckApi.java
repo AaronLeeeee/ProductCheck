@@ -2,6 +2,7 @@ package com.check.gf.gfapplication.network;
 
 import com.check.gf.gfapplication.entity.CheckOrder;
 import com.check.gf.gfapplication.entity.CheckOrderInfo;
+import com.check.gf.gfapplication.entity.ImageUploadResult;
 import com.check.gf.gfapplication.entity.InspectItem;
 import com.check.gf.gfapplication.entity.InspectItemDetail;
 import com.check.gf.gfapplication.entity.ResultObject;
@@ -116,7 +117,7 @@ public interface CheckApi {
      */
     @Multipart
     @POST("Check/ItemChkUploadImg")
-    Observable<ResultObject> ItemChkUploadImg(@Query("equipmentNo") String equipmentNo, @Query("inspectCode") String inspectCode, @Query("itemCode") String itemCode, @Part MultipartBody.Part file);
+    Observable<ImageUploadResult> ItemChkUploadImg(@Query("equipmentNo") String equipmentNo, @Query("inspectCode") String inspectCode, @Query("itemCode") String itemCode, @Part MultipartBody.Part file);
 
 
 //    /**

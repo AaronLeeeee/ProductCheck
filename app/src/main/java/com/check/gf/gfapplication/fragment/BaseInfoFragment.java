@@ -101,7 +101,7 @@ public class BaseInfoFragment extends BaseFragment {
         });
         mSubmitCheckBt.setOnClickListener(v -> {
             // TODO:提交按钮 干什么用
-
+            CommonUtils.showToast("暂无该功能！");
         });
         return layout;
     }
@@ -116,6 +116,7 @@ public class BaseInfoFragment extends BaseFragment {
                         String startCheckTime = checkOrderInfoResult.getData().getStartCheckTime();
                         mStartTimeTv.setText(startCheckTime != null ? startCheckTime : "");
                         mCallback.onTest(true);
+                        mStartCheckBt.setEnabled(false);
                     } else {
                         startCheckError(checkOrderInfoResult.getDesc());
                     }

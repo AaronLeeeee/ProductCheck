@@ -118,9 +118,9 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
         tv_num_des = findViewById(R.id.tv_num_des);
         iv_checked = findViewById(R.id.iv_checked);
         ImageView iv_btn_correct = findViewById(R.id.iv_btn_correct);
-        iv_btn_correct.setOnClickListener(view -> showCheckDialog(0));
+        iv_btn_correct.setOnClickListener(view -> showCheckDialog(1));
         ImageView iv_btn_incorrect = findViewById(R.id.iv_btn_incorrect);
-        iv_btn_incorrect.setOnClickListener(view -> showCheckDialog(1));
+        iv_btn_incorrect.setOnClickListener(view -> showCheckDialog(2));
 
         riv_pic_1 = findViewById(R.id.riv_pic_1);
         riv_pic_1.setOnClickListener(view -> ZoomableActivity.goToPage(CheckDetailItemActivity.this, mPaths, 0));
@@ -160,9 +160,9 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
         showPic(picturesBeans);
     }
 
-    private void showCheckDialog(int result) { // 文档 0:检验通过 1:检验失败
+    private void showCheckDialog(int result) { // 文档 1:检验通过  2：检验不通过
         final NormalDialog dialog = new NormalDialog(this);
-        dialog.content("确认保存检验结果为: " + (result == 0 ? "通过 " : "不通过"))
+        dialog.content("确认保存检验结果为: " + (result == 1 ? "通过 " : "不通过"))
                 .style(NormalDialog.STYLE_TWO)
                 .btnNum(2)
                 .btnText(getString(R.string.tx_cancel), getString(R.string.tx_determine))
@@ -194,7 +194,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
                         hideLoading();
                         iv_checked.setVisibility(View.VISIBLE);
                         iv_checked.setImageResource(
-                                result == 0 ? R.drawable.ic_check : R.drawable.ic_uncheck);
+                                result == 1 ? R.drawable.ic_check : R.drawable.ic_uncheck);
                         showLoading("保存检验结果成功！");
                         refreshInfo();
                     } else {
@@ -359,14 +359,14 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
                         .ItemChkUploadImg(mEquipmentNo, mInspectCode, mInspectItemDetail.getItemCode(), body),
                 () ->
                         showLoading("上传中..."),
-                resultObject -> {
+                imgResultObject -> {
                     // 更新BmobUser对象
-                    if (resultObject.getResult() == 0) {
+                    if (imgResultObject.getResult() == 0) {
                         hideLoading();
                         CommonUtils.showToast("上传成功");
-                        refreshPic(result.getImage().getOriginalPath());
+                        refreshPic(imgResultObject.getSrc());
                     } else {
-                        itemChkUploadImgError(resultObject.getDesc());
+                        itemChkUploadImgError(imgResultObject.getDesc());
                     }
                 },
                 throwable -> itemChkUploadImgError(throwable.getMessage()));

@@ -77,6 +77,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         LinearLayout mFinishedCheckLl = findViewById(R.id.ll_finished);
         mFinishedCheckCountTv = findViewById(R.id.tv_finished_check);
         ExtendUtils.setOnClickListener(this, mUnStartCheckLl, mProcessCheckLl, mFinishedCheckLl);
+        keepalive(); // todo:fix
     }
 
     @Override
@@ -207,12 +208,36 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 throwable -> queryCheckOrderError(throwable.getMessage()));
     }
 
+
+    /**
+     * Represents an asynchronous keep alive
+     */
+    private void keepalive() {
+        toSubscribe(RxFactory.getPublicServiceInstance()
+                        .keepalive(),
+                () -> showLoading("登录中..."),
+                result -> {
+                    if ("forever".equals(result.getExpiration())) {
+                        hideLoading();
+                    } else {
+                        queryKeepalveError("error");
+                    }
+                },
+                throwable -> queryKeepalveError(throwable.getMessage()));
+    }
+
+    private void queryKeepalveError(String msg) {
+        finish();
+    }
+
     private void queryCheckOrderError(String msg) {
         hideLoading();
         CommonUtils.showToast(msg);
         Logger.e(msg);
     }
 
+    // todo: 搜索 记录  并且刷新
+    // todo: 开始检查 loading 黑
     private void jumpCheckListActivity(List<CheckOrder.DataBean> mCheckOrders) {
         if (mCheckOrders.size() > 0) {
             Intent intent = new Intent(this, CheckListActivity.class);
