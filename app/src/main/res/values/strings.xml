@@ -86,5 +86,6 @@
     <string name="start_check">开始检查</string>
     <string name="revocation_check">撤销检查</string>
     <string name="submit">提交</string>
+    <string name="tv_please_pick">请选择 发货日期</string>
 
 </resources>

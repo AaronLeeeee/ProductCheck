@@ -46,6 +46,8 @@ public class CheckDetailActivity extends BaseActivity implements BaseInfoFragmen
         initTopBarForLeft("检测单详情", getString(R.string.tx_back));
         vp_paper = findViewById(R.id.vpItemLeftPaper);
         vp_paper.setOffscreenPageLimit(1);
+        // todo: 动态添加tab
+        //if (mCheckOrderInfo.getCheckData().get(0).getTypeName())
         mFragments.add(BaseInfoFragment.newInstance(mCheckOrderInfo));
         mFragments.add(InspectListFragment.newInstance(DIMENSION_FRAGMENT, mCheckOrderInfo.getEquipmentNo()));
         mFragments.add(InspectListFragment.newInstance(PERFORMANCE_FRAGMENT, mCheckOrderInfo.getEquipmentNo()));

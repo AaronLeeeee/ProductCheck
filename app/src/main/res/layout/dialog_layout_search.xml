@@ -48,9 +48,19 @@
             android:layout_marginLeft="15dp"
             android:layout_marginStart="15dp"
             android:layout_marginTop="15dp"
-            android:text="请点击选择 发货日期"
+            android:text="@string/tv_please_pick"
             android:textColor="@android:color/holo_red_dark"
             android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/iv_btn_clean"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:padding="5dp"
+            android:src="@drawable/ic_delete" />
 
     </LinearLayout>
 

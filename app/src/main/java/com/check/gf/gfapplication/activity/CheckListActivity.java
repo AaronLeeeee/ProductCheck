@@ -4,17 +4,20 @@ import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.check.gf.gfapplication.CustomApplication;
 import com.check.gf.gfapplication.R;
 import com.check.gf.gfapplication.adapter.CheckListAdapter;
 import com.check.gf.gfapplication.base.BaseActivity;
 import com.check.gf.gfapplication.base.IBaseList;
 import com.check.gf.gfapplication.entity.CheckOrder;
 import com.check.gf.gfapplication.entity.CheckOrderInfo;
+import com.check.gf.gfapplication.entity.SearchItem;
 import com.check.gf.gfapplication.network.RxFactory;
 import com.check.gf.gfapplication.utils.CommonUtils;
 import com.check.gf.gfapplication.utils.ExtendUtils;
@@ -78,9 +81,61 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
     @Override
     protected void initData() {
         super.initData();
-        mCheckOrders = getIntent().getParcelableArrayListExtra(SearchActivity.getExtra());
-        mQuickAdapter.setNewData(mCheckOrders);
-        initCheckContent();
+        // mCheckOrders
+        int state = getIntent().getIntExtra(SearchActivity.getExtra(), 0);
+        search(state);
+    }
+
+    /**
+     * Represents an asynchronous search task
+     *
+     * @param state
+     */
+    private void search(int state) {
+        SearchItem searchItem = CustomApplication.getInstance().getSearchItem();
+        String customerName = searchItem.getCustomerName();
+        String requireDate = searchItem.getmRequireDate();
+        String equipmentNo = searchItem.getEquipmentNo();
+        String docNo = searchItem.getDocNo();
+        String custNo = searchItem.getCustNo();
+        if (TextUtils.isEmpty(customerName) && TextUtils.isEmpty(requireDate) &&
+                TextUtils.isEmpty(equipmentNo) && TextUtils.isEmpty(docNo)
+                && TextUtils.isEmpty(custNo)) {
+            return;
+        }
+        toSubscribe(RxFactory.getCheckServiceInstance()
+                        .CheckOrderQuery(customerName, requireDate,
+                                equipmentNo, docNo, custNo),
+                () -> showLoading("搜索中..."),
+                checkOrderResult -> {
+                    if (checkOrderResult.getResult() == 0) {
+                        hideLoading();
+                        List<CheckOrder.DataBean> checkOrders = checkOrderResult.getData();
+                        if (checkOrders == null || checkOrders.size() <= 0) {
+                            CommonUtils.showToast("该筛选条件下检验单不存在");
+                            return;
+                        }
+                        for (int i = 0; i < checkOrders.size(); i++) {
+                            CheckOrder.DataBean checkOrder = checkOrders.get(i);
+                            int finishState = checkOrder.getFinishState();
+                            if (finishState == state) { // 完成状态 0：未开始  1：检查中  2：检查完成
+                                mCheckOrders.add(checkOrder);
+                            }
+                        }
+                        mQuickAdapter.setNewData(mCheckOrders);
+                        initCheckContent();
+                    } else {
+                        queryCheckOrderError(checkOrderResult.getDesc());
+                    }
+                },
+                throwable -> queryCheckOrderError(throwable.getMessage()));
+    }
+
+    private void queryCheckOrderError(String msg) {
+        hideLoading();
+        CommonUtils.showToast("二次检索失败，请重试 ：" + msg);
+        Logger.e(msg);
+        finish();
     }
 
     private void initCheckContent() {
