@@ -23,7 +23,7 @@
         tl:tl_indicator_margin_right="2dp"
         tl:tl_indicator_style="BLOCK"
         tl:tl_tab_space_equal="true"
-        tl:tl_textSelectColor="@android:color/white"
+        tl:tl_textSelectColor="@color/black"
         tl:tl_textUnselectColor="@color/text_color" />
 
     <View

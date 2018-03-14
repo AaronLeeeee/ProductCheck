@@ -53,17 +53,23 @@ public class CheckDetailActivity extends BaseActivity implements BaseInfoFragmen
             types.add(mCheckOrderInfo.getCheckData().get(i).getTypeName());
         }
         mFragments.add(BaseInfoFragment.newInstance(mCheckOrderInfo));
-        if (types.contains("尺寸")) {
+        List<String> titles = new ArrayList<>();
+        titles.add("基本信息");
+        if (types.contains("外观")) {
             mFragments.add(InspectListFragment.newInstance(DIMENSION_FRAGMENT, mCheckOrderInfo.getEquipmentNo()));
+            titles.add("外观");
+        }
+        if (types.contains("尺寸")) {
+            mFragments.add(InspectListFragment.newInstance(PERFORMANCE_FRAGMENT, mCheckOrderInfo.getEquipmentNo()));
+            titles.add("尺寸");
         }
         if (types.contains("性能")) {
-            mFragments.add(InspectListFragment.newInstance(PERFORMANCE_FRAGMENT, mCheckOrderInfo.getEquipmentNo()));
-        }
-        if (types.contains("外观")) {
             mFragments.add(InspectListFragment.newInstance(SURFACE_FRAGMENT, mCheckOrderInfo.getEquipmentNo()));
+            titles.add("性能");
         }
+        String[] fTitles = titles.toArray(new String[titles.size()]);
         tl_library = findViewById(R.id.tl_library);
-        tl_library.setViewPager(vp_paper, getResources().getStringArray(R.array.inspect_type_name), this, mFragments);
+        tl_library.setViewPager(vp_paper, fTitles, this, mFragments);
         onTest(false);
     }
 

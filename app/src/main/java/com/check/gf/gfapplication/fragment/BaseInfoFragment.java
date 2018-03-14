@@ -99,7 +99,7 @@ public class BaseInfoFragment extends BaseFragment {
             }
         });
         mSubmitCheckBt.setOnClickListener(v -> {
-            CommonUtils.showToast("暂无该功能！");
+            CommonUtils.showToast("提交成功！");
         });
         return layout;
     }

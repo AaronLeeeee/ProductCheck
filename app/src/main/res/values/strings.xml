@@ -25,13 +25,6 @@
     <string name="tx_no_data">暂无数据，轻触屏幕重试</string>
     <string name="tx_reload">网络异常，轻触屏幕重试</string>
 
-    <string-array name="inspect_type_name">
-        <item> 基本信息 </item>
-        <item> 尺寸 </item>
-        <item> 性能 </item>
-        <item> 外观 </item>
-    </string-array>
-
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
 
@@ -52,7 +45,7 @@
     <string name="process_check_product">进行中检验单</string>
     <string name="finished_check_product">已完成检验单</string>
 
-    <string name="income_check">来料检(%1$d)</string>
+    <string name="income_check">包装检(%1$d)</string>
     <string name="process_check">过程检(%1$d)</string>
     <string name="shipments_check">出货检(%1$d)</string>
     <string name="nc_check">NC检(%1$d)</string>
