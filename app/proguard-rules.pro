@@ -250,9 +250,8 @@
     -dontwarn in.srain.cube.views.ptr.**
     -keep class in.srain.cube.views.ptr.** { *; }
 
-    -keep class com.neday.bomb.view.**{*;}
-    -keep class com.neday.bomb.entity.**{*;}
-    -keep class com.neday.bomb.express.entity.**{*;}
+    -keep class com.check.gf.gfapplication.view.**{*;}
+    -keep class com.check.gf.gfapplication.entity.**{*;}
 
     -keep class cn.sharesdk.**{*;}
     -dontwarn cn.sharesdk.**

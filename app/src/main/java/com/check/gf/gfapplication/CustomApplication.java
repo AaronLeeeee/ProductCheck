@@ -73,7 +73,7 @@ public class CustomApplication extends LitePalApplication {
             initBugly(true);
         } else {
             initBugly(false);
-            Thread.setDefaultUncaughtExceptionHandler(new MyUnCaughtExceptionHandler());
+            //Thread.setDefaultUncaughtExceptionHandler(new MyUnCaughtExceptionHandler());
         }
         // 初始化Fresco
         Fresco.initialize(this, StaticConfig.getOkHttpImagePipelineConfig(this));
