@@ -75,6 +75,7 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         initAdapter();
+        initCheckContent();
     }
 
 
@@ -96,15 +97,17 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
         String requireDate = searchItem.getmRequireDate();
         String equipmentNo = searchItem.getEquipmentNo();
         String docNo = searchItem.getDocNo();
+        String materialCode = searchItem.getMaterialCode();
         String custNo = searchItem.getCustNo();
         if (TextUtils.isEmpty(customerName) && TextUtils.isEmpty(requireDate) &&
                 TextUtils.isEmpty(equipmentNo) && TextUtils.isEmpty(docNo)
-                && TextUtils.isEmpty(custNo)) {
+                && TextUtils.isEmpty(materialCode) && TextUtils.isEmpty(custNo)) {
+            CommonUtils.showToast("程序异常");
             return;
         }
         toSubscribe(RxFactory.getCheckServiceInstance()
                         .CheckOrderQuery(customerName, requireDate,
-                                equipmentNo, docNo, custNo, custNo),
+                                equipmentNo, docNo, materialCode, custNo),
                 () -> showLoading("搜索中..."),
                 checkOrderResult -> {
                     if (checkOrderResult.getResult() == 0) {
@@ -122,7 +125,6 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
                             }
                         }
                         mQuickAdapter.setNewData(mCheckOrders);
-                        initCheckContent();
                     } else {
                         queryCheckOrderError(checkOrderResult.getDesc());
                     }

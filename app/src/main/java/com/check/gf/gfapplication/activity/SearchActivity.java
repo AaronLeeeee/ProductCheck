@@ -88,7 +88,13 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     protected void onResume() {
         super.onResume();
         searchItem = CustomApplication.getInstance().getSearchItem();
-        search();
+        String customerName = searchItem.getCustomerName();
+        String requireDate = searchItem.getmRequireDate();
+        String equipmentNo = searchItem.getEquipmentNo();
+        String docNo = searchItem.getDocNo();
+        String materialCode = searchItem.getMaterialCode();
+        String custNo = searchItem.getCustNo();
+        search(customerName, equipmentNo, requireDate, docNo, materialCode, custNo);
     }
 
     @Override
@@ -134,20 +140,8 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             String docNo = et_docNo.getText().toString().trim();
             String materialCode = et_materialCode.getText().toString().trim();
             String custNo = et_custNo.getText().toString().trim();
-            if (TextUtils.isEmpty(customerName) && TextUtils.isEmpty(mRequireDate) &&
-                    TextUtils.isEmpty(equipmentNo) && TextUtils.isEmpty(docNo)
-                    && TextUtils.isEmpty(materialCode) && TextUtils.isEmpty(custNo)) {
-                CommonUtils.showToast("条件不允许同时为空");
-            } else {
-                mBottomDialog.dismiss();
-                searchItem.setCustomerName(customerName);
-                searchItem.setEquipmentNo(equipmentNo);
-                searchItem.setmRequireDate(mRequireDate);
-                searchItem.setDocNo(docNo);
-                searchItem.setMaterialCode(materialCode);
-                searchItem.setCustNo(custNo);
-                search();
-            }
+            mBottomDialog.dismiss();
+            search(customerName, equipmentNo, mRequireDate, docNo, materialCode, custNo);
         });
         tv_requireDate_text.setOnClickListener(view12 ->
                 initTimePicker().show(tv_requireDate_text));
@@ -190,17 +184,19 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
     /**
      * Represents an asynchronous search task
+     *
+     * @param customerName
+     * @param equipmentNo
+     * @param requireDate
+     * @param docNo
+     * @param materialCode
+     * @param custNo
      */
-    private void search() {
-        String customerName = searchItem.getCustomerName();
-        String requireDate = searchItem.getmRequireDate();
-        String equipmentNo = searchItem.getEquipmentNo();
-        String docNo = searchItem.getDocNo();
-        String materialCode = searchItem.getMaterialCode();
-        String custNo = searchItem.getCustNo();
-        if (TextUtils.isEmpty(customerName) && TextUtils.isEmpty(mRequireDate) &&
+    private void search(String customerName, String equipmentNo, String requireDate, String docNo, String materialCode, String custNo) {
+        if (TextUtils.isEmpty(customerName) && TextUtils.isEmpty(requireDate) &&
                 TextUtils.isEmpty(equipmentNo) && TextUtils.isEmpty(docNo)
                 && TextUtils.isEmpty(materialCode) && TextUtils.isEmpty(custNo)) {
+            CommonUtils.showToast("条件不允许同时为空");
             return;
         }
         toSubscribe(RxFactory.getCheckServiceInstance()
@@ -212,7 +208,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                         hideLoading();
                         List<CheckOrder.DataBean> checkOrders = checkOrderResult.getData();
                         if (checkOrders == null || checkOrders.size() <= 0) {
-                            CommonUtils.showToast("该筛选条件下检验单不存在");
+                            CommonUtils.showToast("该筛选条件下检验单不存在,请重新搜索");
                             return;
                         }
                         mUnStartCheckOrders.clear();
@@ -234,6 +230,12 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                         mUnStartCheckCountTv.setText(String.valueOf(mUnStartCheckOrders.size() + " 单"));
                         mProcessCheckCountTv.setText(String.valueOf(mProcessCheckOrders.size() + " 单"));
                         mFinishedCheckCountTv.setText(String.valueOf(mFinishedCheckOrders.size() + " 单"));
+                        searchItem.setCustomerName(customerName);
+                        searchItem.setEquipmentNo(equipmentNo);
+                        searchItem.setmRequireDate(mRequireDate);
+                        searchItem.setDocNo(docNo);
+                        searchItem.setMaterialCode(materialCode);
+                        searchItem.setCustNo(custNo);
                     } else {
                         queryCheckOrderError(checkOrderResult.getDesc());
                     }
