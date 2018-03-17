@@ -31,6 +31,7 @@ public class BaseInfoFragment extends BaseFragment {
     private static final String BASE_INFO = "base_info";
     private TextView mPurchaseIdTv;
     private TextView mSupplierTv;
+    private TextView mMaterialCodeTv;
     private TextView mMaterialIdTv;
     private TextView mMaterialNameTv;
     private TextView mQMNOTv;
@@ -59,12 +60,12 @@ public class BaseInfoFragment extends BaseFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-// 这个方法是用来确认当前的Activity容器是否已经继承了该接口，如果没有将抛出异常
+        // 这个方法是用来确认当前的Activity容器是否已经继承了该接口，如果没有将抛出异常
         try {
             mCallback = (onTestListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnHeadlineSelectedListener");
+                    + " must implement onTestListener");
         }
     }
 
@@ -76,6 +77,7 @@ public class BaseInfoFragment extends BaseFragment {
 
         mPurchaseIdTv = layout.findViewById(R.id.tv_purchase_order_id);
         mSupplierTv = layout.findViewById(R.id.tv_supplier);
+        mMaterialCodeTv = layout.findViewById(R.id.tv_material_code);
         mMaterialIdTv = layout.findViewById(R.id.tv_material_id);
         mMaterialNameTv = layout.findViewById(R.id.tv_material_name);
         mQMNOTv = layout.findViewById(R.id.tv_qm_no);
@@ -95,7 +97,7 @@ public class BaseInfoFragment extends BaseFragment {
             if (mStartTimeTv.getText() != null && !mStartTimeTv.getText().equals("")) {
                 CommonUtils.showToast("已经开始检测，请勿重复检查！");
             } else {
-                startCheck(checkOrderInfo.getEquipmentNo());
+                startCheck(checkOrderInfo.getEquipmentNo(), checkOrderInfo.getMaterialCode());
             }
         });
         mSubmitCheckBt.setOnClickListener(v -> {
@@ -104,9 +106,9 @@ public class BaseInfoFragment extends BaseFragment {
         return layout;
     }
 
-    private void startCheck(String equipmentNo) {
+    private void startCheck(String equipmentNo, String materialCode) {
         toSubscribe(RxFactory.getCheckServiceInstance()
-                        .StartCheck(equipmentNo),
+                        .StartCheck(equipmentNo, materialCode),
                 () -> CommonUtils.showToast("请求开始检测..."),
                 checkOrderInfoResult -> {
                     if (checkOrderInfoResult.getResult() == 0) {
@@ -142,6 +144,7 @@ public class BaseInfoFragment extends BaseFragment {
         if (checkOrderInfo != null) {
             mPurchaseIdTv.setText(checkOrderInfo.getCustomerCode());
             mSupplierTv.setText(checkOrderInfo.getCustomerName());
+            mMaterialCodeTv.setText(checkOrderInfo.getMaterialCode());
             mMaterialIdTv.setText(checkOrderInfo.getItemCode());
             mMaterialNameTv.setText(checkOrderInfo.getItemName());
             mQMNOTv.setText("");

@@ -70,6 +70,31 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:paddingTop="8dp"
+                android:text="@string/material_code_"
+                android:textColor="@color/black"
+                android:textSize="@dimen/ts_bigger" />
+
+            <TextView
+                android:id="@+id/tv_material_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:paddingTop="8dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/ts_bigger" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingTop="8dp"
                 android:text="@string/material_id"
                 android:textColor="@color/black"
                 android:textSize="@dimen/ts_bigger" />

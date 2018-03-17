@@ -36,6 +36,7 @@
     <string name="search_requireDate">发货日期</string>
     <string name="search_equipmentNo">出货计划单号</string>
     <string name="search_docNo">设备号</string>
+    <string name="search_materialCode">物料型号</string>
     <string name="search_custNo">客户订单号</string>
 
     <string name="check_list">检测列表</string>
@@ -55,12 +56,14 @@
     <string name="material_name_append">物料名称: %1$s</string>
     <string name="income_material_count_append">来料数量: %1$s</string>
     <string name="check_date">检验日期: %1$s</string>
+    <string name="material_code">物料型号: %1$s</string>
     <string name="supplier_append">供应商: %1$s</string>
     <string name="check_order_id">检验单号: %1$s</string>
     <string name="completion">完成度: %1$s</string>
 
     <string name="purchase_order">采购订单</string>
     <string name="supplier">供应商</string>
+    <string name="material_code_">物料型号</string>
     <string name="material_id">物料号</string>
     <string name="material_name">物料名称</string>
     <string name="qm_no">QM NO</string>

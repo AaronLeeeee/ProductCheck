@@ -56,15 +56,15 @@ public class CheckDetailActivity extends BaseActivity implements BaseInfoFragmen
         List<String> titles = new ArrayList<>();
         titles.add("基本信息");
         if (types.contains("外观")) {
-            mFragments.add(InspectListFragment.newInstance(DIMENSION_FRAGMENT, mCheckOrderInfo.getEquipmentNo()));
+            mFragments.add(InspectListFragment.newInstance(DIMENSION_FRAGMENT, mCheckOrderInfo.getEquipmentNo(), mCheckOrderInfo.getMaterialCode()));
             titles.add("外观");
         }
         if (types.contains("尺寸")) {
-            mFragments.add(InspectListFragment.newInstance(PERFORMANCE_FRAGMENT, mCheckOrderInfo.getEquipmentNo()));
+            mFragments.add(InspectListFragment.newInstance(PERFORMANCE_FRAGMENT, mCheckOrderInfo.getEquipmentNo(), mCheckOrderInfo.getMaterialCode()));
             titles.add("尺寸");
         }
         if (types.contains("性能")) {
-            mFragments.add(InspectListFragment.newInstance(SURFACE_FRAGMENT, mCheckOrderInfo.getEquipmentNo()));
+            mFragments.add(InspectListFragment.newInstance(SURFACE_FRAGMENT, mCheckOrderInfo.getEquipmentNo(), mCheckOrderInfo.getMaterialCode()));
             titles.add("性能");
         }
         String[] fTitles = titles.toArray(new String[titles.size()]);

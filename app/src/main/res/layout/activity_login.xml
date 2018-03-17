@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_account"
                 android:imeOptions="actionNext"
-                android:inputType="textCapWords"
+                android:inputType="number"
                 android:maxLines="1"
                 android:singleLine="true" />
 

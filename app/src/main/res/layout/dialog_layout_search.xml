@@ -102,6 +102,22 @@
         android:layout_height="wrap_content">
 
         <EditText
+            android:id="@+id/et_materialCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/search_materialCode"
+            android:imeOptions="actionNext"
+            android:inputType="number"
+            android:maxLines="1"
+            android:singleLine="true" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
             android:id="@+id/et_custNo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

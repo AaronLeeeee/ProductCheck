@@ -36,7 +36,7 @@
             android:paddingRight="15dp">
 
             <TextView
-                android:id="@+id/tv_material_id"
+                android:id="@+id/tv_materialCode"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -58,7 +58,7 @@
             android:paddingRight="15dp">
 
             <TextView
-                android:id="@+id/tv_income_count"
+                android:id="@+id/tv_material_id"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -73,7 +73,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/tv_supplier"
+            android:id="@+id/tv_income_count"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="15dp"

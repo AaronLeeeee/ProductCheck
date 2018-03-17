@@ -28,6 +28,7 @@ public class CheckOrder extends ResultObject implements Parcelable {
          * id : 1
          * docNo : 0001
          * equipmentNo : 0001
+         * materialCode : 0001
          * itemCode : 0001
          * itemName : 导轨总成
          * PlanQtyTU : 1
@@ -43,6 +44,7 @@ public class CheckOrder extends ResultObject implements Parcelable {
         private int id;
         private String docNo;
         private String equipmentNo;
+        private String materialCode;
         private String itemCode;
         private String itemName;
         private int PlanQtyTU;
@@ -158,6 +160,14 @@ public class CheckOrder extends ResultObject implements Parcelable {
             this.finishState = finishState;
         }
 
+        public String getMaterialCode() {
+            return materialCode;
+        }
+
+        public void setMaterialCode(String materialCode) {
+            this.materialCode = materialCode;
+        }
+
         @Override
         public int describeContents() {
             return 0;
@@ -168,6 +178,7 @@ public class CheckOrder extends ResultObject implements Parcelable {
             dest.writeInt(this.id);
             dest.writeString(this.docNo);
             dest.writeString(this.equipmentNo);
+            dest.writeString(this.materialCode);
             dest.writeString(this.itemCode);
             dest.writeString(this.itemName);
             dest.writeInt(this.PlanQtyTU);
@@ -187,6 +198,7 @@ public class CheckOrder extends ResultObject implements Parcelable {
             this.id = in.readInt();
             this.docNo = in.readString();
             this.equipmentNo = in.readString();
+            this.materialCode = in.readString();
             this.itemCode = in.readString();
             this.itemName = in.readString();
             this.PlanQtyTU = in.readInt();

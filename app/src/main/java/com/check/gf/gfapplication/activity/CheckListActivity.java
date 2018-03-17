@@ -104,7 +104,7 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
         }
         toSubscribe(RxFactory.getCheckServiceInstance()
                         .CheckOrderQuery(customerName, requireDate,
-                                equipmentNo, docNo, custNo),
+                                equipmentNo, docNo, custNo, custNo),
                 () -> showLoading("搜索中..."),
                 checkOrderResult -> {
                     if (checkOrderResult.getResult() == 0) {
@@ -193,7 +193,7 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
 
     private void queryCheckOrderInfo(CheckOrder.DataBean checkOrder) {
         toSubscribe(RxFactory.getCheckServiceInstance()
-                        .CheckOrderInfoQuery(checkOrder.getEquipmentNo()),
+                        .CheckOrderInfoQuery(checkOrder.getEquipmentNo(), checkOrder.getMaterialCode()),
                 () -> showLoading("查询详情中..."),
                 checkOrderInfoResult -> {
                     if (checkOrderInfoResult.getResult() == 0) {

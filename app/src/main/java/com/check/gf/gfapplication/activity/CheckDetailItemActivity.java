@@ -56,6 +56,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
     private InspectItemDetail.DataBean mInspectItemDetail;
     private String mInspectCode;
     private String mEquipmentNo;
+    private String mMaterialCode;
 
     private TextView tv_num_id;
     private TextView tv_num_des;
@@ -73,7 +74,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
 
     private ArrayList<String> mPaths;
 
-    private EditText et_msg;
+    private EditText et_msg_1, et_msg_2, et_msg_3, et_msg_4, et_msg_5;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,6 +101,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
         mInspectItemDetail = intent.getParcelableExtra(InspectListFragment.getExtra());
         mInspectCode = intent.getStringExtra(InspectListFragment.getInspectCodeExtra());
         mEquipmentNo = intent.getStringExtra(InspectListFragment.getEquipmentNoExtra());
+        mMaterialCode = intent.getStringExtra(InspectListFragment.getMaterialCode());
     }
 
 
@@ -140,7 +142,11 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
 
         Button bt_commit_msg = findViewById(R.id.bt_commit_msg);
         bt_commit_msg.setOnClickListener(v -> commitMsg());
-        et_msg = findViewById(R.id.et_msg);
+        et_msg_1 = findViewById(R.id.et_msg_1);
+        et_msg_2 = findViewById(R.id.et_msg_2);
+        et_msg_3 = findViewById(R.id.et_msg_3);
+        et_msg_4 = findViewById(R.id.et_msg_4);
+        et_msg_5 = findViewById(R.id.et_msg_5);
     }
 
     @Override
@@ -153,8 +159,16 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
         iv_checked.setVisibility(checkResult != 0 ? View.VISIBLE : View.GONE);
         iv_checked.setImageResource(checkResult == 1 ? R.drawable.ic_check : R.drawable.ic_uncheck);
 
-        String checkContent = mInspectItemDetail.getCheckContent();
-        et_msg.setText(TextUtils.isEmpty(checkContent) ? "" : checkContent);
+        String checkContent1 = mInspectItemDetail.getCheckContent1();
+        String checkContent2 = mInspectItemDetail.getCheckContent2();
+        String checkContent3 = mInspectItemDetail.getCheckContent3();
+        String checkContent4 = mInspectItemDetail.getCheckContent4();
+        String checkContent5 = mInspectItemDetail.getCheckContent5();
+        et_msg_1.setText(TextUtils.isEmpty(checkContent1) ? "" : checkContent1);
+        et_msg_2.setText(TextUtils.isEmpty(checkContent2) ? "" : checkContent2);
+        et_msg_3.setText(TextUtils.isEmpty(checkContent3) ? "" : checkContent3);
+        et_msg_4.setText(TextUtils.isEmpty(checkContent4) ? "" : checkContent4);
+        et_msg_5.setText(TextUtils.isEmpty(checkContent5) ? "" : checkContent5);
         // et_msg.setEnabled(!TextUtils.isEmpty(checkContent));
         List<InspectItemDetail.DataBean.PicturesBean> picturesBeans = mInspectItemDetail.getPictures();
         showPic(picturesBeans);
@@ -187,7 +201,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
             return;
         }
         toSubscribe(RxFactory.getCheckServiceInstance()
-                        .SaveCheckResult(mInspectCode, mEquipmentNo, mInspectItemDetail.getItemCode(), result, username, postCode, groupCode),
+                        .SaveCheckResult(mInspectCode, mEquipmentNo, mMaterialCode, mInspectItemDetail.getItemCode(), result, username, postCode, groupCode),
                 () -> showLoading("保存检验结果中..."),
                 resultObject -> {
                     if (resultObject.getResult() == 0) {
@@ -210,13 +224,17 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
     }
 
     private void commitMsg() {
-        String msg = et_msg.getText().toString().trim();
-        if (TextUtils.isEmpty(msg)) {
-            CommonUtils.showToast("检验结果备注为空，无法提交");
+        String msg1 = et_msg_1.getText().toString().trim();
+        String msg2 = et_msg_2.getText().toString().trim();
+        String msg3 = et_msg_3.getText().toString().trim();
+        String msg4 = et_msg_4.getText().toString().trim();
+        String msg5 = et_msg_5.getText().toString().trim();
+        if (TextUtils.isEmpty(msg1) && TextUtils.isEmpty(msg2) && TextUtils.isEmpty(msg3) && TextUtils.isEmpty(msg4) && TextUtils.isEmpty(msg5)) {
+            CommonUtils.showToast("检验结果备注均为空，无法提交");
             return;
         }
         toSubscribe(RxFactory.getCheckServiceInstance()
-                        .SaveItemChkCnt(mEquipmentNo, mInspectCode, mInspectItemDetail.getItemCode(), msg),
+                        .SaveItemChkCnt(mEquipmentNo, mMaterialCode, mInspectCode, mInspectItemDetail.getItemCode(), msg1, msg2, msg3, msg4, msg5),
                 () -> showLoading("提交中..."),
                 resultObject -> {
                     if (resultObject.getResult() == 0) {
@@ -348,7 +366,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
                 MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
         toSubscribe(RxFactory.getCheckServiceInstance()
-                        .ItemChkUploadImg(mEquipmentNo, mInspectCode, mInspectItemDetail.getItemCode(), body),
+                        .ItemChkUploadImg(mEquipmentNo, mMaterialCode, mInspectCode, mInspectItemDetail.getItemCode(), body),
                 () ->
                         showLoading("上传中..."),
                 imgResultObject -> {

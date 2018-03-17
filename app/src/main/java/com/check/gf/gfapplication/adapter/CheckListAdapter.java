@@ -30,8 +30,8 @@ public class CheckListAdapter extends BaseQuickAdapter<CheckOrder.DataBean, Base
                         mContext.getString(R.string.income_material_count_append, String.valueOf(incomeCheck.getPlanQtyTU())))
                 .setText(R.id.tv_check_date,
                         mContext.getString(R.string.check_date, incomeCheck.getRequireDate()))
-                .setText(R.id.tv_supplier,
-                        mContext.getString(R.string.supplier_append, incomeCheck.getCustomerName()))
+                .setText(R.id.tv_materialCode,
+                        mContext.getString(R.string.material_code, incomeCheck.getMaterialCode()))
                 .setText(R.id.tv_check_id,
                         mContext.getString(R.string.check_order_id, incomeCheck.getEquipmentNo()))
                 .setText(R.id.tv_completion,

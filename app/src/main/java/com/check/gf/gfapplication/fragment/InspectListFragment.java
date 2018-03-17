@@ -35,9 +35,11 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
 
     private static final String INSPECT_CODE = "inspect_code";
     private static final String EQUIPMENT_NO = "equipment_no";
+    private static final String MATERIAL_CODE = "material_code";
 
     private String mInspectCode;
     private String mEquipmentNo;
+    private String mMaterialCode;
 
     private List<InspectItem.DataBean> inspectItems;
 
@@ -46,11 +48,12 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
     private LinearLayout rl_no_data, rl_no_network;
     private InspectListAdapter mQuickAdapter;
 
-    public static InspectListFragment newInstance(String inspectCode, String equipmentNo) {
+    public static InspectListFragment newInstance(String inspectCode, String equipmentNo, String materialCode) {
         Bundle bundle = new Bundle();
         InspectListFragment fragment = new InspectListFragment();
         bundle.putString(INSPECT_CODE, inspectCode);
         bundle.putString(EQUIPMENT_NO, equipmentNo);
+        bundle.putString(MATERIAL_CODE, materialCode);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -73,6 +76,10 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
         return EQUIPMENT_NO;
     }
 
+    public static String getMaterialCode() {
+        return MATERIAL_CODE;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_inspect_list, container, false);
@@ -86,6 +93,7 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
         if (bundle != null) {
             mInspectCode = bundle.getString(INSPECT_CODE);
             mEquipmentNo = bundle.getString(EQUIPMENT_NO);
+            mMaterialCode = bundle.getString(MATERIAL_CODE);
         }
         mQuickAdapter = new InspectListAdapter(new ArrayList<>());
         mRecyclerView.setAdapter(mQuickAdapter);
@@ -111,7 +119,7 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
 
     private void queryInspectItemDetail(String itemCode) {
         toSubscribe(RxFactory.getCheckServiceInstance()
-                        .ItemDetailQuery(mInspectCode, mEquipmentNo, itemCode),
+                        .ItemDetailQuery(mInspectCode, mEquipmentNo, mMaterialCode, itemCode),
                 () -> showLoading("查询详细信息中..."),
                 inspectItemDetailResult -> {
                     if (inspectItemDetailResult.getResult() == 0) {
@@ -122,6 +130,7 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
                         intent.putExtra(InspectListFragment.getExtra(), inspectItemDetail);
                         intent.putExtra(getInspectCodeExtra(), mInspectCode);
                         intent.putExtra(getEquipmentNoExtra(), mEquipmentNo);
+                        intent.putExtra(getMaterialCode(), mMaterialCode);
                         startActivity(intent);
                     } else {
                         queryInspectItemDetailError(inspectItemDetailResult.getDesc());
@@ -142,7 +151,7 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
      */
     public void RefreshItem() {
         toSubscribe(RxFactory.getCheckServiceInstance()
-                        .InspectItemListQuery(mInspectCode, mEquipmentNo),
+                        .InspectItemListQuery(mInspectCode, mEquipmentNo, mMaterialCode),
                 () -> {
                     // 隐藏无网络和无数据界面
                     rl_no_network.setVisibility(View.GONE);

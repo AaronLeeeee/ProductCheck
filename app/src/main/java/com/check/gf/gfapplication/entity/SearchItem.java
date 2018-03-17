@@ -10,6 +10,7 @@ public class SearchItem {
     private String mRequireDate;
     private String equipmentNo;
     private String docNo;
+    private String materialCode;
     private String custNo;
 
     public String getCustomerName() {
@@ -50,5 +51,13 @@ public class SearchItem {
 
     public void setCustNo(String custNo) {
         this.custNo = custNo;
+    }
+
+    public String getMaterialCode() {
+        return materialCode;
+    }
+
+    public void setMaterialCode(String materialCode) {
+        this.materialCode = materialCode;
     }
 }

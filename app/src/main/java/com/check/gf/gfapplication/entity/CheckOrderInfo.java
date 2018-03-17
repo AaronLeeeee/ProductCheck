@@ -3,7 +3,6 @@ package com.check.gf.gfapplication.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,6 +31,7 @@ public class CheckOrderInfo extends ResultObject implements Parcelable {
          * id : 1
          * docNo : 0001
          * equipmentNo : 0001
+         * materialCode : 0001
          * itemCode : 0001
          * itemName : 导轨总成
          * PlanQtyTU : 1
@@ -50,6 +50,7 @@ public class CheckOrderInfo extends ResultObject implements Parcelable {
         private int id;
         private String docNo;
         private String equipmentNo;
+        private String materialCode;
         private String itemCode;
         private String itemName;
         private int PlanQtyTU;
@@ -192,6 +193,14 @@ public class CheckOrderInfo extends ResultObject implements Parcelable {
             this.checkData = checkData;
         }
 
+        public String getMaterialCode() {
+            return materialCode;
+        }
+
+        public void setMaterialCode(String materialCode) {
+            this.materialCode = materialCode;
+        }
+
         public static class CheckDataBean implements Parcelable {
             /**
              * inspectCode : 001
@@ -283,6 +292,7 @@ public class CheckOrderInfo extends ResultObject implements Parcelable {
             dest.writeInt(this.id);
             dest.writeString(this.docNo);
             dest.writeString(this.equipmentNo);
+            dest.writeString(this.materialCode);
             dest.writeString(this.itemCode);
             dest.writeString(this.itemName);
             dest.writeInt(this.PlanQtyTU);
@@ -295,7 +305,7 @@ public class CheckOrderInfo extends ResultObject implements Parcelable {
             dest.writeString(this.startCheckTime);
             dest.writeString(this.finishCheckTime);
             dest.writeInt(this.finishState);
-            dest.writeList(this.checkData);
+            dest.writeTypedList(this.checkData);
         }
 
         public DataBean() {
@@ -305,6 +315,7 @@ public class CheckOrderInfo extends ResultObject implements Parcelable {
             this.id = in.readInt();
             this.docNo = in.readString();
             this.equipmentNo = in.readString();
+            this.materialCode = in.readString();
             this.itemCode = in.readString();
             this.itemName = in.readString();
             this.PlanQtyTU = in.readInt();
@@ -317,8 +328,7 @@ public class CheckOrderInfo extends ResultObject implements Parcelable {
             this.startCheckTime = in.readString();
             this.finishCheckTime = in.readString();
             this.finishState = in.readInt();
-            this.checkData = new ArrayList<CheckDataBean>();
-            in.readList(this.checkData, CheckDataBean.class.getClassLoader());
+            this.checkData = in.createTypedArrayList(CheckDataBean.CREATOR);
         }
 
         public static final Creator<DataBean> CREATOR = new Creator<DataBean>() {

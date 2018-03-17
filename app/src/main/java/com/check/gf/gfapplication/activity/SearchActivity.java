@@ -124,16 +124,19 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         et_equipmentNo.setText(searchItem.getEquipmentNo());
         EditText et_docNo = view.findViewById(R.id.et_docNo);
         et_docNo.setText(searchItem.getDocNo());
+        EditText et_materialCode = view.findViewById(R.id.et_materialCode);
+        et_materialCode.setText(searchItem.getMaterialCode());
         EditText et_custNo = view.findViewById(R.id.et_custNo);
         et_custNo.setText(searchItem.getCustNo());
         view.findViewById(R.id.btn_search).setOnClickListener(view1 -> {
             String customerName = et_customerName.getText().toString().trim();
             String equipmentNo = et_equipmentNo.getText().toString().trim();
             String docNo = et_docNo.getText().toString().trim();
+            String materialCode = et_materialCode.getText().toString().trim();
             String custNo = et_custNo.getText().toString().trim();
             if (TextUtils.isEmpty(customerName) && TextUtils.isEmpty(mRequireDate) &&
                     TextUtils.isEmpty(equipmentNo) && TextUtils.isEmpty(docNo)
-                    && TextUtils.isEmpty(custNo)) {
+                    && TextUtils.isEmpty(materialCode) && TextUtils.isEmpty(custNo)) {
                 CommonUtils.showToast("条件不允许同时为空");
             } else {
                 mBottomDialog.dismiss();
@@ -141,6 +144,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 searchItem.setEquipmentNo(equipmentNo);
                 searchItem.setmRequireDate(mRequireDate);
                 searchItem.setDocNo(docNo);
+                searchItem.setMaterialCode(materialCode);
                 searchItem.setCustNo(custNo);
                 search();
             }
@@ -192,15 +196,16 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         String requireDate = searchItem.getmRequireDate();
         String equipmentNo = searchItem.getEquipmentNo();
         String docNo = searchItem.getDocNo();
+        String materialCode = searchItem.getMaterialCode();
         String custNo = searchItem.getCustNo();
         if (TextUtils.isEmpty(customerName) && TextUtils.isEmpty(mRequireDate) &&
                 TextUtils.isEmpty(equipmentNo) && TextUtils.isEmpty(docNo)
-                && TextUtils.isEmpty(custNo)) {
+                && TextUtils.isEmpty(materialCode) && TextUtils.isEmpty(custNo)) {
             return;
         }
         toSubscribe(RxFactory.getCheckServiceInstance()
                         .CheckOrderQuery(customerName, requireDate,
-                                equipmentNo, docNo, custNo),
+                                equipmentNo, docNo, materialCode, custNo),
                 () -> showLoading("搜索中..."),
                 checkOrderResult -> {
                     if (checkOrderResult.getResult() == 0) {
