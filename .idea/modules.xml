@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/FlycoTabLayout_Lib/FlycoTabLayout_Lib.iml" filepath="$PROJECT_DIR$/FlycoTabLayout_Lib/FlycoTabLayout_Lib.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Inspection-Package.iml" filepath="$PROJECT_DIR$/Inspection-Package.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ProductCheck-master.iml" filepath="$PROJECT_DIR$/ProductCheck-master.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

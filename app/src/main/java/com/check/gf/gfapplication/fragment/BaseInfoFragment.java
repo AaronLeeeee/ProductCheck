@@ -34,9 +34,9 @@ public class BaseInfoFragment extends BaseFragment {
     private TextView mMaterialCodeTv;
     private TextView mMaterialIdTv;
     private TextView mMaterialNameTv;
-    private TextView mQMNOTv;
+    //private TextView mQMNOTv;
     private TextView mIncomeCountTv;
-    private TextView mSamplePlanTv;
+    //private TextView mSamplePlanTv;
     private TextView mInspectorTv;
     private TextView mStartTimeTv;
     private TextView mEndTimeTv;
@@ -73,16 +73,14 @@ public class BaseInfoFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_base_info, container, false);
 
-        mLoadingView = layout.findViewById(R.id.loadView);
-
         mPurchaseIdTv = layout.findViewById(R.id.tv_purchase_order_id);
         mSupplierTv = layout.findViewById(R.id.tv_supplier);
         mMaterialCodeTv = layout.findViewById(R.id.tv_material_code);
         mMaterialIdTv = layout.findViewById(R.id.tv_material_id);
         mMaterialNameTv = layout.findViewById(R.id.tv_material_name);
-        mQMNOTv = layout.findViewById(R.id.tv_qm_no);
+        //mQMNOTv = layout.findViewById(R.id.tv_qm_no);
         mIncomeCountTv = layout.findViewById(R.id.tv_income_count);
-        mSamplePlanTv = layout.findViewById(R.id.tv_sample_plan);
+        //mSamplePlanTv = layout.findViewById(R.id.tv_sample_plan);
         mInspectorTv = layout.findViewById(R.id.tv_inspector);
         mStartTimeTv = layout.findViewById(R.id.tv_start_time);
         mEndTimeTv = layout.findViewById(R.id.tv_end_time);
@@ -147,9 +145,9 @@ public class BaseInfoFragment extends BaseFragment {
             mMaterialCodeTv.setText(checkOrderInfo.getMaterialCode());
             mMaterialIdTv.setText(checkOrderInfo.getItemCode());
             mMaterialNameTv.setText(checkOrderInfo.getItemName());
-            mQMNOTv.setText("");
+            //mQMNOTv.setText("");
             mIncomeCountTv.setText(String.valueOf(checkOrderInfo.getPlanQtyTU()));
-            mSamplePlanTv.setText("");
+            //mSamplePlanTv.setText("");
             CustomApplication customApplication = CustomApplication.getInstance();
             String realname = customApplication.getSpHelper().getRealname();
             mInspectorTv.setText(realname);
