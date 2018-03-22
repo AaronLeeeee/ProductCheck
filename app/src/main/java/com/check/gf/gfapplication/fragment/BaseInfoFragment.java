@@ -146,7 +146,7 @@ public class BaseInfoFragment extends BaseFragment {
             mMaterialIdTv.setText(checkOrderInfo.getItemCode());
             mMaterialNameTv.setText(checkOrderInfo.getItemName());
             //mQMNOTv.setText("");
-            mIncomeCountTv.setText(String.valueOf(checkOrderInfo.getPlanQtyTU()));
+            mIncomeCountTv.setText(checkOrderInfo.getPackgNum());
             //mSamplePlanTv.setText("");
             CustomApplication customApplication = CustomApplication.getInstance();
             String realname = customApplication.getSpHelper().getRealname();

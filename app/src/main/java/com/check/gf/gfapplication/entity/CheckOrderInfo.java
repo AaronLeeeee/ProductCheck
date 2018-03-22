@@ -13,7 +13,7 @@ import java.util.List;
 public class CheckOrderInfo extends ResultObject implements Parcelable {
 
     /**
-     * data : {"id":1,"docNo":"0001","equipmentNo":"0001","itemCode":"0001","itemName":"导轨总成","PlanQtyTU":1,"PackgNum":2,"requireDate":"2018 - 03 - 09","customerName":"测试客户1","customerCode":"0001","totalCheckNum":10,"finishCheckNum":0,"startCheckTime":"2018-03-09 11:30","finishCheckTime":"2018-03-09 12:30","finishState":0,"checkData":[{"inspectCode":"001","typeName":"外观","totalCheckNumber":10,"finishCheckNumber":4},{"inspectCode":"002","typeName":"尺寸","totalCheckNumber":10,"finishCheckNumber":4},{"inspectCode":"002","typeName":"性能","totalCheckNumber":10,"finishCheckNumber":4}]}
+     * data : {"id":1,"docNo":"0001","equipmentNo":"0001","itemCode":"0001","itemName":"导轨总成","planQtyTU":1,"packgNum":2,"requireDate":"2018 - 03 - 09","customerName":"测试客户1","customerCode":"0001","totalCheckNum":10,"finishCheckNum":0,"startCheckTime":"2018-03-09 11:30","finishCheckTime":"2018-03-09 12:30","finishState":0,"checkData":[{"inspectCode":"001","typeName":"外观","totalCheckNumber":10,"finishCheckNumber":4},{"inspectCode":"002","typeName":"尺寸","totalCheckNumber":10,"finishCheckNumber":4},{"inspectCode":"002","typeName":"性能","totalCheckNumber":10,"finishCheckNumber":4}]}
      */
 
     private DataBean data;
@@ -34,8 +34,8 @@ public class CheckOrderInfo extends ResultObject implements Parcelable {
          * materialCode : 0001
          * itemCode : 0001
          * itemName : 导轨总成
-         * PlanQtyTU : 1
-         * PackgNum : 2
+         * planQtyTU : 1
+         * packgNum : 2
          * requireDate : 2018 - 03 - 09
          * customerName : 测试客户1
          * customerCode : 0001
@@ -53,8 +53,8 @@ public class CheckOrderInfo extends ResultObject implements Parcelable {
         private String materialCode;
         private String itemCode;
         private String itemName;
-        private int PlanQtyTU;
-        private int PackgNum;
+        private int planQtyTU;
+        private String packgNum;
         private String requireDate;
         private String customerName;
         private String customerCode;
@@ -106,19 +106,19 @@ public class CheckOrderInfo extends ResultObject implements Parcelable {
         }
 
         public int getPlanQtyTU() {
-            return PlanQtyTU;
+            return planQtyTU;
         }
 
         public void setPlanQtyTU(int PlanQtyTU) {
-            this.PlanQtyTU = PlanQtyTU;
+            this.planQtyTU = PlanQtyTU;
         }
 
-        public int getPackgNum() {
-            return PackgNum;
+        public String getPackgNum() {
+            return packgNum;
         }
 
-        public void setPackgNum(int PackgNum) {
-            this.PackgNum = PackgNum;
+        public void setPackgNum(String PackgNum) {
+            this.packgNum = PackgNum;
         }
 
         public String getRequireDate() {
@@ -295,8 +295,8 @@ public class CheckOrderInfo extends ResultObject implements Parcelable {
             dest.writeString(this.materialCode);
             dest.writeString(this.itemCode);
             dest.writeString(this.itemName);
-            dest.writeInt(this.PlanQtyTU);
-            dest.writeInt(this.PackgNum);
+            dest.writeInt(this.planQtyTU);
+            dest.writeString(this.packgNum);
             dest.writeString(this.requireDate);
             dest.writeString(this.customerName);
             dest.writeString(this.customerCode);
@@ -318,8 +318,8 @@ public class CheckOrderInfo extends ResultObject implements Parcelable {
             this.materialCode = in.readString();
             this.itemCode = in.readString();
             this.itemName = in.readString();
-            this.PlanQtyTU = in.readInt();
-            this.PackgNum = in.readInt();
+            this.planQtyTU = in.readInt();
+            this.packgNum = in.readString();
             this.requireDate = in.readString();
             this.customerName = in.readString();
             this.customerCode = in.readString();
