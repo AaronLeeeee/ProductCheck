@@ -22,7 +22,6 @@
             android:layout_height="wrap_content"
             android:hint="@string/search_customerName"
             android:imeOptions="actionNext"
-            android:inputType="textCapWords"
             android:maxLines="1"
             android:singleLine="true" />
 
@@ -75,7 +74,6 @@
             android:layout_height="wrap_content"
             android:hint="@string/search_equipmentNo"
             android:imeOptions="actionNext"
-            android:inputType="number"
             android:maxLines="1"
             android:singleLine="true" />
 
@@ -91,7 +89,6 @@
             android:layout_height="wrap_content"
             android:hint="@string/search_docNo"
             android:imeOptions="actionNext"
-            android:inputType="number"
             android:maxLines="1"
             android:singleLine="true" />
 
@@ -107,7 +104,6 @@
             android:layout_height="wrap_content"
             android:hint="@string/search_materialCode"
             android:imeOptions="actionNext"
-            android:inputType="number"
             android:maxLines="1"
             android:singleLine="true" />
 
@@ -123,7 +119,6 @@
             android:layout_height="wrap_content"
             android:hint="@string/search_custNo"
             android:imeOptions="actionSearch"
-            android:inputType="number"
             android:maxLines="1"
             android:singleLine="true" />
 
