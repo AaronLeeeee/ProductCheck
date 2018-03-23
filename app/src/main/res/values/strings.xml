@@ -34,8 +34,8 @@
 
     <string name="search_customerName">客户</string>
     <string name="search_requireDate">发货日期</string>
-    <string name="search_equipmentNo">出货计划单号</string>
-    <string name="search_docNo">设备号</string>
+    <string name="search_equipmentNo">设备号</string>
+    <string name="search_docNo">出货计划单号</string>
     <string name="search_materialCode">物料型号</string>
     <string name="search_custNo">客户订单号</string>
 

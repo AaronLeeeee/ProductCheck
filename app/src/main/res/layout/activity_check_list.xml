@@ -16,7 +16,8 @@
         android:layout_below="@id/top_title_bar"
         android:background="@color/blue_confirm"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/tv_income_check"
