@@ -40,33 +40,22 @@ public class CheckDetailActivity extends BaseActivity implements BaseInfoFragmen
         initTopBarForLeft("检测单详情", getString(R.string.tx_back));
         vp_paper = findViewById(R.id.vpItemLeftPaper);
         vp_paper.setOffscreenPageLimit(1);
-        List<String> types = new ArrayList<>();
+        List<String> titles = new ArrayList<>();
+        titles.add("基本信息");
         mCheckOrderInfo = getIntent().getParcelableExtra(CheckListActivity.getExtra());
+        mFragments.add(BaseInfoFragment.newInstance(mCheckOrderInfo));
         List<CheckOrderInfo.DataBean.CheckDataBean> checkDataBeanList = mCheckOrderInfo.getCheckData();
         if (checkDataBeanList != null) {
             int size = checkDataBeanList.size();
             if (size != 0) {
                 for (int i = 0; i < size; i++) {
-                    if (checkDataBeanList.get(i) != null) {
-                        types.add(checkDataBeanList.get(i).getTypeName());
+                    CheckOrderInfo.DataBean.CheckDataBean checkDataBean = checkDataBeanList.get(i);
+                    if (checkDataBean != null) {
+                        mFragments.add(InspectListFragment.newInstance(checkDataBean.getInspectCode(), mCheckOrderInfo.getEquipmentNo(), mCheckOrderInfo.getMaterialCode()));
+                        titles.add(checkDataBean.getTypeName());
                     }
                 }
             }
-        }
-        mFragments.add(BaseInfoFragment.newInstance(mCheckOrderInfo));
-        List<String> titles = new ArrayList<>();
-        titles.add("基本信息");
-        if (types.contains("外观")) {
-            mFragments.add(InspectListFragment.newInstance(DIMENSION_FRAGMENT, mCheckOrderInfo.getEquipmentNo(), mCheckOrderInfo.getMaterialCode()));
-            titles.add("外观");
-        }
-        if (types.contains("尺寸")) {
-            mFragments.add(InspectListFragment.newInstance(PERFORMANCE_FRAGMENT, mCheckOrderInfo.getEquipmentNo(), mCheckOrderInfo.getMaterialCode()));
-            titles.add("尺寸");
-        }
-        if (types.contains("性能")) {
-            mFragments.add(InspectListFragment.newInstance(SURFACE_FRAGMENT, mCheckOrderInfo.getEquipmentNo(), mCheckOrderInfo.getMaterialCode()));
-            titles.add("性能");
         }
         String[] fTitles = titles.toArray(new String[titles.size()]);
         tl_library = findViewById(R.id.tl_library);

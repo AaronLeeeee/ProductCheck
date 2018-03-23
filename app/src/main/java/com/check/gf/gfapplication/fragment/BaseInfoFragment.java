@@ -170,11 +170,11 @@ public class BaseInfoFragment extends BaseFragment {
                         int finishCheckNumber = checkDataBean.getFinishCheckNumber();
                         int totalCheckNumber = checkDataBean.getTotalCheckNumber();
                         String text = finishCheckNumber + "/" + totalCheckNumber;
-                        if ("001".equals(inspectCode) && "外观".equals(typeName)) {
+                        if ("LT001".equals(inspectCode) || "外观".equals(typeName)) {
                             mSurfaceTv.setText(text + " (NG;0)");
-                        } else if ("002".equals(inspectCode) && "尺寸".equals(typeName)) {
+                        } else if ("LT002".equals(inspectCode) || "尺寸".equals(typeName)) {
                             mDimensionTv.setText(text + " (NG:0)");
-                        } else if ("003".equals(inspectCode) && "性能".equals(typeName)) {
+                        } else if ("LT003".equals(inspectCode) || "性能".equals(typeName)) {
                             mPerformanceTv.setText(text + " (NG:0)");
                         }
                     }
