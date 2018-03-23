@@ -19,9 +19,9 @@ import okhttp3.OkHttpClient;
  * @author nEdAy
  */
 public final class StaticConfig {
-    public static final String SERVER_HOST_URL = "http://47.95.234.192/";
+    //public static final String SERVER_HOST_URL = "http://47.95.234.192/";
 
-    //public static final String SERVER_HOST_URL = "http://10.0.0.242:88";
+    public static final String SERVER_HOST_URL = "http://10.0.0.242:88";
 
     // Bugly APP ID
     public static final String BUGLY_APP_ID = "a4415edc26";
