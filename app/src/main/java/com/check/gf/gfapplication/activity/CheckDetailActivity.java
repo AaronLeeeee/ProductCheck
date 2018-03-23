@@ -1,6 +1,5 @@
 package com.check.gf.gfapplication.activity;
 
-import android.content.Intent;
 import android.support.v4.app.Fragment;
 
 import com.check.gf.gfapplication.R;
@@ -29,12 +28,6 @@ public class CheckDetailActivity extends BaseActivity implements BaseInfoFragmen
     private GuardViewPager vp_paper;
     private SlidingTabLayout tl_library;
 
-    @Override
-    protected void getIntentData() {
-        super.getIntentData();
-        Intent intent = getIntent();
-        mCheckOrderInfo = intent.getParcelableExtra(CheckListActivity.getExtra());
-    }
 
     @Override
     protected int getContentLayout() {
@@ -47,10 +40,18 @@ public class CheckDetailActivity extends BaseActivity implements BaseInfoFragmen
         initTopBarForLeft("检测单详情", getString(R.string.tx_back));
         vp_paper = findViewById(R.id.vpItemLeftPaper);
         vp_paper.setOffscreenPageLimit(1);
-        int size = mCheckOrderInfo.getCheckData().size();
         List<String> types = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            types.add(mCheckOrderInfo.getCheckData().get(i).getTypeName());
+        mCheckOrderInfo = getIntent().getParcelableExtra(CheckListActivity.getExtra());
+        List<CheckOrderInfo.DataBean.CheckDataBean> checkDataBeanList = mCheckOrderInfo.getCheckData();
+        if (checkDataBeanList != null) {
+            int size = checkDataBeanList.size();
+            if (size != 0) {
+                for (int i = 0; i < size; i++) {
+                    if (checkDataBeanList.get(i) != null) {
+                        types.add(checkDataBeanList.get(i).getTypeName());
+                    }
+                }
+            }
         }
         mFragments.add(BaseInfoFragment.newInstance(mCheckOrderInfo));
         List<String> titles = new ArrayList<>();

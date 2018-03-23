@@ -47,7 +47,7 @@ public class CheckOrderInfo extends ResultObject implements Parcelable {
          * checkData : [{"inspectCode":"001","typeName":"外观","totalCheckNumber":10,"finishCheckNumber":4},{"inspectCode":"002","typeName":"尺寸","totalCheckNumber":10,"finishCheckNumber":4},{"inspectCode":"002","typeName":"性能","totalCheckNumber":10,"finishCheckNumber":4}]
          */
 
-        private int id;
+        private String id;
         private String docNo;
         private String equipmentNo;
         private String materialCode;
@@ -65,11 +65,11 @@ public class CheckOrderInfo extends ResultObject implements Parcelable {
         private int finishState;
         private List<CheckDataBean> checkData;
 
-        public int getId() {
+        public String getId() {
             return id;
         }
 
-        public void setId(int id) {
+        public void setId(String id) {
             this.id = id;
         }
 
@@ -289,7 +289,7 @@ public class CheckOrderInfo extends ResultObject implements Parcelable {
 
         @Override
         public void writeToParcel(Parcel dest, int flags) {
-            dest.writeInt(this.id);
+            dest.writeString(this.id);
             dest.writeString(this.docNo);
             dest.writeString(this.equipmentNo);
             dest.writeString(this.materialCode);
@@ -312,7 +312,7 @@ public class CheckOrderInfo extends ResultObject implements Parcelable {
         }
 
         protected DataBean(Parcel in) {
-            this.id = in.readInt();
+            this.id = in.readString();
             this.docNo = in.readString();
             this.equipmentNo = in.readString();
             this.materialCode = in.readString();

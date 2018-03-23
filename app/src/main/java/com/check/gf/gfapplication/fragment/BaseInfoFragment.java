@@ -161,19 +161,23 @@ public class BaseInfoFragment extends BaseFragment {
             }
             mEndTimeTv.setText(checkOrderInfo.getFinishCheckTime());
             List<CheckOrderInfo.DataBean.CheckDataBean> checkDataBeans = checkOrderInfo.getCheckData();
-            for (int i = 0; i < checkDataBeans.size(); i++) {
-                CheckOrderInfo.DataBean.CheckDataBean checkDataBean = checkDataBeans.get(i);
-                String inspectCode = checkDataBean.getInspectCode();
-                String typeName = checkDataBean.getTypeName();
-                int finishCheckNumber = checkDataBean.getFinishCheckNumber();
-                int totalCheckNumber = checkDataBean.getTotalCheckNumber();
-                String text = finishCheckNumber + "/" + totalCheckNumber;
-                if (inspectCode.equals("001") && typeName.equals("外观")) {
-                    mSurfaceTv.setText(text + " (NG;0)");
-                } else if (inspectCode.equals("002") && typeName.equals("尺寸")) {
-                    mDimensionTv.setText(text + " (NG:0)");
-                } else if (inspectCode.equals("003") && typeName.equals("性能")) {
-                    mPerformanceTv.setText(text + " (NG:0)");
+            if (checkDataBeans != null && checkDataBeans.size() != 0) {
+                for (int i = 0; i < checkDataBeans.size(); i++) {
+                    CheckOrderInfo.DataBean.CheckDataBean checkDataBean = checkDataBeans.get(i);
+                    if (checkDataBean != null) {
+                        String inspectCode = checkDataBean.getInspectCode();
+                        String typeName = checkDataBean.getTypeName();
+                        int finishCheckNumber = checkDataBean.getFinishCheckNumber();
+                        int totalCheckNumber = checkDataBean.getTotalCheckNumber();
+                        String text = finishCheckNumber + "/" + totalCheckNumber;
+                        if ("001".equals(inspectCode) && "外观".equals(typeName)) {
+                            mSurfaceTv.setText(text + " (NG;0)");
+                        } else if ("002".equals(inspectCode) && "尺寸".equals(typeName)) {
+                            mDimensionTv.setText(text + " (NG:0)");
+                        } else if ("003".equals(inspectCode) && "性能".equals(typeName)) {
+                            mPerformanceTv.setText(text + " (NG:0)");
+                        }
+                    }
                 }
             }
         } else {

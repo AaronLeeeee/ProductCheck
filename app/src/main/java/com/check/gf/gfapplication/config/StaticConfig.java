@@ -19,7 +19,7 @@ import okhttp3.OkHttpClient;
  * @author nEdAy
  */
 public final class StaticConfig {
-    // public static final String SERVER_HOST_URL = "http://47.95.234.192/";
+    //public static final String SERVER_HOST_URL = "http://47.95.234.192/";
 
     public static final String SERVER_HOST_URL = "http://10.0.0.242:88";
 
