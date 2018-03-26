@@ -62,10 +62,10 @@ dependencies {
     // Logger
     implementation 'com.orhanobut:logger:2.1.1'
 
-    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
-    implementation 'com.squareup.retrofit2:adapter-rxjava:2.3.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.8.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava:2.4.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
 
     implementation 'com.facebook.fresco:fresco:1.8.1'
     implementation "com.facebook.fresco:imagepipeline-okhttp3:1.8.1"
