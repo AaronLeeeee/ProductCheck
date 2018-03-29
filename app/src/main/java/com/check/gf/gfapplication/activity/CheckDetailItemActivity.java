@@ -28,7 +28,6 @@ import com.flyco.dialog.widget.NormalDialog;
 import com.jph.takephoto.app.TakePhoto;
 import com.jph.takephoto.app.TakePhotoImpl;
 import com.jph.takephoto.compress.CompressConfig;
-import com.jph.takephoto.model.CropOptions;
 import com.jph.takephoto.model.InvokeParam;
 import com.jph.takephoto.model.TContextWrap;
 import com.jph.takephoto.model.TResult;
@@ -271,10 +270,10 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
 
             switch (position) {
                 case 0:
-                    takePhoto.onPickFromCaptureWithCrop(imageUri, getCropOptions());
+                    takePhoto.onPickFromCapture(imageUri);
                     break;
                 case 1:
-                    takePhoto.onPickFromGalleryWithCrop(imageUri, getCropOptions());
+                    takePhoto.onPickFromGallery();
                     break;
                 default:
                     break;
@@ -283,15 +282,15 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
         });
     }
 
-    /**
-     * 配置裁剪参数
-     */
-    private CropOptions getCropOptions() {
-        CropOptions.Builder builder = new CropOptions.Builder();
-        builder.setOutputX(400).setOutputY(400);
-        builder.setWithOwnCrop(false);
-        return builder.create();
-    }
+//    /**
+//     * 配置裁剪参数
+//     */
+//    private CropOptions getCropOptions() {
+//        CropOptions.Builder builder = new CropOptions.Builder();
+//        builder.setOutputX(400).setOutputY(400);
+//        builder.setWithOwnCrop(false);
+//        return builder.create();
+//    }
 
     private void configTakePhotoOption(TakePhoto takePhoto) {
         TakePhotoOptions.Builder builder = new TakePhotoOptions.Builder();
@@ -308,7 +307,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
     private void configCompress(TakePhoto takePhoto) {
         CompressConfig config = new CompressConfig.Builder()
                 .setMaxSize(102400)
-                .setMaxPixel(400)
+                .setMaxPixel(800)
                 .enableReserveRaw(true)
                 .create();
         takePhoto.onEnableCompress(config, true);
