@@ -27,7 +27,6 @@ import com.flyco.dialog.widget.ActionSheetDialog;
 import com.flyco.dialog.widget.NormalDialog;
 import com.jph.takephoto.app.TakePhoto;
 import com.jph.takephoto.app.TakePhotoImpl;
-import com.jph.takephoto.compress.CompressConfig;
 import com.jph.takephoto.model.InvokeParam;
 import com.jph.takephoto.model.TContextWrap;
 import com.jph.takephoto.model.TResult;
@@ -265,7 +264,8 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
             if (!file.getParentFile().exists()) file.getParentFile().mkdirs();
             Uri imageUri = Uri.fromFile(file);
 
-            configCompress(takePhoto);
+            //configCompress(takePhoto);
+            takePhoto.onEnableCompress(null,false);
             configTakePhotoOption(takePhoto);
 
             switch (position) {
@@ -299,19 +299,18 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
         takePhoto.setTakePhotoOptions(builder.create());
     }
 
-    /**
-     * 配置压缩参数
-     *
-     * @param takePhoto takePhoto实例
-     */
-    private void configCompress(TakePhoto takePhoto) {
-        CompressConfig config = new CompressConfig.Builder()
-                .setMaxSize(102400)
-                .setMaxPixel(800)
-                .enableReserveRaw(true)
-                .create();
-        takePhoto.onEnableCompress(config, true);
-    }
+//    /**
+//     * 配置压缩参数
+//     *
+//     * @param takePhoto takePhoto实例
+//     */
+//    private void configCompress(TakePhoto takePhoto) {
+//        CompressConfig config = new CompressConfig.Builder()
+//                .setMaxSize(1048576)
+//                .enableReserveRaw(true)
+//                .create();
+//        takePhoto.onEnableCompress(config, true);
+//    }
 
 
     /**
@@ -357,7 +356,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
 
     @Override
     public void takeSuccess(TResult result) {
-        File file = new File(result.getImage().getCompressPath());
+        File file = new File(result.getImage().getOriginalPath());
         // create RequestBody instance from file
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
 
