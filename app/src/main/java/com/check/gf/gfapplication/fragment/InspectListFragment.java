@@ -186,7 +186,7 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
      */
     public void RefreshItem() {
         toSubscribe(RxFactory.getCheckServiceInstance()
-                        .InspectItemListQuery(mInspectCode, mEquipmentNo, ""),
+                        .InspectItemListQuery(mInspectCode, mEquipmentNo, mEquipmentNoSecond),
                 () -> {
                     // 隐藏无网络和无数据界面
                     rl_no_network.setVisibility(View.GONE);
