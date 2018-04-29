@@ -2,6 +2,7 @@ package com.check.gf.gfapplication.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -55,15 +56,19 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     }
 
     @Override
-    protected int getContentLayout() {
+    public int bindLayout() {
         return R.layout.activity_search;
     }
 
     @Override
-    protected void initContentView() {
-        super.initContentView();
+    public void getIntentData() {
+
+    }
+
+    @Override
+    public void initView(Bundle savedInstanceState) {
         mBottomDialog = BottomDialog.create(getSupportFragmentManager())
-                .setViewListener(this::initView)
+                .setViewListener(this::initSearchView)
                 .setLayoutRes(R.layout.dialog_layout_search)
                 .setDimAmount(0.2f)   // Dialog window 背景色深度 范围：0 到 1，默认是0.2f
                 .setCancelOutside(true)     // 点击外部区域是否关闭，默认true
@@ -128,7 +133,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
-    private void initView(View view) {
+    private void initSearchView(View view) {
         EditText et_customerName = view.findViewById(R.id.et_customerName);
         et_customerName.setText(mSearchItem.getCustomerName());
         TextView tv_requireDate_text = view.findViewById(R.id.tv_requireDate_text);
@@ -313,4 +318,5 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         }
         firstTime = System.currentTimeMillis();
     }
+
 }

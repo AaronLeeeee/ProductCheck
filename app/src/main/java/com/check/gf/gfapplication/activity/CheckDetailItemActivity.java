@@ -97,8 +97,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
     }
 
     @Override
-    protected void getIntentData() {
-        super.getIntentData();
+    public void getIntentData() {
         Intent intent = getIntent();
         mInspectItemDetail = intent.getParcelableExtra(InspectListFragment.getExtra());
         mInspectCode = intent.getStringExtra(InspectListFragment.getInspectCodeExtra());
@@ -109,14 +108,12 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
 
 
     @Override
-    protected int getContentLayout() {
+    public int bindLayout() {
         return R.layout.activity_check_detail_item;
     }
 
     @Override
-    protected void initContentView() {
-        super.initContentView();
-
+    public void initView(Bundle savedInstanceState) {
         initTopBarForLeft("检测条目", getString(R.string.tx_back));
         mLoadingView = findViewById(R.id.loadView);
 
@@ -151,11 +148,10 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
         et_msg_3 = findViewById(R.id.et_msg_3);
         et_msg_4 = findViewById(R.id.et_msg_4);
         et_msg_5 = findViewById(R.id.et_msg_5);
+        initData();
     }
 
-    @Override
-    protected void initData() {
-        super.initData();
+    private void initData() {
         mRealName = CustomApplication.getInstance().getSpHelper().getRealname();
 
         mPaths = new ArrayList<>();

@@ -21,7 +21,7 @@ import rx.schedulers.Schedulers;
 /**
  * @author nEdAy
  */
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements IBaseComponent {
     protected Context mContext;
     private HeaderLayout mHeaderLayout;
     protected LoadingView mLoadingView;
@@ -30,41 +30,11 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
-        getIntentData(savedInstanceState);
-        View layoutView = LayoutInflater.from(this).inflate(getContentLayout(), null);
-        setContentView(layoutView);
+        View layoutView = LayoutInflater.from(this).inflate(bindLayout(), null);
         getIntentData();
-        initHeaderView();
-        initContentView();
-        initFooterView();
-        initData();
-    }
-
-    protected abstract int getContentLayout();
-
-
-    protected void getIntentData(Bundle outState) {
-
-    }
-
-    protected void getIntentData() {
-
-    }
-
-    protected void initHeaderView() {
-
-    }
-
-    protected void initContentView() {
-
-    }
-
-    protected void initFooterView() {
-
-    }
-
-    protected void initData() {
-
+        setContentView(layoutView);
+        // 初始化控件
+        initView(savedInstanceState);
     }
 
     /**

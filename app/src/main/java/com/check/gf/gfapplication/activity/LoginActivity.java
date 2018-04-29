@@ -1,6 +1,7 @@
 package com.check.gf.gfapplication.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -43,14 +44,19 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private OptionsPickerView optionsPickerView;
     private SharedPreferencesHelper sharedPreferencesHelper;
 
+
     @Override
-    protected int getContentLayout() {
+    public int bindLayout() {
         return R.layout.activity_login;
     }
 
     @Override
-    protected void initContentView() {
-        super.initContentView();
+    public void getIntentData() {
+
+    }
+
+    @Override
+    public void initView(Bundle savedInstanceState) {
         initTopBarForLeft("登录", getString(R.string.tx_exit));
         sharedPreferencesHelper = CustomApplication.getInstance().getSpHelper();
         sharedPreferencesHelper.setUserPostCode("");
@@ -84,6 +90,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         tv_pack_group_text = findViewById(R.id.tv_pack_group_text);
 
         ExtendUtils.setOnClickListener(this, tv_pack_station_text, tv_pack_group_text);
+
+        initData();
     }
 
     @Override
@@ -99,8 +107,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
     }
 
-    @Override
-    protected void initData() {
+    private void initData() {
         // 等数据加载完毕再初始化并显示Picker,以免还未加载完数据就显示,造成APP崩溃。
         toSubscribe(RxFactory.getUserServiceInstance()
                         .postQuery(),

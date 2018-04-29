@@ -36,6 +36,7 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:allowBackup">
         <activity
             android:name=".activity.SplashActivity"

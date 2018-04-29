@@ -1,6 +1,7 @@
 package com.check.gf.gfapplication.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -52,18 +53,19 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
     }
 
     @Override
-    protected int getContentLayout() {
+    public int bindLayout() {
         return R.layout.activity_check_list;
     }
 
     @Override
-    protected void initContentView() {
-        super.initContentView();
+    public void getIntentData() {
+        Intent intent = getIntent();
+        mSearchItem = intent.getParcelableExtra(SearchActivity.getSearchItem());
+        mState = intent.getIntExtra(SearchActivity.getExtra(), 0);
+    }
 
-        mSearchItem = getIntent().getParcelableExtra(SearchActivity.getSearchItem());
-
-        mState = getIntent().getIntExtra(SearchActivity.getExtra(), 0);
-
+    @Override
+    public void initView(Bundle savedInstanceState) {
         initTopBarForLeft("检测列表", getString(R.string.tx_back));
         mLoadingView = findViewById(R.id.loadView);
 
@@ -230,8 +232,4 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
         CommonUtils.showToast("暂页面不支持下拉刷新");
     }
 
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
-    }
 }

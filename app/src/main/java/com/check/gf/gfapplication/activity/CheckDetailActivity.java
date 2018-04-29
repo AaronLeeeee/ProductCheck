@@ -1,5 +1,8 @@
 package com.check.gf.gfapplication.activity;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.check.gf.gfapplication.R;
@@ -20,6 +23,7 @@ import java.util.List;
  */
 public class CheckDetailActivity extends BaseActivity implements BaseInfoFragment.onTestBeginListener {
     private final ArrayList<Fragment> mFragments = new ArrayList<>();
+    @SuppressLint("StaticFieldLeak")
     private static CheckDetailActivity mInstance;
     private CheckOrderInfo mCheckOrderInfo;
     private GuardViewPager vp_paper;
@@ -36,20 +40,24 @@ public class CheckDetailActivity extends BaseActivity implements BaseInfoFragmen
     }
 
     @Override
-    protected int getContentLayout() {
+    public int bindLayout() {
         return R.layout.activity_check_detail;
     }
 
     @Override
-    protected void initContentView() {
-        super.initContentView();
+    public void getIntentData() {
+        Intent intent = getIntent();
+        mCheckOrderInfo = intent.getParcelableExtra(CheckListActivity.getExtra());
+    }
+
+    @Override
+    public void initView(Bundle savedInstanceState) {
         mInstance = this;
         initTopBarForLeft("检测单详情", getString(R.string.tx_back));
         vp_paper = findViewById(R.id.vpItemLeftPaper);
         vp_paper.setOffscreenPageLimit(1);
         List<String> titles = new ArrayList<>();
         titles.add("基本信息");
-        mCheckOrderInfo = getIntent().getParcelableExtra(CheckListActivity.getExtra());
         mFragments.add(BaseInfoFragment.newInstance(mCheckOrderInfo));
         List<CheckOrderInfo.CheckDataBean> checkDataBeanList = mCheckOrderInfo.getCheckData();
         if (checkDataBeanList != null) {
@@ -69,7 +77,6 @@ public class CheckDetailActivity extends BaseActivity implements BaseInfoFragmen
         tl_library.setViewPager(vp_paper, fTitles, this, mFragments);
         onTestBegin(false);
     }
-
 
     /**
      * 接受事件，切换点击/滑动状态
@@ -92,5 +99,10 @@ public class CheckDetailActivity extends BaseActivity implements BaseInfoFragmen
         this.equipmentNoSecond = equipmentNoSecond;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mInstance = null;
+    }
 
 }
