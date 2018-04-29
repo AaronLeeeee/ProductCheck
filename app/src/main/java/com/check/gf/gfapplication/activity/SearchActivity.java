@@ -85,6 +85,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         mFinishedCheckCountTv = findViewById(R.id.tv_finished_check);
         findViewById(R.id.btn_search).setOnClickListener(view -> mBottomDialog.show());
         ExtendUtils.setOnClickListener(this, mUnStartCheckLl, mProcessCheckLl, mFinishedCheckLl);
+        // TODO: 额 这个最后别忘记加
         //keepAlive();
     }
 

@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.check.gf.gfapplication.CustomApplication;
 import com.check.gf.gfapplication.R;
+import com.check.gf.gfapplication.activity.CheckDetailActivity;
 import com.check.gf.gfapplication.activity.CheckDetailItemActivity;
 import com.check.gf.gfapplication.adapter.InspectListAdapter;
 import com.check.gf.gfapplication.base.BaseFragment;
@@ -97,7 +98,7 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
     }
 
     private void setUpViews(View parentView) {
-        mEquipmentNoSecond = CustomApplication.getInstance().getEquipmentNoSecond();
+        mEquipmentNoSecond = CheckDetailActivity.getInstance().getEquipmentNoSecond();
         mRealName = CustomApplication.getInstance().getSpHelper().getRealname();
 
         mLoadingView = parentView.findViewById(R.id.loadView);

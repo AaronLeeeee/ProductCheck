@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.check.gf.gfapplication.CustomApplication;
 import com.check.gf.gfapplication.R;
+import com.check.gf.gfapplication.activity.CheckDetailActivity;
 import com.check.gf.gfapplication.base.BaseFragment;
 import com.check.gf.gfapplication.entity.CheckOrderInfo;
 import com.check.gf.gfapplication.network.RxFactory;
@@ -119,7 +120,7 @@ public class BaseInfoFragment extends BaseFragment {
                     if (checkOrderInfoResult.getResult() == 0) {
                         hideLoading();
                         et_equipment_no_second.setEnabled(false);
-                        CustomApplication.getInstance().setEquipmentNoSecond(equipmentNoSecond);
+                        CheckDetailActivity.getInstance().setEquipmentNoSecond(equipmentNoSecond);
                         initData(mCheckOrderInfo);
                         queryStartCheck(equipmentNo, materialCode, equipmentNoSecond);
                     } else {

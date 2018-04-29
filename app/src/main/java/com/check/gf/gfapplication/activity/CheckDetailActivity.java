@@ -20,10 +20,20 @@ import java.util.List;
  */
 public class CheckDetailActivity extends BaseActivity implements BaseInfoFragment.onTestBeginListener {
     private final ArrayList<Fragment> mFragments = new ArrayList<>();
+    private static CheckDetailActivity mInstance;
     private CheckOrderInfo mCheckOrderInfo;
     private GuardViewPager vp_paper;
     private SlidingTabLayout tl_library;
+    private String equipmentNoSecond;
 
+    /**
+     * 对外提供CheckDetailActivity Context
+     *
+     * @return CheckDetailActivity
+     */
+    public static CheckDetailActivity getInstance() {
+        return mInstance;
+    }
 
     @Override
     protected int getContentLayout() {
@@ -33,6 +43,7 @@ public class CheckDetailActivity extends BaseActivity implements BaseInfoFragmen
     @Override
     protected void initContentView() {
         super.initContentView();
+        mInstance = this;
         initTopBarForLeft("检测单详情", getString(R.string.tx_back));
         vp_paper = findViewById(R.id.vpItemLeftPaper);
         vp_paper.setOffscreenPageLimit(1);
@@ -70,5 +81,16 @@ public class CheckDetailActivity extends BaseActivity implements BaseInfoFragmen
         vp_paper.setSlidingEnable(enable);
         tl_library.setTabClickEnable(enable);
     }
+
+
+    public synchronized String getEquipmentNoSecond() {
+        return equipmentNoSecond;
+    }
+
+
+    public synchronized void setEquipmentNoSecond(String equipmentNoSecond) {
+        this.equipmentNoSecond = equipmentNoSecond;
+    }
+
 
 }

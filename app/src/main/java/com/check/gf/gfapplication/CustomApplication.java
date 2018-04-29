@@ -45,7 +45,6 @@ public class CustomApplication extends Application {
     // 对外提供整个应用生命周期的Context
     private static CustomApplication mInstance;
     private SharedPreferencesHelper sharedPreferencesHelper;
-    private String equipmentNoSecond;
 
     /**
      * 对外提供Application Context
@@ -149,16 +148,6 @@ public class CustomApplication extends Application {
             sharedPreferencesHelper = new SharedPreferencesHelper(mInstance);
         }
         return sharedPreferencesHelper;
-    }
-
-
-    public synchronized String getEquipmentNoSecond() {
-        return equipmentNoSecond;
-    }
-
-
-    public synchronized void setEquipmentNoSecond(String equipmentNoSecond) {
-        this.equipmentNoSecond = equipmentNoSecond;
     }
 
     /**
