@@ -2,11 +2,9 @@ package com.check.gf.gfapplication.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -90,14 +88,19 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
         return EQUIPMENT_NO_SECOND;
     }
 
+
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View layout = inflater.inflate(R.layout.fragment_inspect_list, container, false);
-        setUpViews(layout);
-        return layout;
+    public int bindLayout() {
+        return R.layout.fragment_inspect_list;
     }
 
-    private void setUpViews(View parentView) {
+    @Override
+    public void getIntentData() {
+
+    }
+
+    @Override
+    public void initView(Bundle savedInstanceState) {
         mEquipmentNoSecond = CheckDetailActivity.getInstance().getEquipmentNoSecond();
         mRealName = CustomApplication.getInstance().getSpHelper().getRealname();
 
@@ -236,6 +239,5 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
     public void onRefresh() {
         RefreshItem();
     }
-
 
 }

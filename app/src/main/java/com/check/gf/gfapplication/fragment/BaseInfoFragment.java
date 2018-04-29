@@ -6,9 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -74,26 +72,35 @@ public class BaseInfoFragment extends BaseFragment {
         }
     }
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View layout = inflater.inflate(R.layout.fragment_base_info, container, false);
 
-        mPurchaseIdTv = layout.findViewById(R.id.tv_purchase_order_id);
-        mSupplierTv = layout.findViewById(R.id.tv_supplier);
-        mMaterialCodeTv = layout.findViewById(R.id.tv_material_code);
-        mMaterialIdTv = layout.findViewById(R.id.tv_material_id);
-        mMaterialNameTv = layout.findViewById(R.id.tv_material_name);
-        //mQMNOTv = layout.findViewById(R.id.tv_qm_no);
-        mIncomeCountTv = layout.findViewById(R.id.tv_income_count);
-        //mSamplePlanTv = layout.findViewById(R.id.tv_sample_plan);
-        mInspectorTv = layout.findViewById(R.id.tv_inspector);
-        mStartTimeTv = layout.findViewById(R.id.tv_start_time);
-        mEndTimeTv = layout.findViewById(R.id.tv_end_time);
-        mSurfaceTv = layout.findViewById(R.id.tv_surface);
-        mDimensionTv = layout.findViewById(R.id.tv_dimension);
-        mPerformanceTv = layout.findViewById(R.id.tv_performance);
-        et_equipment_no_second = layout.findViewById(R.id.et_equipment_no_second);
-        mStartCheckBt = layout.findViewById(R.id.tv_start_check);
+    @Override
+    public int bindLayout() {
+        return R.layout.fragment_base_info;
+    }
+
+    @Override
+    public void getIntentData() {
+
+    }
+
+    @Override
+    public void initView(Bundle savedInstanceState) {
+        mPurchaseIdTv = parentView.findViewById(R.id.tv_purchase_order_id);
+        mSupplierTv = parentView.findViewById(R.id.tv_supplier);
+        mMaterialCodeTv = parentView.findViewById(R.id.tv_material_code);
+        mMaterialIdTv = parentView.findViewById(R.id.tv_material_id);
+        mMaterialNameTv = parentView.findViewById(R.id.tv_material_name);
+        //mQMNOTv = parentView.findViewById(R.id.tv_qm_no);
+        mIncomeCountTv = parentView.findViewById(R.id.tv_income_count);
+        //mSamplePlanTv = parentView.findViewById(R.id.tv_sample_plan);
+        mInspectorTv = parentView.findViewById(R.id.tv_inspector);
+        mStartTimeTv = parentView.findViewById(R.id.tv_start_time);
+        mEndTimeTv = parentView.findViewById(R.id.tv_end_time);
+        mSurfaceTv = parentView.findViewById(R.id.tv_surface);
+        mDimensionTv = parentView.findViewById(R.id.tv_dimension);
+        mPerformanceTv = parentView.findViewById(R.id.tv_performance);
+        et_equipment_no_second = parentView.findViewById(R.id.et_equipment_no_second);
+        mStartCheckBt = parentView.findViewById(R.id.tv_start_check);
 
         mRealName = CustomApplication.getInstance().getSpHelper().getRealname();
 
@@ -109,7 +116,6 @@ public class BaseInfoFragment extends BaseFragment {
                 queryCheckOrderInfoQuery(mCheckOrderInfo.getEquipmentNo(), mCheckOrderInfo.getMaterialCode(), equipmentNoSecond);
             }
         });
-        return layout;
     }
 
     private void queryCheckOrderInfoQuery(String equipmentNo, String materialCode, String equipmentNoSecond) {

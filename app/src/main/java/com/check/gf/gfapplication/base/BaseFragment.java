@@ -1,8 +1,13 @@
 package com.check.gf.gfapplication.base;
 
+import android.content.Context;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.mingle.widget.LoadingView;
 
@@ -17,15 +22,27 @@ import rx.schedulers.Schedulers;
  *
  * @author nEdAy
  */
-public class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment implements IBaseComponent {
 
+    protected Context mContext;
+    protected View parentView;
     protected LoadingView mLoadingView;
 
-    /**
-     * 获取共通操作机能
-     */
-    protected BaseOperation getOperation() {
-        return new BaseOperation(getActivity());
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mContext = getActivity();
+        // 设置渲染视图View
+        parentView = inflater.inflate(bindLayout(), container, false);
+        initView(savedInstanceState);
+        return parentView;
+    }
+
+    protected FragmentActivity getActivityNonNull() {
+        if (super.getActivity() != null) {
+            return super.getActivity();
+        } else {
+            throw new RuntimeException("null returned from getActivity()");
+        }
     }
 
     /**
@@ -75,14 +92,6 @@ public class BaseFragment extends Fragment {
     protected void hideLoading() {
         if (mLoadingView != null) {
             mLoadingView.setVisibility(View.GONE);
-        }
-    }
-
-    protected FragmentActivity getActivityNonNull() {
-        if (super.getActivity() != null) {
-            return super.getActivity();
-        } else {
-            throw new RuntimeException("null returned from getActivity()");
         }
     }
 
