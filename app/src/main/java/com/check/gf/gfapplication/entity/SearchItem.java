@@ -1,11 +1,14 @@
 package com.check.gf.gfapplication.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * time   : 2018/3/13
  * desc   :
  */
 
-public class SearchItem {
+public class SearchItem implements Parcelable {
     private String customerName;
     private String mRequireDate;
     private String equipmentNo;
@@ -60,4 +63,43 @@ public class SearchItem {
     public void setMaterialCode(String materialCode) {
         this.materialCode = materialCode;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.customerName);
+        dest.writeString(this.mRequireDate);
+        dest.writeString(this.equipmentNo);
+        dest.writeString(this.docNo);
+        dest.writeString(this.materialCode);
+        dest.writeString(this.custNo);
+    }
+
+    public SearchItem() {
+    }
+
+    protected SearchItem(Parcel in) {
+        this.customerName = in.readString();
+        this.mRequireDate = in.readString();
+        this.equipmentNo = in.readString();
+        this.docNo = in.readString();
+        this.materialCode = in.readString();
+        this.custNo = in.readString();
+    }
+
+    public static final Parcelable.Creator<SearchItem> CREATOR = new Parcelable.Creator<SearchItem>() {
+        @Override
+        public SearchItem createFromParcel(Parcel source) {
+            return new SearchItem(source);
+        }
+
+        @Override
+        public SearchItem[] newArray(int size) {
+            return new SearchItem[size];
+        }
+    };
 }

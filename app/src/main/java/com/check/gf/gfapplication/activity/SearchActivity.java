@@ -43,11 +43,15 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     private List<CheckOrder> mFinishedCheckOrders = new ArrayList<>();
     private String mRequireDate;
     private BottomDialog mBottomDialog;
-    private SearchItem searchItem;
+    private SearchItem mSearchItem = new SearchItem();
     private boolean isNotFirstInit;
 
     public static String getExtra() {
         return "CheckOrders";
+    }
+
+    public static String getSearchItem() {
+        return "SearchItem";
     }
 
     @Override
@@ -88,15 +92,19 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void onResume() {
         super.onResume();
-        searchItem = CustomApplication.getInstance().getSearchItem();
-        String customerName = searchItem.getCustomerName();
-        String requireDate = searchItem.getmRequireDate();
-        String equipmentNo = searchItem.getEquipmentNo();
-        String docNo = searchItem.getDocNo();
-        String materialCode = searchItem.getMaterialCode();
-        String custNo = searchItem.getCustNo();
+        String customerName = mSearchItem.getCustomerName();
+        String requireDate = mSearchItem.getmRequireDate();
+        String equipmentNo = mSearchItem.getEquipmentNo();
+        String docNo = mSearchItem.getDocNo();
+        String materialCode = mSearchItem.getMaterialCode();
+        String custNo = mSearchItem.getCustNo();
         if (!isNotFirstInit) {
             isNotFirstInit = true;
+            return;
+        }
+        if (TextUtils.isEmpty(customerName) && TextUtils.isEmpty(requireDate) &&
+                TextUtils.isEmpty(equipmentNo) && TextUtils.isEmpty(docNo)
+                && TextUtils.isEmpty(materialCode) && TextUtils.isEmpty(custNo)) {
             return;
         }
         search(customerName, equipmentNo, requireDate, docNo, materialCode, custNo);
@@ -121,24 +129,24 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
     private void initView(View view) {
         EditText et_customerName = view.findViewById(R.id.et_customerName);
-        et_customerName.setText(searchItem.getCustomerName());
+        et_customerName.setText(mSearchItem.getCustomerName());
         TextView tv_requireDate_text = view.findViewById(R.id.tv_requireDate_text);
-        String requireDate = searchItem.getmRequireDate();
+        String requireDate = mSearchItem.getmRequireDate();
         tv_requireDate_text.setText(TextUtils.isEmpty(requireDate) ? getString(R.string.tv_please_pick) : requireDate);
         ImageView iv_btn_clean = view.findViewById(R.id.iv_btn_clean);
         iv_btn_clean.setOnClickListener(view13 -> {
             mRequireDate = "";
-            searchItem.setmRequireDate("");
+            mSearchItem.setmRequireDate("");
             tv_requireDate_text.setText(getString(R.string.tv_please_pick));
         });
         EditText et_equipmentNo = view.findViewById(R.id.et_equipmentNo);
-        et_equipmentNo.setText(searchItem.getEquipmentNo());
+        et_equipmentNo.setText(mSearchItem.getEquipmentNo());
         EditText et_docNo = view.findViewById(R.id.et_docNo);
-        et_docNo.setText(searchItem.getDocNo());
+        et_docNo.setText(mSearchItem.getDocNo());
         EditText et_materialCode = view.findViewById(R.id.et_materialCode);
-        et_materialCode.setText(searchItem.getMaterialCode());
+        et_materialCode.setText(mSearchItem.getMaterialCode());
         EditText et_custNo = view.findViewById(R.id.et_custNo);
-        et_custNo.setText(searchItem.getCustNo());
+        et_custNo.setText(mSearchItem.getCustNo());
         view.findViewById(R.id.btn_search).setOnClickListener(view1 -> {
             String customerName = et_customerName.getText().toString().trim();
             String equipmentNo = et_equipmentNo.getText().toString().trim();
@@ -146,6 +154,12 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             String materialCode = et_materialCode.getText().toString().trim();
             String custNo = et_custNo.getText().toString().trim();
             mBottomDialog.dismiss();
+            if (TextUtils.isEmpty(customerName) && TextUtils.isEmpty(mRequireDate) &&
+                    TextUtils.isEmpty(equipmentNo) && TextUtils.isEmpty(docNo)
+                    && TextUtils.isEmpty(materialCode) && TextUtils.isEmpty(custNo)) {
+                CommonUtils.showToast("条件不允许同时为空");
+                return;
+            }
             search(customerName, equipmentNo, mRequireDate, docNo, materialCode, custNo);
         });
         tv_requireDate_text.setOnClickListener(view12 ->
@@ -167,7 +181,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                     TextView tv_requireDate_text = (TextView) view;
                     mRequireDate = getTime(date);
                     tv_requireDate_text.setText(mRequireDate);
-                    CustomApplication.getInstance().getSearchItem().setmRequireDate(mRequireDate);
                 })
                 // 年月日时分秒 的显示与否，不设置则默认全部显示
                 .setType(new boolean[]{true, true, true, false, false, false})
@@ -198,12 +211,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
      * @param custNo
      */
     private void search(String customerName, String equipmentNo, String requireDate, String docNo, String materialCode, String custNo) {
-        if (TextUtils.isEmpty(customerName) && TextUtils.isEmpty(requireDate) &&
-                TextUtils.isEmpty(equipmentNo) && TextUtils.isEmpty(docNo)
-                && TextUtils.isEmpty(materialCode) && TextUtils.isEmpty(custNo)) {
-            CommonUtils.showToast("条件不允许同时为空");
-            return;
-        }
         toSubscribe(RxFactory.getCheckServiceInstance()
                         .CheckOrderQuery(customerName, requireDate,
                                 equipmentNo, docNo, materialCode, custNo),
@@ -235,12 +242,12 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                         mUnStartCheckCountTv.setText(String.valueOf(mUnStartCheckOrders.size() + " 单"));
                         mProcessCheckCountTv.setText(String.valueOf(mProcessCheckOrders.size() + " 单"));
                         mFinishedCheckCountTv.setText(String.valueOf(mFinishedCheckOrders.size() + " 单"));
-                        searchItem.setCustomerName(customerName);
-                        searchItem.setEquipmentNo(equipmentNo);
-                        searchItem.setmRequireDate(mRequireDate);
-                        searchItem.setDocNo(docNo);
-                        searchItem.setMaterialCode(materialCode);
-                        searchItem.setCustNo(custNo);
+                        mSearchItem.setCustomerName(customerName);
+                        mSearchItem.setEquipmentNo(equipmentNo);
+                        mSearchItem.setmRequireDate(mRequireDate);
+                        mSearchItem.setDocNo(docNo);
+                        mSearchItem.setMaterialCode(materialCode);
+                        mSearchItem.setCustNo(custNo);
                     } else {
                         queryCheckOrderError(checkOrderResult.getDesc());
                     }
@@ -282,8 +289,8 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     private void jumpCheckListActivity(List<CheckOrder> mCheckOrders, int checkOrderState) {
         if (mCheckOrders.size() > 0) {
             Intent intent = new Intent(this, CheckListActivity.class);
-            // intent.putParcelableArrayListExtra(SearchActivity.getExtra(), (ArrayList<? extends Parcelable>) mCheckOrders);
             intent.putExtra(SearchActivity.getExtra(), checkOrderState);
+            intent.putExtra(SearchActivity.getSearchItem(), mSearchItem);
             startActivity(intent);
         } else {
             CommonUtils.showToast("没有该状态的检验单");

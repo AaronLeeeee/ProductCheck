@@ -6,7 +6,6 @@ import android.os.Environment;
 
 import com.check.gf.gfapplication.activity.LoginActivity;
 import com.check.gf.gfapplication.config.StaticConfig;
-import com.check.gf.gfapplication.entity.SearchItem;
 import com.check.gf.gfapplication.helper.SharedPreferencesHelper;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.orhanobut.logger.AndroidLogAdapter;
@@ -46,7 +45,6 @@ public class CustomApplication extends LitePalApplication {
     // 对外提供整个应用生命周期的Context
     private static CustomApplication mInstance;
     private SharedPreferencesHelper sharedPreferencesHelper;
-    private SearchItem searchItem;
     private String equipmentNoSecond;
 
     /**
@@ -151,17 +149,6 @@ public class CustomApplication extends LitePalApplication {
         return sharedPreferencesHelper;
     }
 
-    /**
-     * 单例模式，返回SearchItem
-     *
-     * @return SearchItem
-     */
-    public synchronized SearchItem getSearchItem() {
-        if (searchItem == null) {
-            searchItem = new SearchItem();
-        }
-        return searchItem;
-    }
 
     public synchronized String getEquipmentNoSecond() {
         return equipmentNoSecond;

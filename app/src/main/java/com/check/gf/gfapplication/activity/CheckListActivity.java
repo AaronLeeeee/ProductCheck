@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.check.gf.gfapplication.CustomApplication;
 import com.check.gf.gfapplication.R;
 import com.check.gf.gfapplication.adapter.CheckListAdapter;
 import com.check.gf.gfapplication.base.BaseActivity;
@@ -45,6 +44,9 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
     protected SwipeRefreshLayout mSwipeRefreshLayout;
     protected LinearLayout rl_no_data, rl_no_network;
 
+    private SearchItem mSearchItem;
+    private int mState;
+
     public static String getExtra() {
         return "CheckOrder";
     }
@@ -57,6 +59,11 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
     @Override
     protected void initContentView() {
         super.initContentView();
+
+        mSearchItem = getIntent().getParcelableExtra(SearchActivity.getSearchItem());
+
+        mState = getIntent().getIntExtra(SearchActivity.getExtra(), 0);
+
         initTopBarForLeft("检测列表", getString(R.string.tx_back));
         mLoadingView = findViewById(R.id.loadView);
 
@@ -82,23 +89,20 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
     @Override
     protected void onResume() {
         super.onResume();
-        search(getIntent().getIntExtra(SearchActivity.getExtra(), 0));
+        search();
     }
 
     /**
      * Represents an asynchronous search task
-     *
-     * @param state 状态
      */
-    private void search(int state) {
+    private void search() {
         mCheckOrders.clear();
-        SearchItem searchItem = CustomApplication.getInstance().getSearchItem();
-        String customerName = searchItem.getCustomerName();
-        String requireDate = searchItem.getmRequireDate();
-        String equipmentNo = searchItem.getEquipmentNo();
-        String docNo = searchItem.getDocNo();
-        String materialCode = searchItem.getMaterialCode();
-        String custNo = searchItem.getCustNo();
+        String customerName = mSearchItem.getCustomerName();
+        String requireDate = mSearchItem.getmRequireDate();
+        String equipmentNo = mSearchItem.getEquipmentNo();
+        String docNo = mSearchItem.getDocNo();
+        String materialCode = mSearchItem.getMaterialCode();
+        String custNo = mSearchItem.getCustNo();
         if (TextUtils.isEmpty(customerName) && TextUtils.isEmpty(requireDate) &&
                 TextUtils.isEmpty(equipmentNo) && TextUtils.isEmpty(docNo)
                 && TextUtils.isEmpty(materialCode) && TextUtils.isEmpty(custNo)) {
@@ -120,7 +124,7 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
                         for (int i = 0; i < checkOrders.size(); i++) {
                             CheckOrder checkOrder = checkOrders.get(i);
                             int finishState = checkOrder.getFinishState();
-                            if (finishState == state) { // 完成状态 0：未开始  1：检查中  2：检查完成
+                            if (finishState == mState) { // 完成状态 0：未开始  1：检查中  2：检查完成
                                 mCheckOrders.add(checkOrder);
                             }
                         }
