@@ -12,30 +12,30 @@ import java.util.List;
  *
  * @author nEdAy
  */
-public class CheckListAdapter extends BaseQuickAdapter<CheckOrder.DataBean, BaseViewHolder> {
+public class CheckListAdapter extends BaseQuickAdapter<CheckOrder, BaseViewHolder> {
 
-    public CheckListAdapter(List<CheckOrder.DataBean> items) {
+    public CheckListAdapter(List<CheckOrder> items) {
         super(R.layout.list_item_check_list, items);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, CheckOrder.DataBean incomeCheck) {
+    protected void convert(BaseViewHolder helper, CheckOrder checkOrder) {
         helper.setText(R.id.tv_purchase_order,
-                mContext.getString(R.string.purchase_order_id, incomeCheck.getCustomerCode()))
+                mContext.getString(R.string.purchase_order_id, checkOrder.getCustomerCode()))
                 .setText(R.id.tv_material_id,
-                        mContext.getString(R.string.material_id_append, incomeCheck.getItemCode()))
+                        mContext.getString(R.string.material_id_append, checkOrder.getItemCode()))
                 .setText(R.id.tv_material_name,
-                        mContext.getString(R.string.material_name_append, incomeCheck.getItemName()))
+                        mContext.getString(R.string.material_name_append, checkOrder.getItemName()))
                 .setText(R.id.tv_income_count,
-                        mContext.getString(R.string.income_material_count_append, incomeCheck.getPackgNum()))
+                        mContext.getString(R.string.income_material_count_append, checkOrder.getPackgNum()))
                 .setText(R.id.tv_check_date,
-                        mContext.getString(R.string.check_date, incomeCheck.getRequireDate()))
+                        mContext.getString(R.string.check_date, checkOrder.getRequireDate()))
                 .setText(R.id.tv_materialCode,
-                        mContext.getString(R.string.material_code, incomeCheck.getMaterialCode()))
+                        mContext.getString(R.string.material_code, checkOrder.getMaterialCode()))
                 .setText(R.id.tv_check_id,
-                        mContext.getString(R.string.check_order_id, incomeCheck.getEquipmentNo()))
+                        mContext.getString(R.string.check_order_id, checkOrder.getEquipmentNo()))
                 .setText(R.id.tv_completion,
-                        mContext.getString(R.string.completion, String.valueOf(incomeCheck.getFinishCheckNum()) + " / " + String.valueOf(incomeCheck.getTotalCheckNum())))
+                        mContext.getString(R.string.completion, String.valueOf(checkOrder.getFinishCheckNum()) + " / " + String.valueOf(checkOrder.getTotalCheckNum())))
                 .addOnClickListener(R.id.ll_go_detail);
     }
 

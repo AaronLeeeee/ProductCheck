@@ -38,12 +38,13 @@ import me.shaohui.bottomdialog.BottomDialog;
 public class SearchActivity extends BaseActivity implements View.OnClickListener {
 
     private TextView mUnStartCheckCountTv, mProcessCheckCountTv, mFinishedCheckCountTv;
-    private List<CheckOrder.DataBean> mUnStartCheckOrders = new ArrayList<>();
-    private List<CheckOrder.DataBean> mProcessCheckOrders = new ArrayList<>();
-    private List<CheckOrder.DataBean> mFinishedCheckOrders = new ArrayList<>();
+    private List<CheckOrder> mUnStartCheckOrders = new ArrayList<>();
+    private List<CheckOrder> mProcessCheckOrders = new ArrayList<>();
+    private List<CheckOrder> mFinishedCheckOrders = new ArrayList<>();
     private String mRequireDate;
     private BottomDialog mBottomDialog;
     private SearchItem searchItem;
+    private boolean isNotFirstInit;
 
     public static String getExtra() {
         return "CheckOrders";
@@ -80,7 +81,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         mFinishedCheckCountTv = findViewById(R.id.tv_finished_check);
         findViewById(R.id.btn_search).setOnClickListener(view -> mBottomDialog.show());
         ExtendUtils.setOnClickListener(this, mUnStartCheckLl, mProcessCheckLl, mFinishedCheckLl);
-        keepAlive();
+        //keepAlive();
     }
 
 
@@ -94,6 +95,10 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         String docNo = searchItem.getDocNo();
         String materialCode = searchItem.getMaterialCode();
         String custNo = searchItem.getCustNo();
+        if (!isNotFirstInit) {
+            isNotFirstInit = true;
+            return;
+        }
         search(customerName, equipmentNo, requireDate, docNo, materialCode, custNo);
     }
 
@@ -206,7 +211,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 checkOrderResult -> {
                     if (checkOrderResult.getResult() == 0) {
                         hideLoading();
-                        List<CheckOrder.DataBean> checkOrders = checkOrderResult.getData();
+                        List<CheckOrder> checkOrders = checkOrderResult.getData();
                         if (checkOrders == null || checkOrders.size() <= 0) {
                             CommonUtils.showToast("该筛选条件下检验单不存在,请重新搜索");
                             return;
@@ -215,7 +220,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                         mProcessCheckOrders.clear();
                         mFinishedCheckOrders.clear();
                         for (int i = 0; i < checkOrders.size(); i++) {
-                            CheckOrder.DataBean checkOrder = checkOrders.get(i);
+                            CheckOrder checkOrder = checkOrders.get(i);
                             int finishState = checkOrder.getFinishState();
                             if (finishState == 0) { // 完成状态 0：未开始  1：检查中  2：检查完成
                                 mUnStartCheckOrders.add(checkOrder);
@@ -274,7 +279,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         Logger.e(msg);
     }
 
-    private void jumpCheckListActivity(List<CheckOrder.DataBean> mCheckOrders, int checkOrderState) {
+    private void jumpCheckListActivity(List<CheckOrder> mCheckOrders, int checkOrderState) {
         if (mCheckOrders.size() > 0) {
             Intent intent = new Intent(this, CheckListActivity.class);
             // intent.putParcelableArrayListExtra(SearchActivity.getExtra(), (ArrayList<? extends Parcelable>) mCheckOrders);

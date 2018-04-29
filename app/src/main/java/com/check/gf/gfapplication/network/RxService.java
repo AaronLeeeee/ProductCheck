@@ -20,7 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 class RxService<T> {
 
     private HttpLoggingInterceptor httpLoggingInterceptor = createHttpLoggingInterceptor();
-    private T mService = null;
+    private T mService;
 
     RxService(Class<T> clazz) {
         Retrofit retrofit = new Retrofit.Builder()

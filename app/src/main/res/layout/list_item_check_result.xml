@@ -33,12 +33,21 @@
             android:textSize="@dimen/ts_larger" />
 
         <TextView
+            android:id="@+id/tv_material_code"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:textColor="@color/white"
+            android:textSize="@dimen/ts_larger" />
+
+        <TextView
             android:id="@+id/tv_num_des"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="8"
             android:textColor="@color/white"
             android:textSize="@dimen/ts_larger" />
+
 
         <ImageView
             android:id="@+id/iv_checked"

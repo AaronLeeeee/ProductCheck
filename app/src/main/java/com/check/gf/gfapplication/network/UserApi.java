@@ -1,8 +1,11 @@
 package com.check.gf.gfapplication.network;
 
 
-import com.check.gf.gfapplication.entity.LoginResult;
-import com.check.gf.gfapplication.entity.TeamGroupResult;
+import com.check.gf.gfapplication.entity.PostData;
+import com.check.gf.gfapplication.entity.ResultObject;
+import com.check.gf.gfapplication.entity.User;
+
+import java.util.List;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -26,7 +29,7 @@ public interface UserApi {
      * }
      */
     @GET("User/Login")
-    Observable<LoginResult> login(@Query("username") String username, @Query("password") String password);
+    Observable<ResultObject<User>> login(@Query("username") String username, @Query("password") String password);
 
     /**
      * 工位班组查询接口
@@ -34,6 +37,6 @@ public interface UserApi {
      * @return 工位班组信息
      */
     @GET("User/PostQuery")
-    Observable<TeamGroupResult> postQuery();
+    Observable<ResultObject<List<PostData>>> postQuery();
 
 }

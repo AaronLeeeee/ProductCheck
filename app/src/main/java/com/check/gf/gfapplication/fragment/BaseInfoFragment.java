@@ -1,13 +1,15 @@
 package com.check.gf.gfapplication.fragment;
 
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.check.gf.gfapplication.CustomApplication;
@@ -44,12 +46,14 @@ public class BaseInfoFragment extends BaseFragment {
     private TextView mDimensionTv;
     private TextView mPerformanceTv;
     private TextView mStartCheckBt;
-    private TextView mSubmitCheckBt;
+    private EditText et_equipment_no_second;
 
-    private CheckOrderInfo.DataBean checkOrderInfo;
-    private onTestListener mCallback;
+    private CheckOrderInfo mCheckOrderInfo;
+    private onTestBeginListener mCallback;
 
-    public static BaseInfoFragment newInstance(CheckOrderInfo.DataBean checkOrderInfo) {
+    private String mRealName;
+
+    public static BaseInfoFragment newInstance(CheckOrderInfo checkOrderInfo) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(BASE_INFO, checkOrderInfo);
         BaseInfoFragment fragment = new BaseInfoFragment();
@@ -58,19 +62,19 @@ public class BaseInfoFragment extends BaseFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         // 这个方法是用来确认当前的Activity容器是否已经继承了该接口，如果没有将抛出异常
         try {
-            mCallback = (onTestListener) activity;
+            mCallback = (onTestBeginListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
+            throw new ClassCastException(context.toString()
                     + " must implement onTestListener");
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_base_info, container, false);
 
         mPurchaseIdTv = layout.findViewById(R.id.tv_purchase_order_id);
@@ -87,33 +91,56 @@ public class BaseInfoFragment extends BaseFragment {
         mSurfaceTv = layout.findViewById(R.id.tv_surface);
         mDimensionTv = layout.findViewById(R.id.tv_dimension);
         mPerformanceTv = layout.findViewById(R.id.tv_performance);
-
+        et_equipment_no_second = layout.findViewById(R.id.et_equipment_no_second);
         mStartCheckBt = layout.findViewById(R.id.tv_start_check);
-        mSubmitCheckBt = layout.findViewById(R.id.tv_submit);
+
+        mRealName = CustomApplication.getInstance().getSpHelper().getRealname();
 
         mStartCheckBt.setOnClickListener(v -> {
+            String equipmentNoSecond = et_equipment_no_second.getText().toString().trim();
+            if (equipmentNoSecond.isEmpty()) {
+                CommonUtils.showToast("次要检验单号为空，请输入！");
+                return;
+            }
             if (mStartTimeTv.getText() != null && !mStartTimeTv.getText().equals("")) {
                 CommonUtils.showToast("已经开始检测，请勿重复检查！");
             } else {
-                startCheck(checkOrderInfo.getEquipmentNo(), checkOrderInfo.getMaterialCode());
+                queryCheckOrderInfoQuery(mCheckOrderInfo.getEquipmentNo(), mCheckOrderInfo.getMaterialCode(), equipmentNoSecond);
             }
-        });
-        mSubmitCheckBt.setOnClickListener(v -> {
-            CommonUtils.showToast("提交成功！");
         });
         return layout;
     }
 
-    private void startCheck(String equipmentNo, String materialCode) {
+    private void queryCheckOrderInfoQuery(String equipmentNo, String materialCode, String equipmentNoSecond) {
         toSubscribe(RxFactory.getCheckServiceInstance()
-                        .StartCheck(equipmentNo, materialCode),
+                        .CheckOrderInfoQuery(equipmentNo, materialCode, equipmentNoSecond),
+                () -> showLoading("查询次要检验单号详情中..."),
+                checkOrderInfoResult -> {
+                    if (checkOrderInfoResult.getResult() == 0) {
+                        hideLoading();
+                        et_equipment_no_second.setEnabled(false);
+                        CustomApplication.getInstance().setEquipmentNoSecond(equipmentNoSecond);
+                        initData(mCheckOrderInfo);
+                        queryStartCheck(equipmentNo, materialCode, equipmentNoSecond);
+                    } else {
+                        queryCheckOrderInfoError(checkOrderInfoResult.getDesc());
+                    }
+                },
+                throwable -> queryCheckOrderInfoError(throwable.getMessage()));
+
+
+    }
+
+    private void queryStartCheck(String equipmentNo, String materialCode, String equipmentNoSecond) {
+        toSubscribe(RxFactory.getCheckServiceInstance()
+                        .StartCheck(equipmentNo, materialCode, equipmentNoSecond, mRealName),
                 () -> CommonUtils.showToast("请求开始检测..."),
                 checkOrderInfoResult -> {
                     if (checkOrderInfoResult.getResult() == 0) {
-                        CommonUtils.showToast("开始检测成功");
+                        CommonUtils.showToast("开始检测成功!");
                         String startCheckTime = checkOrderInfoResult.getData().getStartCheckTime();
                         mStartTimeTv.setText(startCheckTime != null ? startCheckTime : "");
-                        mCallback.onTest(true);
+                        mCallback.onTestBegin(true);
                         mStartCheckBt.setEnabled(false);
                     } else {
                         startCheckError(checkOrderInfoResult.getDesc());
@@ -122,48 +149,59 @@ public class BaseInfoFragment extends BaseFragment {
                 throwable -> startCheckError(throwable.getMessage()));
     }
 
+
+    private void queryCheckOrderInfoError(String msg) {
+        hideLoading();
+        CommonUtils.showToast("次要检验单基本信息查询失败，请重试：" + msg);
+        Logger.e(msg);
+    }
+
+
     private void startCheckError(String desc) {
         CommonUtils.showToast("开始检测失败");
         Logger.e(desc);
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initData();
+        initData(null);
     }
 
-    private void initData() {
-        //获得索引值
-        Bundle bundle = getArguments();
-        if (bundle != null && bundle.containsKey(BASE_INFO)) {
-            checkOrderInfo = bundle.getParcelable(BASE_INFO);
+    private void initData(CheckOrderInfo checkOrderInfo) {
+        mCheckOrderInfo = checkOrderInfo;
+        if (mCheckOrderInfo == null) {
+            //获得索引值
+            Bundle bundle = getArguments();
+            if (bundle != null && bundle.containsKey(BASE_INFO)) {
+                mCheckOrderInfo = bundle.getParcelable(BASE_INFO);
+            }
         }
-        if (checkOrderInfo != null) {
-            mPurchaseIdTv.setText(checkOrderInfo.getCustomerCode());
-            mSupplierTv.setText(checkOrderInfo.getCustomerName());
-            mMaterialCodeTv.setText(checkOrderInfo.getMaterialCode());
-            mMaterialIdTv.setText(checkOrderInfo.getItemCode());
-            mMaterialNameTv.setText(checkOrderInfo.getItemName());
+        if (mCheckOrderInfo != null) {
+            mPurchaseIdTv.setText(mCheckOrderInfo.getCustomerCode());
+            mSupplierTv.setText(mCheckOrderInfo.getCustomerName());
+            mMaterialCodeTv.setText(mCheckOrderInfo.getMaterialCode());
+            mMaterialIdTv.setText(mCheckOrderInfo.getItemCode());
+            mMaterialNameTv.setText(mCheckOrderInfo.getItemName());
             //mQMNOTv.setText("");
-            mIncomeCountTv.setText(checkOrderInfo.getPackgNum());
+            mIncomeCountTv.setText(mCheckOrderInfo.getPackgNum());
             //mSamplePlanTv.setText("");
             CustomApplication customApplication = CustomApplication.getInstance();
             String realname = customApplication.getSpHelper().getRealname();
             mInspectorTv.setText(realname);
-            String startCheckTime = checkOrderInfo.getStartCheckTime();
+            String startCheckTime = mCheckOrderInfo.getStartCheckTime();
             if (TextUtils.isEmpty(startCheckTime)) {
                 mStartCheckBt.setEnabled(true);
             } else {
                 mStartCheckBt.setEnabled(false);
-                mCallback.onTest(true);
-                mStartTimeTv.setText(checkOrderInfo.getStartCheckTime());
+                mCallback.onTestBegin(true);
+                mStartTimeTv.setText(mCheckOrderInfo.getStartCheckTime());
             }
-            mEndTimeTv.setText(checkOrderInfo.getFinishCheckTime());
-            List<CheckOrderInfo.DataBean.CheckDataBean> checkDataBeans = checkOrderInfo.getCheckData();
+            mEndTimeTv.setText(mCheckOrderInfo.getFinishCheckTime());
+            List<CheckOrderInfo.CheckDataBean> checkDataBeans = mCheckOrderInfo.getCheckData();
             if (checkDataBeans != null && checkDataBeans.size() != 0) {
                 for (int i = 0; i < checkDataBeans.size(); i++) {
-                    CheckOrderInfo.DataBean.CheckDataBean checkDataBean = checkDataBeans.get(i);
+                    CheckOrderInfo.CheckDataBean checkDataBean = checkDataBeans.get(i);
                     if (checkDataBean != null) {
                         String inspectCode = checkDataBean.getInspectCode();
                         String typeName = checkDataBean.getTypeName();
@@ -182,12 +220,13 @@ public class BaseInfoFragment extends BaseFragment {
             }
         } else {
             CommonUtils.showToast("程序异常，请重试");
-            getActivity().finish();
+            getActivityNonNull().finish();
         }
 
     }
 
-    public interface onTestListener {
-        void onTest(boolean enable);
+    public interface onTestBeginListener {
+        void onTestBegin(boolean enable);
     }
+
 }

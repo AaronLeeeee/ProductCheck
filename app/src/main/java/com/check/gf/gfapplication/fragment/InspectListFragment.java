@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.check.gf.gfapplication.CustomApplication;
 import com.check.gf.gfapplication.R;
 import com.check.gf.gfapplication.activity.CheckDetailItemActivity;
 import com.check.gf.gfapplication.adapter.InspectListAdapter;
@@ -27,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 尺寸
+ * 尺寸/../..
  *
  * @author nEdAy
  */
@@ -36,17 +37,21 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
     private static final String INSPECT_CODE = "inspect_code";
     private static final String EQUIPMENT_NO = "equipment_no";
     private static final String MATERIAL_CODE = "material_code";
+    private static final String EQUIPMENT_NO_SECOND = "equipment_no_second";
 
     private String mInspectCode;
     private String mEquipmentNo;
     private String mMaterialCode;
 
-    private List<InspectItem.DataBean> inspectItems;
+    private List<InspectItem> inspectItems;
 
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private LinearLayout rl_no_data, rl_no_network;
     private InspectListAdapter mQuickAdapter;
+
+    private String mEquipmentNoSecond;
+    private String mRealName;
 
     public static InspectListFragment newInstance(String inspectCode, String equipmentNo, String materialCode) {
         Bundle bundle = new Bundle();
@@ -80,11 +85,32 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
         return MATERIAL_CODE;
     }
 
+    public static String getEquipmentNoSecond() {
+        return EQUIPMENT_NO_SECOND;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_inspect_list, container, false);
         setUpViews(layout);
         return layout;
+    }
+
+    private void setUpViews(View parentView) {
+        mEquipmentNoSecond = CustomApplication.getInstance().getEquipmentNoSecond();
+        mRealName = CustomApplication.getInstance().getSpHelper().getRealname();
+
+        mLoadingView = parentView.findViewById(R.id.loadView);
+        rl_no_data = parentView.findViewById(R.id.rl_no_data);
+        rl_no_network = parentView.findViewById(R.id.rl_no_network);
+        mRecyclerView = parentView.findViewById(R.id.recycler_view);
+        mSwipeRefreshLayout = parentView.findViewById(R.id.swipe_container);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.red,
+                R.color.orange, R.color.green,
+                R.color.blue);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        initAdapter();
     }
 
     public void initAdapter() {
@@ -119,17 +145,18 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
 
     private void queryInspectItemDetail(String itemCode) {
         toSubscribe(RxFactory.getCheckServiceInstance()
-                        .ItemDetailQuery(mInspectCode, mEquipmentNo, mMaterialCode, itemCode),
+                        .ItemDetailQuery(mInspectCode, mEquipmentNo, mMaterialCode, itemCode, mRealName, mEquipmentNoSecond),
                 () -> showLoading("查询详细信息中..."),
                 inspectItemDetailResult -> {
                     if (inspectItemDetailResult.getResult() == 0) {
                         hideLoading();
-                        InspectItemDetail.DataBean inspectItemDetail
+                        InspectItemDetail inspectItemDetail
                                 = inspectItemDetailResult.getData();
                         Intent intent = new Intent(getActivity(), CheckDetailItemActivity.class);
                         intent.putExtra(InspectListFragment.getExtra(), inspectItemDetail);
                         intent.putExtra(getInspectCodeExtra(), mInspectCode);
                         intent.putExtra(getEquipmentNoExtra(), mEquipmentNo);
+                        intent.putExtra(getMaterialCode(), mMaterialCode);
                         intent.putExtra(getMaterialCode(), mMaterialCode);
                         startActivity(intent);
                     } else {
@@ -151,7 +178,7 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
      */
     public void RefreshItem() {
         toSubscribe(RxFactory.getCheckServiceInstance()
-                        .InspectItemListQuery(mInspectCode, mEquipmentNo, mMaterialCode),
+                        .InspectItemListQuery(mInspectCode, mEquipmentNo, ""),
                 () -> {
                     // 隐藏无网络和无数据界面
                     rl_no_network.setVisibility(View.GONE);
@@ -191,20 +218,6 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
      */
     public void LoadMoreItem() {
 
-    }
-
-    private void setUpViews(View parentView) {
-        mLoadingView = parentView.findViewById(R.id.loadView);
-        rl_no_data = parentView.findViewById(R.id.rl_no_data);
-        rl_no_network = parentView.findViewById(R.id.rl_no_network);
-        mRecyclerView = parentView.findViewById(R.id.recycler_view);
-        mSwipeRefreshLayout = parentView.findViewById(R.id.swipe_container);
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.red,
-                R.color.orange, R.color.green,
-                R.color.blue);
-        mSwipeRefreshLayout.setOnRefreshListener(this);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        initAdapter();
     }
 
     /**

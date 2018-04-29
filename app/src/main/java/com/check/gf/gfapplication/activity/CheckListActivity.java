@@ -39,7 +39,7 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
     private TextView mNcCheckTv;
     private CheckListAdapter mQuickAdapter;
 
-    private List<CheckOrder.DataBean> mCheckOrders = new ArrayList<>();
+    private List<CheckOrder> mCheckOrders = new ArrayList<>();
 
     protected RecyclerView mRecyclerView;
     protected SwipeRefreshLayout mSwipeRefreshLayout;
@@ -112,13 +112,13 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
                 checkOrderResult -> {
                     if (checkOrderResult.getResult() == 0) {
                         hideLoading();
-                        List<CheckOrder.DataBean> checkOrders = checkOrderResult.getData();
+                        List<CheckOrder> checkOrders = checkOrderResult.getData();
                         if (checkOrders == null || checkOrders.size() <= 0) {
                             CommonUtils.showToast("该筛选条件下检验单不存在");
                             return;
                         }
                         for (int i = 0; i < checkOrders.size(); i++) {
-                            CheckOrder.DataBean checkOrder = checkOrders.get(i);
+                            CheckOrder checkOrder = checkOrders.get(i);
                             int finishState = checkOrder.getFinishState();
                             if (finishState == state) { // 完成状态 0：未开始  1：检查中  2：检查完成
                                 mCheckOrders.add(checkOrder);
@@ -183,24 +183,21 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
         //mQuickAdapter.addHeaderView(getView());
         mRecyclerView.setAdapter(mQuickAdapter);
         //条目子控件点击事件
-        mQuickAdapter.setOnItemChildClickListener((adapter, view, position) -> {
-            queryCheckOrderInfo(mCheckOrders.get(position));
-
-        });
+        mQuickAdapter.setOnItemChildClickListener((adapter, view, position) -> queryCheckOrderInfo(mCheckOrders.get(position)));
         // 一行代码搞定（默认为渐显效果）
         mQuickAdapter.openLoadAnimation();
         // 默认提供5种方法（渐显、缩放、从下到上，从左到右、从右到左）
         // mQuickAdapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
     }
 
-    private void queryCheckOrderInfo(CheckOrder.DataBean checkOrder) {
+    private void queryCheckOrderInfo(CheckOrder checkOrder) {
         toSubscribe(RxFactory.getCheckServiceInstance()
-                        .CheckOrderInfoQuery(checkOrder.getEquipmentNo(), checkOrder.getMaterialCode()),
+                        .CheckOrderInfoQuery(checkOrder.getEquipmentNo(), checkOrder.getMaterialCode(), ""),
                 () -> showLoading("查询详情中..."),
                 checkOrderInfoResult -> {
                     if (checkOrderInfoResult.getResult() == 0) {
                         hideLoading();
-                        CheckOrderInfo.DataBean checkOrderInfo = checkOrderInfoResult.getData();
+                        CheckOrderInfo checkOrderInfo = checkOrderInfoResult.getData();
                         Intent intent = new Intent(
                                 CheckListActivity.this, CheckDetailActivity.class);
                         intent.putExtra(CheckListActivity.getExtra(), checkOrderInfo);

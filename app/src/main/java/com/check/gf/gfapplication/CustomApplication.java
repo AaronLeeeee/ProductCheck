@@ -47,6 +47,7 @@ public class CustomApplication extends LitePalApplication {
     private static CustomApplication mInstance;
     private SharedPreferencesHelper sharedPreferencesHelper;
     private SearchItem searchItem;
+    private String equipmentNoSecond;
 
     /**
      * 对外提供Application Context
@@ -162,6 +163,14 @@ public class CustomApplication extends LitePalApplication {
         return searchItem;
     }
 
+    public synchronized String getEquipmentNoSecond() {
+        return equipmentNoSecond;
+    }
+
+
+    public synchronized void setEquipmentNoSecond(String equipmentNoSecond) {
+        this.equipmentNoSecond = equipmentNoSecond;
+    }
 
     /**
      * http://www.sixwolf.net/blog/2016/04/11/Android去除烦人的闪退弹窗/

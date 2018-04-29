@@ -12,12 +12,6 @@ import android.content.SharedPreferences;
  */
 public final class SharedPreferencesHelper {
     private static final String PREFERENCE_SETTINGS = "_Settings";
-    private static final String SETTING_FIRST = "setting_first";
-    private static final String SETTING_NOTIFY = "setting_notify";
-    private static final String SETTING_VOICE = "setting_voice";
-    private static final String SETTING_VIBRATE = "setting_vibrate";
-    private static final String SETTING_QUIET = "setting_quiet";
-    private static final String SETTING_PROVINCE_FLOW_MODEL = "setting_province_flow_model ";
     private static final String USERNAME = "username";
     private static final String REALNAME = "realname";
     private static final String USER_POST_CODE = "user_post_code";
@@ -40,79 +34,6 @@ public final class SharedPreferencesHelper {
     public void clear() {
         editor.clear();
         editor.apply();
-    }
-
-    /**
-     * 是否首次导航
-     */
-    public boolean isAllowFirst() {
-        return mSharedPreferences.getBoolean(SETTING_FIRST, true);
-    }
-
-    public void setAllowFirstEnable(boolean isFirst) {
-        editor.putBoolean(SETTING_FIRST, isFirst);
-        editor.commit();
-    }
-
-
-    /**
-     * 是否允许推送通知
-     */
-    public boolean isAllowPushNotify() {
-        return mSharedPreferences.getBoolean(SETTING_NOTIFY, true);
-    }
-
-    public void setPushNotifyEnable(boolean isChecked) {
-        editor.putBoolean(SETTING_NOTIFY, isChecked);
-        editor.commit();
-    }
-
-    /**
-     * 是否允许声音
-     */
-    public boolean isAllowVoice() {
-        return mSharedPreferences.getBoolean(SETTING_VOICE, true);
-    }
-
-    public void setAllowVoiceEnable(boolean isChecked) {
-        editor.putBoolean(SETTING_VOICE, isChecked);
-        editor.commit();
-    }
-
-    /**
-     * 是否允许震动
-     */
-    public boolean isAllowVibrate() {
-        return mSharedPreferences.getBoolean(SETTING_VIBRATE, true);
-    }
-
-    public void setAllowVibrateEnable(boolean isChecked) {
-        editor.putBoolean(SETTING_VIBRATE, isChecked);
-        editor.commit();
-    }
-
-    /**
-     * 允许靜音
-     */
-    public boolean isAllowQuiet() {
-        return mSharedPreferences.getBoolean(SETTING_QUIET, true);
-    }
-
-    public void setAllowQuietEnable(boolean isChecked) {
-        editor.putBoolean(SETTING_QUIET, isChecked);
-        editor.commit();
-    }
-
-    /**
-     * 是否开启省流模式
-     */
-    public boolean isAllowProvinceFlowModel() {
-        return mSharedPreferences.getBoolean(SETTING_PROVINCE_FLOW_MODEL, false);
-    }
-
-    public void setAllowProvinceFlowModelEnable(boolean isProvinceFlowModel) {
-        editor.putBoolean(SETTING_PROVINCE_FLOW_MODEL, isProvinceFlowModel);
-        editor.commit();
     }
 
     /**

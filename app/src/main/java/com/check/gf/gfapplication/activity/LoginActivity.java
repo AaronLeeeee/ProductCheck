@@ -12,7 +12,7 @@ import com.bigkoo.pickerview.OptionsPickerView;
 import com.check.gf.gfapplication.CustomApplication;
 import com.check.gf.gfapplication.R;
 import com.check.gf.gfapplication.base.BaseActivity;
-import com.check.gf.gfapplication.entity.TeamGroupResult;
+import com.check.gf.gfapplication.entity.PostData;
 import com.check.gf.gfapplication.helper.SharedPreferencesHelper;
 import com.check.gf.gfapplication.network.RxFactory;
 import com.check.gf.gfapplication.utils.CommonUtils;
@@ -29,7 +29,7 @@ import java.util.List;
  */
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
-    private ArrayList<TeamGroupResult.PostData> postDatas = new ArrayList<>();
+    private ArrayList<PostData> postDatas = new ArrayList<>();
     private ArrayList<ArrayList<String>> groupNameDatas = new ArrayList<>();
     private ArrayList<ArrayList<String>> groupCodeDatas = new ArrayList<>();
 
@@ -55,6 +55,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         sharedPreferencesHelper = CustomApplication.getInstance().getSpHelper();
         sharedPreferencesHelper.setUserPostCode("");
         sharedPreferencesHelper.setUserGroupCode("");
+        sharedPreferencesHelper.setRealname("");
+        sharedPreferencesHelper.clear();
         // Set up the login form.
         mUsernameView = findViewById(R.id.username);
         mPasswordView = findViewById(R.id.password);
@@ -106,7 +108,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 teamGroupResult -> {
                     if (teamGroupResult.getResult() == 0) {
                         hideLoading();
-                        List<TeamGroupResult.PostData> postDatas = teamGroupResult.getData();
+                        List<PostData> postDatas = teamGroupResult.getData();
                         initOptionData(postDatas);
                     } else {
                         postQueryTeamGroupError(teamGroupResult.getDesc());
@@ -120,12 +122,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
      *
      * @param postDatas 实体数据
      */
-    private void initOptionData(List<TeamGroupResult.PostData> postDatas) {
+    private void initOptionData(List<PostData> postDatas) {
         // 选项1
         this.postDatas.addAll(postDatas);
         // 选项2
         for (int i = 0; i < postDatas.size(); i++) {
-            List<TeamGroupResult.PostData.GroupData> groupDatas = postDatas.get(i).getGroups();
+            List<PostData.GroupData> groupDatas = postDatas.get(i).getGroups();
             ArrayList<String> options2ItemNames = new ArrayList<>();
             ArrayList<String> options2ItemCodes = new ArrayList<>();
             for (int j = 0; j < groupDatas.size(); j++) {
@@ -163,7 +165,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     /**
      * 班组数据请求失败 （该数据必须存在）
      *
-     * @param errorMessage
+     * @param errorMessage errorMessage
      */
     private void postQueryTeamGroupError(String errorMessage) {
         // showProgress(false);
@@ -199,18 +201,18 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             mPasswordView.findFocus();
             return;
         }
-        if (!isUsernameValid(username)) {
-            CommonUtils.showToast(getString(R.string.error_invalid_username));
-            mUsernameView.setError(getString(R.string.error_invalid_username));
-            mUsernameView.findFocus();
-            return;
-        }
-        if (!isPasswordValid(password)) {
-            CommonUtils.showToast(getString(R.string.error_invalid_password));
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            mPasswordView.findFocus();
-            return;
-        }
+//        if (!isUsernameValid(username)) {
+//            CommonUtils.showToast(getString(R.string.error_invalid_username));
+//            mUsernameView.setError(getString(R.string.error_invalid_username));
+//            mUsernameView.findFocus();
+//            return;
+//        }
+//        if (!isPasswordValid(password)) {
+//            CommonUtils.showToast(getString(R.string.error_invalid_password));
+//            mPasswordView.setError(getString(R.string.error_invalid_password));
+//            mPasswordView.findFocus();
+//            return;
+//        }
         if (TextUtils.isEmpty(sharedPreferencesHelper.getUserPostCode())
                 || TextUtils.isEmpty(sharedPreferencesHelper.getUserGroupCode())) {
             CommonUtils.showToast(getString(R.string.error_empty_team_group));
@@ -226,13 +228,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         userLogin(username, password);
     }
 
-    private boolean isUsernameValid(String username) {
-        return true;// username.length() > 4;
-    }
-
-    private boolean isPasswordValid(String password) {
-        return true;// password.length() > 4;
-    }
+//    private boolean isUsernameValid(String username) {
+//        return true;// username.length() > 4;
+//    }
+//
+//    private boolean isPasswordValid(String password) {
+//        return true;// password.length() > 4;
+//    }
 
 
     /**

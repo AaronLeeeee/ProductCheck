@@ -6,9 +6,11 @@ package com.check.gf.gfapplication.entity;
  * desc   :
  */
 
-public class ResultObject {
+public class ResultObject<T> {
+
     private int result;
     private String desc;
+    private T data;
 
     public int getResult() {
         return result;
@@ -25,4 +27,13 @@ public class ResultObject {
     public void setDesc(String desc) {
         this.desc = desc;
     }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
+
 }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
@@ -51,10 +52,11 @@ import okhttp3.RequestBody;
  */
 public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.TakeResultListener, InvokeListener {
 
-    private InspectItemDetail.DataBean mInspectItemDetail;
+    private InspectItemDetail mInspectItemDetail;
     private String mInspectCode;
     private String mEquipmentNo;
     private String mMaterialCode;
+    private String mEquipmentNoSecond;
 
     private TextView tv_num_id;
     private TextView tv_num_des;
@@ -73,6 +75,8 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
     private ArrayList<String> mPaths;
 
     private EditText et_msg_1, et_msg_2, et_msg_3, et_msg_4, et_msg_5;
+
+    private String mRealName;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,6 +104,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
         mInspectCode = intent.getStringExtra(InspectListFragment.getInspectCodeExtra());
         mEquipmentNo = intent.getStringExtra(InspectListFragment.getEquipmentNoExtra());
         mMaterialCode = intent.getStringExtra(InspectListFragment.getMaterialCode());
+        mEquipmentNoSecond = intent.getStringExtra(InspectListFragment.getEquipmentNoSecond());
     }
 
 
@@ -111,6 +116,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
     @Override
     protected void initContentView() {
         super.initContentView();
+
         initTopBarForLeft("检测条目", getString(R.string.tx_back));
         mLoadingView = findViewById(R.id.loadView);
 
@@ -150,6 +156,8 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
     @Override
     protected void initData() {
         super.initData();
+        mRealName = CustomApplication.getInstance().getSpHelper().getRealname();
+
         mPaths = new ArrayList<>();
         tv_num_id.setText(mInspectItemDetail.getItemCode());
         tv_num_des.setText(mInspectItemDetail.getItemName());
@@ -168,7 +176,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
         et_msg_4.setText(TextUtils.isEmpty(checkContent4) ? "" : checkContent4);
         et_msg_5.setText(TextUtils.isEmpty(checkContent5) ? "" : checkContent5);
         // et_msg.setEnabled(!TextUtils.isEmpty(checkContent));
-        List<InspectItemDetail.DataBean.PicturesBean> picturesBeans = mInspectItemDetail.getPictures();
+        List<InspectItemDetail.PicturesBean> picturesBeans = mInspectItemDetail.getPictures();
         showPic(picturesBeans);
     }
 
@@ -199,7 +207,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
             return;
         }
         toSubscribe(RxFactory.getCheckServiceInstance()
-                        .SaveCheckResult(mInspectCode, mEquipmentNo, mMaterialCode, mInspectItemDetail.getItemCode(), result, username, postCode, groupCode),
+                        .SaveCheckResult(mInspectCode, mEquipmentNo, mMaterialCode, mInspectItemDetail.getItemCode(), result, username, postCode, groupCode, mRealName, mEquipmentNoSecond),
                 () -> showLoading("保存检验结果中..."),
                 resultObject -> {
                     if (resultObject.getResult() == 0) {
@@ -232,7 +240,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
             return;
         }
         toSubscribe(RxFactory.getCheckServiceInstance()
-                        .SaveItemChkCnt(mEquipmentNo, mMaterialCode, mInspectCode, mInspectItemDetail.getItemCode(), msg1, msg2, msg3, msg4, msg5),
+                        .SaveItemChkCnt(mEquipmentNo, mMaterialCode, mInspectCode, mInspectItemDetail.getItemCode(), msg1, msg2, msg3, msg4, msg5, mRealName, mEquipmentNoSecond),
                 () -> showLoading("提交中..."),
                 resultObject -> {
                     if (resultObject.getResult() == 0) {
@@ -265,7 +273,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
             Uri imageUri = Uri.fromFile(file);
 
             //configCompress(takePhoto);
-            takePhoto.onEnableCompress(null,false);
+            takePhoto.onEnableCompress(null, false);
             configTakePhotoOption(takePhoto);
 
             switch (position) {
@@ -364,7 +372,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
                 MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
         toSubscribe(RxFactory.getCheckServiceInstance()
-                        .ItemChkUploadImg(mEquipmentNo, mMaterialCode, mInspectCode, mInspectItemDetail.getItemCode(), body),
+                        .ItemChkUploadImg(mEquipmentNo, mMaterialCode, mInspectCode, mInspectItemDetail.getItemCode(), body, mRealName, mEquipmentNoSecond),
                 () ->
                         showLoading("上传中..."),
                 imgResultObject -> {
@@ -409,14 +417,14 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
 
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         PermissionManager.TPermissionType type = PermissionManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
         PermissionManager.handlePermissionsResult(this, type, invokeParam, this);
     }
 
 
-    private void showPic(List<InspectItemDetail.DataBean.PicturesBean> picturesBeans) {
+    private void showPic(List<InspectItemDetail.PicturesBean> picturesBeans) {
         // TODO: 额 这段以后重构 动态添加布局 最多6个
         for (int i = 0; i < picturesBeans.size(); i++) {
             String picUrl = picturesBeans.get(i).getUrl();

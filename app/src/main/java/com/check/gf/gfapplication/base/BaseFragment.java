@@ -1,6 +1,7 @@
 package com.check.gf.gfapplication.base;
 
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
 import com.mingle.widget.LoadingView;
@@ -77,5 +78,12 @@ public class BaseFragment extends Fragment {
         }
     }
 
+    protected FragmentActivity getActivityNonNull() {
+        if (super.getActivity() != null) {
+            return super.getActivity();
+        } else {
+            throw new RuntimeException("null returned from getActivity()");
+        }
+    }
 
 }

@@ -316,13 +316,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:paddingTop="20dp">
+
+            <EditText
+                android:id="@+id/et_equipment_no_second"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:hint="请输入次要检验单号"
+                android:maxLines="1"
+                android:minWidth="180dp" />
 
             <TextView
                 android:id="@+id/tv_start_check"
-                android:layout_width="88dp"
-                android:layout_height="wrap_content"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/global_blue_clickable_selector"
                 android:enabled="false"
                 android:gravity="center"
@@ -332,18 +344,6 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/ts_big" />
 
-            <TextView
-                android:id="@+id/tv_submit"
-                android:layout_width="88dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:background="@drawable/global_blue_clickable_selector"
-                android:gravity="center"
-                android:paddingBottom="4dp"
-                android:paddingTop="4dp"
-                android:text="@string/submit"
-                android:textColor="@color/white"
-                android:textSize="@dimen/ts_big" />
         </LinearLayout>
     </LinearLayout>
 

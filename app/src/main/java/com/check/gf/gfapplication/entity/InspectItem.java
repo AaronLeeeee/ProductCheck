@@ -1,67 +1,103 @@
 package com.check.gf.gfapplication.entity;
 
-import java.util.List;
-
 /**
  * author : nEdAy
  * time   : 2018/3/9
  * desc   : 检验条目信息
  */
-public class InspectItem extends ResultObject {
+public class InspectItem {
 
-    private List<DataBean> data;
+    /**
+     * itemCode : 001
+     * materialCode : 001
+     * itemName : 表面不能有破损，摩察系数不能太大
+     * checkResult : 0
+     * checkContent1 : 检验结果备注
+     * checkContent2 : 检验结果备注
+     * checkContent3 : 检验结果备注
+     * checkContent4 : 检验结果备注
+     * checkContent5 : 检验结果备注
+     */
 
-    public List<DataBean> getData() {
-        return data;
+    private String itemCode;
+    private String materialCode;
+    private String itemName;
+    private int checkResult;
+    private String checkContent1;
+    private String checkContent2;
+    private String checkContent3;
+    private String checkContent4;
+    private String checkContent5;
+
+    public String getItemCode() {
+        return itemCode;
     }
 
-    public void setData(List<DataBean> data) {
-        this.data = data;
+    public void setItemCode(String itemCode) {
+        this.itemCode = itemCode;
     }
 
-    public static class DataBean {
-        /**
-         * itemCode : 001
-         * itemName : 表面不能有破损，摩察系数不能太大
-         * checkResult : 0
-         * checkContent : 检验结果备注
-         */
+    public String getItemName() {
+        return itemName;
+    }
 
-        private String itemCode;
-        private String itemName;
-        private int checkResult;
-        private String checkContent;
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
 
-        public String getItemCode() {
-            return itemCode;
-        }
+    public int getCheckResult() {
+        return checkResult;
+    }
 
-        public void setItemCode(String itemCode) {
-            this.itemCode = itemCode;
-        }
+    public void setCheckResult(int checkResult) {
+        this.checkResult = checkResult;
+    }
 
-        public String getItemName() {
-            return itemName;
-        }
+    public String getCheckContent1() {
+        return checkContent1;
+    }
 
-        public void setItemName(String itemName) {
-            this.itemName = itemName;
-        }
+    public void setCheckContent1(String checkContent1) {
+        this.checkContent1 = checkContent1;
+    }
 
-        public int getCheckResult() {
-            return checkResult;
-        }
+    public String getCheckContent2() {
+        return checkContent2;
+    }
 
-        public void setCheckResult(int checkResult) {
-            this.checkResult = checkResult;
-        }
+    public void setCheckContent2(String checkContent2) {
+        this.checkContent2 = checkContent2;
+    }
 
-        public String getCheckContent() {
-            return checkContent;
-        }
+    public String getCheckContent3() {
+        return checkContent3;
+    }
 
-        public void setCheckContent(String checkContent) {
-            this.checkContent = checkContent;
-        }
+    public void setCheckContent3(String checkContent3) {
+        this.checkContent3 = checkContent3;
+    }
+
+    public String getCheckContent4() {
+        return checkContent4;
+    }
+
+    public void setCheckContent4(String checkContent4) {
+        this.checkContent4 = checkContent4;
+    }
+
+    public String getCheckContent5() {
+        return checkContent5;
+    }
+
+    public void setCheckContent5(String checkContent5) {
+        this.checkContent5 = checkContent5;
+    }
+
+    public String getMaterialCode() {
+        return materialCode;
+    }
+
+    public void setMaterialCode(String materialCode) {
+        this.materialCode = materialCode;
     }
 }
