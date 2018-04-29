@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 
 import com.check.gf.gfapplication.R;
 import com.check.gf.gfapplication.view.HeaderLayout;
@@ -125,19 +124,5 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseCom
             mLoadingView.setVisibility(View.GONE);
         }
     }
-
-    /**
-     * 隐藏软键盘
-     */
-    protected void hideSoftInputFromWindow() {
-        View peekDecorView = getWindow().peekDecorView();
-        if (peekDecorView != null) {
-            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (inputMethodManager != null) {
-                inputMethodManager.hideSoftInputFromWindow(peekDecorView.getWindowToken(), 0);
-            }
-        }
-    }
-
 
 }

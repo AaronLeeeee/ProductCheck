@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.check.gf.gfapplication.CustomApplication;
 import com.check.gf.gfapplication.R;
@@ -20,7 +21,6 @@ import com.check.gf.gfapplication.base.IBaseList;
 import com.check.gf.gfapplication.entity.InspectItem;
 import com.check.gf.gfapplication.entity.InspectItemDetail;
 import com.check.gf.gfapplication.network.RxFactory;
-import com.check.gf.gfapplication.utils.CommonUtils;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
@@ -63,9 +63,13 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        onRefresh();
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            // load data here
+            // TODO:test resume
+            onRefresh();
+        }
     }
 
     public static String getExtra() {
@@ -172,7 +176,7 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
 
     private void queryInspectItemDetailError(String msg) {
         hideLoading();
-        CommonUtils.showToast("检验条目详细信息查询失败，请重试：" + msg);
+        ToastUtils.showShort("检验条目详细信息查询失败，请重试：" + msg);
         Logger.e(msg);
     }
 

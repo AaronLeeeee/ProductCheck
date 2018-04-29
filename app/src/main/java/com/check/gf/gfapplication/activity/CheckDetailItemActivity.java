@@ -13,13 +13,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.check.gf.gfapplication.CustomApplication;
 import com.check.gf.gfapplication.R;
 import com.check.gf.gfapplication.base.BaseActivity;
 import com.check.gf.gfapplication.entity.InspectItemDetail;
 import com.check.gf.gfapplication.fragment.InspectListFragment;
 import com.check.gf.gfapplication.network.RxFactory;
-import com.check.gf.gfapplication.utils.CommonUtils;
 import com.check.gf.gfapplication.view.common.ZoomableActivity;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.flyco.animation.BounceEnter.BounceTopEnter;
@@ -199,7 +199,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
         String postCode = customApplication.getSpHelper().getUserPostCode();
         String groupCode = customApplication.getSpHelper().getUserGroupCode();
         if (TextUtils.isEmpty(username) || TextUtils.isEmpty(postCode) || TextUtils.isEmpty(groupCode)) {
-            CommonUtils.showToast(getString(R.string.error_empty_team_group));
+            ToastUtils.showShort(getString(R.string.error_empty_team_group));
             return;
         }
         toSubscribe(RxFactory.getCheckServiceInstance()
@@ -221,7 +221,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
 
     private void SaveCheckResultError(String msg) {
         hideLoading();
-        CommonUtils.showToast("提交失败");
+        ToastUtils.showShort("提交失败");
         Logger.e(msg);
     }
 
@@ -232,7 +232,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
         String msg4 = et_msg_4.getText().toString().trim();
         String msg5 = et_msg_5.getText().toString().trim();
         if (TextUtils.isEmpty(msg1) && TextUtils.isEmpty(msg2) && TextUtils.isEmpty(msg3) && TextUtils.isEmpty(msg4) && TextUtils.isEmpty(msg5)) {
-            CommonUtils.showToast("检验结果备注均为空，无法提交");
+            ToastUtils.showShort("检验结果备注均为空，无法提交");
             return;
         }
         toSubscribe(RxFactory.getCheckServiceInstance()
@@ -241,7 +241,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
                 resultObject -> {
                     if (resultObject.getResult() == 0) {
                         hideLoading();
-                        CommonUtils.showToast("提交成功");
+                        ToastUtils.showShort("提交成功");
                     } else {
                         SaveItemChkCntError(resultObject.getDesc());
                     }
@@ -251,7 +251,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
 
     private void SaveItemChkCntError(String msg) {
         hideLoading();
-        CommonUtils.showToast("提交失败");
+        ToastUtils.showShort("提交失败");
         Logger.e(msg);
     }
 
@@ -375,7 +375,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
                     // 更新BmobUser对象
                     if (imgResultObject.getResult() == 0) {
                         hideLoading();
-                        CommonUtils.showToast("上传成功");
+                        ToastUtils.showShort("上传成功");
                         refreshPic(imgResultObject.getSrc());
                     } else {
                         itemChkUploadImgError(imgResultObject.getDesc());
@@ -387,13 +387,13 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
 
     private void itemChkUploadImgError(String msg) {
         hideLoading();
-        CommonUtils.showToast("上传失败");
+        ToastUtils.showShort("上传失败");
         Logger.e(msg);
     }
 
     @Override
     public void takeFail(TResult result, String msg) {
-        CommonUtils.showToast("获取头像失败");
+        ToastUtils.showShort("获取头像失败");
         Logger.i("takeFail:" + msg);
     }
 

@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.TimePickerView;
+import com.blankj.utilcode.util.ToastUtils;
 import com.check.gf.gfapplication.CustomApplication;
 import com.check.gf.gfapplication.R;
 import com.check.gf.gfapplication.base.BaseActivity;
@@ -18,8 +19,6 @@ import com.check.gf.gfapplication.entity.CheckOrder;
 import com.check.gf.gfapplication.entity.SearchItem;
 import com.check.gf.gfapplication.helper.SharedPreferencesHelper;
 import com.check.gf.gfapplication.network.RxFactory;
-import com.check.gf.gfapplication.utils.CommonUtils;
-import com.check.gf.gfapplication.utils.ExtendUtils;
 import com.orhanobut.logger.Logger;
 
 import java.text.SimpleDateFormat;
@@ -76,7 +75,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         initTopBarForBoth(getString(R.string.tx_search), getString(R.string.tx_logout), () -> {
             SharedPreferencesHelper sharedPreferencesHelper = CustomApplication.getInstance().getSpHelper();
             sharedPreferencesHelper.clear();
-            CommonUtils.showToast("注销成功！");
+            ToastUtils.showShort("注销成功！");
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             finish();
@@ -89,7 +88,9 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         LinearLayout mFinishedCheckLl = findViewById(R.id.ll_finished);
         mFinishedCheckCountTv = findViewById(R.id.tv_finished_check);
         findViewById(R.id.btn_search).setOnClickListener(view -> mBottomDialog.show());
-        ExtendUtils.setOnClickListener(this, mUnStartCheckLl, mProcessCheckLl, mFinishedCheckLl);
+        mUnStartCheckLl.setOnClickListener(this);
+        mProcessCheckLl.setOnClickListener(this);
+        mFinishedCheckLl.setOnClickListener(this);
         // TODO: 额 这个最后别忘记加
         //keepAlive();
     }
@@ -163,7 +164,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             if (TextUtils.isEmpty(customerName) && TextUtils.isEmpty(mRequireDate) &&
                     TextUtils.isEmpty(equipmentNo) && TextUtils.isEmpty(docNo)
                     && TextUtils.isEmpty(materialCode) && TextUtils.isEmpty(custNo)) {
-                CommonUtils.showToast("条件不允许同时为空");
+                ToastUtils.showShort("条件不允许同时为空");
                 return;
             }
             search(customerName, equipmentNo, mRequireDate, docNo, materialCode, custNo);
@@ -226,7 +227,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                         hideLoading();
                         List<CheckOrder> checkOrders = checkOrderResult.getData();
                         if (checkOrders == null || checkOrders.size() <= 0) {
-                            CommonUtils.showToast("该筛选条件下检验单不存在,请重新搜索");
+                            ToastUtils.showShort("该筛选条件下检验单不存在,请重新搜索");
                             return;
                         }
                         mUnStartCheckOrders.clear();
@@ -242,7 +243,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                             } else if (finishState == 2) {
                                 mFinishedCheckOrders.add(checkOrder);
                             } else {
-                                CommonUtils.showToast("存在异常数据");
+                                ToastUtils.showShort("存在异常数据");
                             }
                         }
                         mUnStartCheckCountTv.setText(String.valueOf(mUnStartCheckOrders.size() + " 单"));
@@ -288,7 +289,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
     private void queryCheckOrderError(String msg) {
         hideLoading();
-        CommonUtils.showToast(msg);
+        ToastUtils.showShort(msg);
         Logger.e(msg);
     }
 
@@ -299,7 +300,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             intent.putExtra(SearchActivity.getSearchItem(), mSearchItem);
             startActivity(intent);
         } else {
-            CommonUtils.showToast("没有该状态的检验单");
+            ToastUtils.showShort("没有该状态的检验单");
         }
     }
 
@@ -314,7 +315,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         if (firstTime + 2000 > System.currentTimeMillis()) {
             super.onBackPressed();
         } else {
-            CommonUtils.showToast("再按一次退出程序");
+            ToastUtils.showShort("再按一次退出程序");
         }
         firstTime = System.currentTimeMillis();
     }

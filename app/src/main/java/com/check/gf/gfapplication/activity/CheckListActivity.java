@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.check.gf.gfapplication.R;
 import com.check.gf.gfapplication.adapter.CheckListAdapter;
@@ -19,8 +20,6 @@ import com.check.gf.gfapplication.entity.CheckOrder;
 import com.check.gf.gfapplication.entity.CheckOrderInfo;
 import com.check.gf.gfapplication.entity.SearchItem;
 import com.check.gf.gfapplication.network.RxFactory;
-import com.check.gf.gfapplication.utils.CommonUtils;
-import com.check.gf.gfapplication.utils.ExtendUtils;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
@@ -74,7 +73,10 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
         mShipmentsCheckTv = findViewById(R.id.tv_shipments_check);
         mNcCheckTv = findViewById(R.id.tv_NC_check);
 
-        ExtendUtils.setOnClickListener(this, mIncomeCheckTv, mProcessCheckTv, mShipmentsCheckTv, mNcCheckTv);
+        mIncomeCheckTv.setOnClickListener(this);
+        mProcessCheckTv.setOnClickListener(this);
+        mShipmentsCheckTv.setOnClickListener(this);
+        mNcCheckTv.setOnClickListener(this);
 
         rl_no_data = findViewById(R.id.rl_no_data);
         rl_no_network = findViewById(R.id.rl_no_network);
@@ -108,7 +110,7 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
         if (TextUtils.isEmpty(customerName) && TextUtils.isEmpty(requireDate) &&
                 TextUtils.isEmpty(equipmentNo) && TextUtils.isEmpty(docNo)
                 && TextUtils.isEmpty(materialCode) && TextUtils.isEmpty(custNo)) {
-            CommonUtils.showToast("程序异常");
+            ToastUtils.showShort("程序异常");
             return;
         }
         toSubscribe(RxFactory.getCheckServiceInstance()
@@ -120,7 +122,7 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
                         hideLoading();
                         List<CheckOrder> checkOrders = checkOrderResult.getData();
                         if (checkOrders == null || checkOrders.size() <= 0) {
-                            CommonUtils.showToast("该筛选条件下检验单不存在");
+                            ToastUtils.showShort("该筛选条件下检验单不存在");
                             return;
                         }
                         for (int i = 0; i < checkOrders.size(); i++) {
@@ -140,7 +142,7 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
 
     private void queryCheckOrderError(String msg) {
         hideLoading();
-        CommonUtils.showToast("二次检索失败，请重试 ：" + msg);
+        ToastUtils.showShort("二次检索失败，请重试 ：" + msg);
         Logger.e(msg);
         finish();
     }
@@ -217,7 +219,7 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
 
     private void queryCheckOrderInfoError(String msg) {
         hideLoading();
-        CommonUtils.showToast("检验单基本信息查询失败，请重试：" + msg);
+        ToastUtils.showShort("检验单基本信息查询失败，请重试：" + msg);
         Logger.e(msg);
     }
 
@@ -229,7 +231,7 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
     @Override
     public void RefreshItem() {
         mSwipeRefreshLayout.setRefreshing(false);
-        CommonUtils.showToast("暂页面不支持下拉刷新");
+        ToastUtils.showShort("暂页面不支持下拉刷新");
     }
 
 }

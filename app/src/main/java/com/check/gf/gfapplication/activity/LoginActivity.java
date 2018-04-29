@@ -10,14 +10,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.OptionsPickerView;
+import com.blankj.utilcode.util.KeyboardUtils;
+import com.blankj.utilcode.util.NetworkUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.check.gf.gfapplication.CustomApplication;
 import com.check.gf.gfapplication.R;
 import com.check.gf.gfapplication.base.BaseActivity;
 import com.check.gf.gfapplication.entity.PostData;
 import com.check.gf.gfapplication.helper.SharedPreferencesHelper;
 import com.check.gf.gfapplication.network.RxFactory;
-import com.check.gf.gfapplication.utils.CommonUtils;
-import com.check.gf.gfapplication.utils.ExtendUtils;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
@@ -89,7 +90,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         tv_pack_station_text = findViewById(R.id.tv_pack_station_text);
         tv_pack_group_text = findViewById(R.id.tv_pack_group_text);
 
-        ExtendUtils.setOnClickListener(this, tv_pack_station_text, tv_pack_group_text);
+        tv_pack_station_text.setOnClickListener(this);
+        tv_pack_group_text.setOnClickListener(this);
 
         initData();
     }
@@ -98,7 +100,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public void onClick(View view) {
         int viewId = view.getId();
         if (viewId == R.id.tv_pack_station_text || viewId == R.id.tv_pack_group_text) {
-            hideSoftInputFromWindow();
+            // 隐藏软键盘
+            KeyboardUtils.hideSoftInput(this);
             if (optionsPickerView != null) {
                 optionsPickerView.show(); //弹出条件选择器
             } else {
@@ -197,37 +200,38 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         // Check for a valid username and password.
         // if error, don't attempt login and focus the first form field with an error.
         if (TextUtils.isEmpty(username)) {
-            CommonUtils.showToast(getString(R.string.error_empty_username));
+            ToastUtils.showShort(getString(R.string.error_empty_username));
             mUsernameView.setError(getString(R.string.error_empty_username));
             mUsernameView.findFocus();
             return;
         }
         if (TextUtils.isEmpty(password)) {
-            CommonUtils.showToast(getString(R.string.error_empty_password));
+            ToastUtils.showShort(getString(R.string.error_empty_password));
             mPasswordView.setError(getString(R.string.error_empty_password));
             mPasswordView.findFocus();
             return;
         }
 //        if (!isUsernameValid(username)) {
-//            CommonUtils.showToast(getString(R.string.error_invalid_username));
+//            ToastUtils.showShort(getString(R.string.error_invalid_username));
 //            mUsernameView.setError(getString(R.string.error_invalid_username));
 //            mUsernameView.findFocus();
 //            return;
 //        }
 //        if (!isPasswordValid(password)) {
-//            CommonUtils.showToast(getString(R.string.error_invalid_password));
+//            ToastUtils.showShort(getString(R.string.error_invalid_password));
 //            mPasswordView.setError(getString(R.string.error_invalid_password));
 //            mPasswordView.findFocus();
 //            return;
 //        }
         if (TextUtils.isEmpty(sharedPreferencesHelper.getUserPostCode())
                 || TextUtils.isEmpty(sharedPreferencesHelper.getUserGroupCode())) {
-            CommonUtils.showToast(getString(R.string.error_empty_team_group));
+            ToastUtils.showShort(getString(R.string.error_empty_team_group));
             return;
         }
-        hideSoftInputFromWindow();
-        if (!CommonUtils.isNetworkAvailable()) {
-            CommonUtils.showToast(R.string.network_tips);
+        // 隐藏软键盘
+        KeyboardUtils.hideSoftInput(this);
+        if (!NetworkUtils.isConnected()) {
+            ToastUtils.showShort(R.string.network_tips);
             return;
         }
         // Show a progress spinner, and kick off a background task to
@@ -273,7 +277,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private void userLoginError(String errorMessage) {
         hideLoading();
-        CommonUtils.showToast("你输入的密码和账户名不匹配，请重新输入后重试");
+        ToastUtils.showShort("你输入的密码和账户名不匹配，请重新输入后重试");
         mPasswordView.setError(getString(R.string.error_incorrect_password));
         mPasswordView.requestFocus();
         Logger.e(errorMessage);
@@ -291,7 +295,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         if (firstTime + 2000 > System.currentTimeMillis()) {
             super.onBackPressed();
         } else {
-            CommonUtils.showToast("再按一次退出程序");
+            ToastUtils.showShort("再按一次退出程序");
         }
         firstTime = System.currentTimeMillis();
     }

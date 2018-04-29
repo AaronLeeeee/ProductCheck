@@ -10,13 +10,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.check.gf.gfapplication.CustomApplication;
 import com.check.gf.gfapplication.R;
 import com.check.gf.gfapplication.activity.CheckDetailActivity;
 import com.check.gf.gfapplication.base.BaseFragment;
 import com.check.gf.gfapplication.entity.CheckOrderInfo;
 import com.check.gf.gfapplication.network.RxFactory;
-import com.check.gf.gfapplication.utils.CommonUtils;
 import com.orhanobut.logger.Logger;
 
 import java.util.List;
@@ -107,11 +107,11 @@ public class BaseInfoFragment extends BaseFragment {
         mStartCheckBt.setOnClickListener(v -> {
             String equipmentNoSecond = et_equipment_no_second.getText().toString().trim();
             if (equipmentNoSecond.isEmpty()) {
-                CommonUtils.showToast("次要检验单号为空，请输入！");
+                ToastUtils.showShort("次要检验单号为空，请输入！");
                 return;
             }
             if (mStartTimeTv.getText() != null && !mStartTimeTv.getText().equals("")) {
-                CommonUtils.showToast("已经开始检测，请勿重复检查！");
+                ToastUtils.showShort("已经开始检测，请勿重复检查！");
             } else {
                 queryCheckOrderInfoQuery(mCheckOrderInfo.getEquipmentNo(), mCheckOrderInfo.getMaterialCode(), equipmentNoSecond);
             }
@@ -141,10 +141,10 @@ public class BaseInfoFragment extends BaseFragment {
     private void queryStartCheck(String equipmentNo, String materialCode, String equipmentNoSecond) {
         toSubscribe(RxFactory.getCheckServiceInstance()
                         .StartCheck(equipmentNo, materialCode, equipmentNoSecond, mRealName),
-                () -> CommonUtils.showToast("请求开始检测..."),
+                () -> ToastUtils.showShort("请求开始检测..."),
                 checkOrderInfoResult -> {
                     if (checkOrderInfoResult.getResult() == 0) {
-                        CommonUtils.showToast("开始检测成功!");
+                        ToastUtils.showShort("开始检测成功!");
                         String startCheckTime = checkOrderInfoResult.getData().getStartCheckTime();
                         mStartTimeTv.setText(startCheckTime != null ? startCheckTime : "");
                         mCallback.onTestBegin(true);
@@ -159,13 +159,13 @@ public class BaseInfoFragment extends BaseFragment {
 
     private void queryCheckOrderInfoError(String msg) {
         hideLoading();
-        CommonUtils.showToast("次要检验单基本信息查询失败，请重试：" + msg);
+        ToastUtils.showShort("次要检验单基本信息查询失败，请重试：" + msg);
         Logger.e(msg);
     }
 
 
     private void startCheckError(String desc) {
-        CommonUtils.showToast("开始检测失败");
+        ToastUtils.showShort("开始检测失败");
         Logger.e(desc);
     }
 
@@ -226,7 +226,7 @@ public class BaseInfoFragment extends BaseFragment {
                 }
             }
         } else {
-            CommonUtils.showToast("程序异常，请重试");
+            ToastUtils.showShort("程序异常，请重试");
             getActivityNonNull().finish();
         }
 
