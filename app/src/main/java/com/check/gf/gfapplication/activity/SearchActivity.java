@@ -92,7 +92,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         mProcessCheckLl.setOnClickListener(this);
         mFinishedCheckLl.setOnClickListener(this);
         // TODO: 额 这个最后别忘记加
-        //keepAlive();
+        keepAlive();
     }
 
 

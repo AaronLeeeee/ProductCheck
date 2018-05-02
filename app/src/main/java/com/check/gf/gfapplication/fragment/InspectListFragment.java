@@ -163,7 +163,7 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
                         intent.putExtra(getInspectCodeExtra(), mInspectCode);
                         intent.putExtra(getEquipmentNoExtra(), mEquipmentNo);
                         intent.putExtra(getMaterialCode(), mMaterialCode);
-                        intent.putExtra(getMaterialCode(), mMaterialCode);
+                        intent.putExtra(getEquipmentNoSecond(), mEquipmentNoSecond);
                         startActivity(intent);
                     } else {
                         queryInspectItemDetailError(inspectItemDetailResult.getDesc());
