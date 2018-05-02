@@ -28,6 +28,8 @@ import java.util.List;
 public class BaseInfoFragment extends BaseFragment {
 
     private static final String BASE_INFO = "base_info";
+
+    private TextView tv_equipment_no_second;
     private TextView mPurchaseIdTv;
     private TextView mSupplierTv;
     private TextView mMaterialCodeTv;
@@ -98,6 +100,8 @@ public class BaseInfoFragment extends BaseFragment {
         mPerformanceTv = parentView.findViewById(R.id.tv_performance);
         mStartCheckBt = parentView.findViewById(R.id.tv_start_check);
 
+        tv_equipment_no_second = parentView.findViewById(R.id.tv_equipment_no_second);
+
         mRealName = CustomApplication.getInstance().getSpHelper().getRealname();
 
         mStartCheckBt.setOnClickListener(v -> {
@@ -146,6 +150,7 @@ public class BaseInfoFragment extends BaseFragment {
             mCheckOrderInfo = bundle.getParcelable(BASE_INFO);
         }
         if (mCheckOrderInfo != null) {
+            tv_equipment_no_second.setText(mCheckOrderInfo.getEquipmentNoSecond());
             mPurchaseIdTv.setText(mCheckOrderInfo.getCustomerCode());
             mSupplierTv.setText(mCheckOrderInfo.getCustomerName());
             mMaterialCodeTv.setText(mCheckOrderInfo.getMaterialCode());

@@ -22,8 +22,6 @@ import com.check.gf.gfapplication.fragment.InspectListFragment;
 import com.check.gf.gfapplication.network.RxFactory;
 import com.check.gf.gfapplication.view.common.ZoomableActivity;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.flyco.animation.BounceEnter.BounceTopEnter;
-import com.flyco.animation.SlideExit.SlideBottomExit;
 import com.flyco.dialog.widget.ActionSheetDialog;
 import com.flyco.dialog.widget.NormalDialog;
 import com.jph.takephoto.app.TakePhoto;
@@ -59,6 +57,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
     private String mEquipmentNoSecond;
 
     private TextView tv_num_id;
+    private TextView tv_material_code;
     private TextView tv_num_des;
     private ImageView iv_checked;
 
@@ -118,6 +117,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
         mLoadingView = findViewById(R.id.loadView);
 
         tv_num_id = findViewById(R.id.tv_num_id);
+        tv_material_code = findViewById(R.id.tv_material_code);
         tv_num_des = findViewById(R.id.tv_num_des);
         iv_checked = findViewById(R.id.iv_checked);
         ImageView iv_btn_correct = findViewById(R.id.iv_btn_correct);
@@ -157,6 +157,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
         mPaths = new ArrayList<>();
         tv_num_id.setText(mInspectItemDetail.getItemCode());
         tv_num_des.setText(mInspectItemDetail.getItemName());
+        tv_material_code.setText(mInspectItemDetail.getMaterialCode());
         int checkResult = mInspectItemDetail.getCheckResult();
         iv_checked.setVisibility(checkResult != 0 ? View.VISIBLE : View.GONE);
         iv_checked.setImageResource(checkResult == 1 ? R.drawable.ic_check : R.drawable.ic_uncheck);
@@ -182,8 +183,6 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
                 .style(NormalDialog.STYLE_TWO)
                 .btnNum(2)
                 .btnText(getString(R.string.tx_cancel), getString(R.string.tx_determine))
-                .showAnim(new BounceTopEnter())
-                .dismissAnim(new SlideBottomExit())
                 .show();
         dialog.setOnBtnClickL(
                 dialog::dismiss,

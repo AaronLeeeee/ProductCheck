@@ -28,27 +28,22 @@
             android:paddingRight="15dp"
             android:textColor="@color/text_color" />
 
-        <LinearLayout
+
+        <TextView
+            android:id="@+id/tv_materialCode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:paddingLeft="15dp"
-            android:paddingRight="15dp">
+            android:paddingRight="15dp"
+            android:textColor="@color/text_color" />
 
-            <TextView
-                android:id="@+id/tv_materialCode"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@color/text_color" />
-
-            <TextView
-                android:id="@+id/tv_material_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@color/text_color" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_material_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:textColor="@color/text_color" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -90,16 +85,10 @@
             android:paddingLeft="15dp"
             android:paddingRight="15dp">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/cs_arrow_right" />
-
             <TextView
                 android:id="@+id/tv_check_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="16dp"
                 android:textColor="@color/white"
                 android:textSize="@dimen/ts_normal" />
 
@@ -107,7 +96,7 @@
                 android:id="@+id/tv_completion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="16dp"
+                android:layout_marginLeft="8dp"
                 android:textColor="@color/white"
                 android:textSize="@dimen/ts_normal" />
         </LinearLayout>

@@ -6,12 +6,15 @@
     android:background="@color/blue_confirm"
     android:orientation="horizontal"
     android:paddingBottom="8dp"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
     android:paddingTop="8dp">
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="2"
+        android:layout_gravity="center"
+        android:layout_weight="4"
         android:gravity="center"
         android:text="序号"
         android:textColor="@color/white"
@@ -22,7 +25,8 @@
     <TextView
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="2"
+        android:layout_gravity="center"
+        android:layout_weight="4"
         android:gravity="center"
         android:text="物料型号"
         android:textColor="@color/white"
@@ -32,6 +36,7 @@
     <TextView
         android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:layout_gravity="center"
         android:layout_weight="8"
         android:gravity="center"
         android:text="检查内容"
@@ -42,6 +47,7 @@
     <TextView
         android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:layout_gravity="center"
         android:layout_weight="2"
         android:gravity="center"
         android:text="结果"
