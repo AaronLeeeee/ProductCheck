@@ -1,6 +1,5 @@
 package com.check.gf.gfapplication.activity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -21,23 +20,11 @@ import java.util.List;
  *
  * @author nEdAy
  */
-public class CheckDetailActivity extends BaseActivity implements BaseInfoFragment.onTestBeginListener {
+public class CheckDetailActivity extends BaseActivity implements BaseInfoFragment.OnTestBeginListener {
     private final ArrayList<Fragment> mFragments = new ArrayList<>();
-    @SuppressLint("StaticFieldLeak")
-    private static CheckDetailActivity mInstance;
     private CheckOrderInfo mCheckOrderInfo;
     private GuardViewPager vp_paper;
     private SlidingTabLayout tl_library;
-    private String equipmentNoSecond;
-
-    /**
-     * 对外提供CheckDetailActivity Context
-     *
-     * @return CheckDetailActivity
-     */
-    public static CheckDetailActivity getInstance() {
-        return mInstance;
-    }
 
     @Override
     public int bindLayout() {
@@ -52,7 +39,6 @@ public class CheckDetailActivity extends BaseActivity implements BaseInfoFragmen
 
     @Override
     public void initView(Bundle savedInstanceState) {
-        mInstance = this;
         initTopBarForLeft("检测单详情", getString(R.string.tx_back));
         vp_paper = findViewById(R.id.vpItemLeftPaper);
         vp_paper.setOffscreenPageLimit(1);
@@ -66,7 +52,7 @@ public class CheckDetailActivity extends BaseActivity implements BaseInfoFragmen
                 for (int i = 0; i < size; i++) {
                     CheckOrderInfo.CheckDataBean checkDataBean = checkDataBeanList.get(i);
                     if (checkDataBean != null) {
-                        mFragments.add(InspectListFragment.newInstance(checkDataBean.getInspectCode(), mCheckOrderInfo.getEquipmentNo(), mCheckOrderInfo.getMaterialCode()));
+                        mFragments.add(InspectListFragment.newInstance(checkDataBean.getInspectCode(), mCheckOrderInfo.getEquipmentNo(), mCheckOrderInfo.getMaterialCode(), mCheckOrderInfo.getEquipmentNoSecond()));
                         titles.add(checkDataBean.getTypeName());
                     }
                 }
@@ -87,22 +73,6 @@ public class CheckDetailActivity extends BaseActivity implements BaseInfoFragmen
     public void onTestBegin(boolean enable) {
         vp_paper.setSlidingEnable(enable);
         tl_library.setTabClickEnable(enable);
-    }
-
-
-    public synchronized String getEquipmentNoSecond() {
-        return equipmentNoSecond;
-    }
-
-
-    public synchronized void setEquipmentNoSecond(String equipmentNoSecond) {
-        this.equipmentNoSecond = equipmentNoSecond;
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mInstance = null;
     }
 
 }

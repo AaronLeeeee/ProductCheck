@@ -13,7 +13,6 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.check.gf.gfapplication.CustomApplication;
 import com.check.gf.gfapplication.R;
-import com.check.gf.gfapplication.activity.CheckDetailActivity;
 import com.check.gf.gfapplication.activity.CheckDetailItemActivity;
 import com.check.gf.gfapplication.adapter.InspectListAdapter;
 import com.check.gf.gfapplication.base.BaseFragment;
@@ -52,25 +51,24 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
     private String mEquipmentNoSecond;
     private String mRealName;
 
-    public static InspectListFragment newInstance(String inspectCode, String equipmentNo, String materialCode) {
+    public static InspectListFragment newInstance(String inspectCode, String equipmentNo, String materialCode, String equipmentNoSecond) {
         Bundle bundle = new Bundle();
         InspectListFragment fragment = new InspectListFragment();
         bundle.putString(INSPECT_CODE, inspectCode);
         bundle.putString(EQUIPMENT_NO, equipmentNo);
         bundle.putString(MATERIAL_CODE, materialCode);
+        bundle.putString(EQUIPMENT_NO_SECOND, equipmentNoSecond);
         fragment.setArguments(bundle);
         return fragment;
     }
 
+
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            // load data here
-            // TODO:test resume
-            onRefresh();
-        }
+    public void onResume() {
+        super.onResume();
+        onRefresh();
     }
+
 
     public static String getExtra() {
         return "inspectItemDetail";
@@ -105,7 +103,6 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
 
     @Override
     public void initView(Bundle savedInstanceState) {
-        mEquipmentNoSecond = CheckDetailActivity.getInstance().getEquipmentNoSecond();
         mRealName = CustomApplication.getInstance().getSpHelper().getRealname();
 
         mLoadingView = parentView.findViewById(R.id.loadView);
@@ -128,6 +125,7 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
             mInspectCode = bundle.getString(INSPECT_CODE);
             mEquipmentNo = bundle.getString(EQUIPMENT_NO);
             mMaterialCode = bundle.getString(MATERIAL_CODE);
+            mEquipmentNoSecond = bundle.getString(EQUIPMENT_NO_SECOND);
         }
         mQuickAdapter = new InspectListAdapter(new ArrayList<>());
         mRecyclerView.setAdapter(mQuickAdapter);

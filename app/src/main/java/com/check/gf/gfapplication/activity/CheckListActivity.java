@@ -20,6 +20,7 @@ import com.check.gf.gfapplication.entity.CheckOrder;
 import com.check.gf.gfapplication.entity.CheckOrderInfo;
 import com.check.gf.gfapplication.entity.SearchItem;
 import com.check.gf.gfapplication.network.RxFactory;
+import com.check.gf.gfapplication.view.CustomDialog;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ import java.util.List;
  *
  * @author nEdAy
  */
-public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener, IBaseList, View.OnClickListener {
+public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener, IBaseList, View.OnClickListener, CustomDialog.OnStartQueryEquipmentListener {
 
     private TextView mIncomeCheckTv;
     private TextView mProcessCheckTv;
@@ -191,16 +192,25 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
         //mQuickAdapter.addHeaderView(getView());
         mRecyclerView.setAdapter(mQuickAdapter);
         //条目子控件点击事件
-        mQuickAdapter.setOnItemChildClickListener((adapter, view, position) -> queryCheckOrderInfo(mCheckOrders.get(position)));
+        mQuickAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+            CheckOrder checkOrder = mCheckOrders.get(position);
+            if (0 == mState) { // 完成状态 0：未开始  1：检查中  2：检查完成
+                final CustomDialog dialog = new CustomDialog(mContext, position, checkOrder.getEquipmentNo());
+                dialog.show();
+                dialog.setCanceledOnTouchOutside(true);
+            } else {
+                queryCheckOrderInfo(checkOrder, "");
+            }
+        });
         // 一行代码搞定（默认为渐显效果）
         mQuickAdapter.openLoadAnimation();
         // 默认提供5种方法（渐显、缩放、从下到上，从左到右、从右到左）
         // mQuickAdapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
     }
 
-    private void queryCheckOrderInfo(CheckOrder checkOrder) {
+    private void queryCheckOrderInfo(CheckOrder checkOrder, String equipmentNoSecond) {
         toSubscribe(RxFactory.getCheckServiceInstance()
-                        .CheckOrderInfoQuery(checkOrder.getEquipmentNo(), checkOrder.getMaterialCode(), ""),
+                        .CheckOrderInfoQuery(checkOrder.getEquipmentNo(), checkOrder.getMaterialCode(), equipmentNoSecond),
                 () -> showLoading("查询详情中..."),
                 checkOrderInfoResult -> {
                     if (checkOrderInfoResult.getResult() == 0) {
@@ -232,6 +242,12 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
     public void RefreshItem() {
         mSwipeRefreshLayout.setRefreshing(false);
         ToastUtils.showShort("暂页面不支持下拉刷新");
+    }
+
+    @Override
+    public void onStartQueryEquipmentListener(int position, String equipmentNoSecond) {
+        CheckOrder checkOrder = mCheckOrders.get(position);
+        queryCheckOrderInfo(checkOrder, equipmentNoSecond);
     }
 
 }

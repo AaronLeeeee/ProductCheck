@@ -7,13 +7,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.check.gf.gfapplication.CustomApplication;
 import com.check.gf.gfapplication.R;
-import com.check.gf.gfapplication.activity.CheckDetailActivity;
 import com.check.gf.gfapplication.base.BaseFragment;
 import com.check.gf.gfapplication.entity.CheckOrderInfo;
 import com.check.gf.gfapplication.network.RxFactory;
@@ -45,10 +43,9 @@ public class BaseInfoFragment extends BaseFragment {
     private TextView mDimensionTv;
     private TextView mPerformanceTv;
     private TextView mStartCheckBt;
-    private EditText et_equipment_no_second;
 
     private CheckOrderInfo mCheckOrderInfo;
-    private onTestBeginListener mCallback;
+    private OnTestBeginListener mCallback;
 
     private String mRealName;
 
@@ -65,7 +62,7 @@ public class BaseInfoFragment extends BaseFragment {
         super.onAttach(context);
         // 这个方法是用来确认当前的Activity容器是否已经继承了该接口，如果没有将抛出异常
         try {
-            mCallback = (onTestBeginListener) context;
+            mCallback = (OnTestBeginListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
                     + " must implement onTestListener");
@@ -99,43 +96,17 @@ public class BaseInfoFragment extends BaseFragment {
         mSurfaceTv = parentView.findViewById(R.id.tv_surface);
         mDimensionTv = parentView.findViewById(R.id.tv_dimension);
         mPerformanceTv = parentView.findViewById(R.id.tv_performance);
-        et_equipment_no_second = parentView.findViewById(R.id.et_equipment_no_second);
         mStartCheckBt = parentView.findViewById(R.id.tv_start_check);
 
         mRealName = CustomApplication.getInstance().getSpHelper().getRealname();
 
         mStartCheckBt.setOnClickListener(v -> {
-            String equipmentNoSecond = et_equipment_no_second.getText().toString().trim();
-            if (equipmentNoSecond.isEmpty()) {
-                ToastUtils.showShort("次要检验单号为空，请输入！");
-                return;
-            }
             if (mStartTimeTv.getText() != null && !mStartTimeTv.getText().equals("")) {
                 ToastUtils.showShort("已经开始检测，请勿重复检查！");
             } else {
-                queryCheckOrderInfoQuery(mCheckOrderInfo.getEquipmentNo(), mCheckOrderInfo.getMaterialCode(), equipmentNoSecond);
+                queryStartCheck(mCheckOrderInfo.getEquipmentNo(), mCheckOrderInfo.getMaterialCode(), mCheckOrderInfo.getEquipmentNoSecond());
             }
         });
-    }
-
-    private void queryCheckOrderInfoQuery(String equipmentNo, String materialCode, String equipmentNoSecond) {
-        toSubscribe(RxFactory.getCheckServiceInstance()
-                        .CheckOrderInfoQuery(equipmentNo, materialCode, equipmentNoSecond),
-                () -> showLoading("查询次要检验单号详情中..."),
-                checkOrderInfoResult -> {
-                    if (checkOrderInfoResult.getResult() == 0) {
-                        hideLoading();
-                        et_equipment_no_second.setEnabled(false);
-                        CheckDetailActivity.getInstance().setEquipmentNoSecond(equipmentNoSecond);
-                        initData(mCheckOrderInfo);
-                        queryStartCheck(equipmentNo, materialCode, equipmentNoSecond);
-                    } else {
-                        queryCheckOrderInfoError(checkOrderInfoResult.getDesc());
-                    }
-                },
-                throwable -> queryCheckOrderInfoError(throwable.getMessage()));
-
-
     }
 
     private void queryStartCheck(String equipmentNo, String materialCode, String equipmentNoSecond) {
@@ -157,13 +128,6 @@ public class BaseInfoFragment extends BaseFragment {
     }
 
 
-    private void queryCheckOrderInfoError(String msg) {
-        hideLoading();
-        ToastUtils.showShort("次要检验单基本信息查询失败，请重试：" + msg);
-        Logger.e(msg);
-    }
-
-
     private void startCheckError(String desc) {
         ToastUtils.showShort("开始检测失败");
         Logger.e(desc);
@@ -172,17 +136,14 @@ public class BaseInfoFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initData(null);
+        initData();
     }
 
-    private void initData(CheckOrderInfo checkOrderInfo) {
-        mCheckOrderInfo = checkOrderInfo;
-        if (mCheckOrderInfo == null) {
-            //获得索引值
-            Bundle bundle = getArguments();
-            if (bundle != null && bundle.containsKey(BASE_INFO)) {
-                mCheckOrderInfo = bundle.getParcelable(BASE_INFO);
-            }
+    private void initData() {
+        //获得索引值
+        Bundle bundle = getArguments();
+        if (bundle != null && bundle.containsKey(BASE_INFO)) {
+            mCheckOrderInfo = bundle.getParcelable(BASE_INFO);
         }
         if (mCheckOrderInfo != null) {
             mPurchaseIdTv.setText(mCheckOrderInfo.getCustomerCode());
@@ -232,7 +193,7 @@ public class BaseInfoFragment extends BaseFragment {
 
     }
 
-    public interface onTestBeginListener {
+    public interface OnTestBeginListener {
         void onTestBegin(boolean enable);
     }
 
