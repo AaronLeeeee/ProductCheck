@@ -1,5 +1,7 @@
 package com.check.gf.gfapplication.adapter;
 
+import android.text.TextUtils;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.check.gf.gfapplication.R;
@@ -33,7 +35,7 @@ public class CheckListAdapter extends BaseQuickAdapter<CheckOrder, BaseViewHolde
                 .setText(R.id.tv_materialCode,
                         mContext.getString(R.string.material_code, checkOrder.getMaterialCode()))
                 .setText(R.id.tv_check_id,
-                        mContext.getString(R.string.check_order_id, checkOrder.getEquipmentNo()))
+                        mContext.getString(R.string.check_order_id, TextUtils.isEmpty(checkOrder.getEquipmentNoSecond()) ? checkOrder.getEquipmentNo() : checkOrder.getEquipmentNoSecond()))
                 .setText(R.id.tv_completion,
                         mContext.getString(R.string.completion, String.valueOf(checkOrder.getFinishCheckNum()) + " / " + String.valueOf(checkOrder.getTotalCheckNum())))
                 .addOnClickListener(R.id.ll_go_detail);

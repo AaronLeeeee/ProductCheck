@@ -55,6 +55,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
     private String mEquipmentNo;
     private String mMaterialCode;
     private String mEquipmentNoSecond;
+    private boolean mIsFinishCheck;
 
     private TextView tv_num_id;
     private TextView tv_material_code;
@@ -76,6 +77,11 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
     private EditText et_msg_1, et_msg_2, et_msg_3, et_msg_4, et_msg_5;
 
     private String mRealName;
+
+    private ImageView iv_btn_correct;
+    private ImageView iv_btn_incorrect;
+    private Button mTakePictureBt;
+    private Button bt_commit_msg;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -103,6 +109,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
         mEquipmentNo = intent.getStringExtra(InspectListFragment.getEquipmentNoExtra());
         mMaterialCode = intent.getStringExtra(InspectListFragment.getMaterialCode());
         mEquipmentNoSecond = intent.getStringExtra(InspectListFragment.getEquipmentNoSecond());
+        mIsFinishCheck = intent.getBooleanExtra(InspectListFragment.getIsFinishCheck(), false);
     }
 
 
@@ -110,6 +117,7 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
     public int bindLayout() {
         return R.layout.activity_check_detail_item;
     }
+
 
     @Override
     public void initView(Bundle savedInstanceState) {
@@ -120,9 +128,9 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
         tv_material_code = findViewById(R.id.tv_material_code);
         tv_num_des = findViewById(R.id.tv_num_des);
         iv_checked = findViewById(R.id.iv_checked);
-        ImageView iv_btn_correct = findViewById(R.id.iv_btn_correct);
+        iv_btn_correct = findViewById(R.id.iv_btn_correct);
         iv_btn_correct.setOnClickListener(view -> showCheckDialog(1));
-        ImageView iv_btn_incorrect = findViewById(R.id.iv_btn_incorrect);
+        iv_btn_incorrect = findViewById(R.id.iv_btn_incorrect);
         iv_btn_incorrect.setOnClickListener(view -> showCheckDialog(2));
 
         riv_pic_1 = findViewById(R.id.riv_pic_1);
@@ -138,16 +146,19 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
         riv_pic_6 = findViewById(R.id.riv_pic_6);
         riv_pic_6.setOnClickListener(view -> ZoomableActivity.goToPage(CheckDetailItemActivity.this, mPaths, 5));
 
-        Button mTakePictureBt = findViewById(R.id.bt_take_picture);
+        mTakePictureBt = findViewById(R.id.bt_take_picture);
         mTakePictureBt.setOnClickListener(v -> showActionSheet());
 
-        Button bt_commit_msg = findViewById(R.id.bt_commit_msg);
+        bt_commit_msg = findViewById(R.id.bt_commit_msg);
         bt_commit_msg.setOnClickListener(v -> commitMsg());
         et_msg_1 = findViewById(R.id.et_msg_1);
         et_msg_2 = findViewById(R.id.et_msg_2);
         et_msg_3 = findViewById(R.id.et_msg_3);
         et_msg_4 = findViewById(R.id.et_msg_4);
         et_msg_5 = findViewById(R.id.et_msg_5);
+
+        disableOrEnableButtons();
+
         initData();
     }
 
@@ -157,9 +168,9 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
         mPaths = new ArrayList<>();
         tv_num_id.setText(mInspectItemDetail.getItemCode());
         tv_num_des.setText(mInspectItemDetail.getItemName());
-        tv_material_code.setText(mInspectItemDetail.getMaterialCode());
+        tv_material_code.setText(mMaterialCode);
         int checkResult = mInspectItemDetail.getCheckResult();
-        iv_checked.setVisibility(checkResult != 0 ? View.VISIBLE : View.GONE);
+        iv_checked.setVisibility(checkResult != 0 ? View.VISIBLE : View.INVISIBLE);
         iv_checked.setImageResource(checkResult == 1 ? R.drawable.ic_check : R.drawable.ic_uncheck);
 
         String checkContent1 = mInspectItemDetail.getCheckContent1();
@@ -444,6 +455,20 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
                 riv_pic_6.setImageURI(picUrl);
             }
         }
+    }
+
+
+    private void disableOrEnableButtons() {
+        boolean isEnabled = !mIsFinishCheck;
+        et_msg_1.setEnabled(isEnabled);
+        et_msg_2.setEnabled(isEnabled);
+        et_msg_3.setEnabled(isEnabled);
+        et_msg_4.setEnabled(isEnabled);
+        et_msg_5.setEnabled(isEnabled);
+        iv_btn_correct.setEnabled(isEnabled);
+        iv_btn_incorrect.setEnabled(isEnabled);
+        mTakePictureBt.setEnabled(isEnabled);
+        bt_commit_msg.setEnabled(isEnabled);
     }
 
 }

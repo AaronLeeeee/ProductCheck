@@ -13,6 +13,7 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.check.gf.gfapplication.CustomApplication;
 import com.check.gf.gfapplication.R;
+import com.check.gf.gfapplication.activity.CheckDetailActivity;
 import com.check.gf.gfapplication.activity.CheckDetailItemActivity;
 import com.check.gf.gfapplication.adapter.InspectListAdapter;
 import com.check.gf.gfapplication.base.BaseFragment;
@@ -36,6 +37,7 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
     private static final String EQUIPMENT_NO = "equipment_no";
     private static final String MATERIAL_CODE = "material_code";
     private static final String EQUIPMENT_NO_SECOND = "equipment_no_second";
+    private static final String IS_FINISH_CHECK = "is_finish_check";
 
     private String mInspectCode;
     private String mEquipmentNo;
@@ -90,6 +92,9 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
         return EQUIPMENT_NO_SECOND;
     }
 
+    public static String getIsFinishCheck() {
+        return IS_FINISH_CHECK;
+    }
 
     @Override
     public int bindLayout() {
@@ -135,7 +140,7 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
         // mQuickAdapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
         mQuickAdapter.setOnItemClickListener((adapter, view, position) -> {
             String itemCode = inspectItems.get(position).getItemCode();
-            queryInspectItemDetail(itemCode);
+            queryInspectItemDetail(itemCode, mMaterialCode);
         });
         addHeadView();
     }
@@ -144,12 +149,12 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
      * 添加头部
      */
     private void addHeadView() {
-        View headView = getActivity().getLayoutInflater().inflate(R.layout.include_check_list_header,
+        View headView = getActivityNonNull().getLayoutInflater().inflate(R.layout.include_check_list_header,
                 (ViewGroup) mRecyclerView.getParent(), false);
         mQuickAdapter.addHeaderView(headView);
     }
 
-    private void queryInspectItemDetail(String itemCode) {
+    private void queryInspectItemDetail(String itemCode, String materialCode) {
         toSubscribe(RxFactory.getCheckServiceInstance()
                         .ItemDetailQuery(mInspectCode, mEquipmentNo, mMaterialCode, itemCode, mRealName, mEquipmentNoSecond),
                 () -> showLoading("查询详细信息中..."),
@@ -162,8 +167,10 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
                         intent.putExtra(InspectListFragment.getExtra(), inspectItemDetail);
                         intent.putExtra(getInspectCodeExtra(), mInspectCode);
                         intent.putExtra(getEquipmentNoExtra(), mEquipmentNo);
-                        intent.putExtra(getMaterialCode(), mMaterialCode);
+                        intent.putExtra(getMaterialCode(), materialCode);
                         intent.putExtra(getEquipmentNoSecond(), mEquipmentNoSecond);
+                        intent.putExtra(getIsFinishCheck(),
+                                CheckDetailActivity.getInstance().isFinishCheck());
                         startActivity(intent);
                     } else {
                         queryInspectItemDetailError(inspectItemDetailResult.getDesc());

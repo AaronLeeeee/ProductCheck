@@ -26,6 +26,14 @@ public class CheckDetailActivity extends BaseActivity implements BaseInfoFragmen
     private GuardViewPager vp_paper;
     private SlidingTabLayout tl_library;
 
+    private boolean isFinishCheck;
+
+    private static CheckDetailActivity mInstance;
+
+    public static CheckDetailActivity getInstance() {
+        return mInstance;
+    }
+
     @Override
     public int bindLayout() {
         return R.layout.activity_check_detail;
@@ -39,6 +47,7 @@ public class CheckDetailActivity extends BaseActivity implements BaseInfoFragmen
 
     @Override
     public void initView(Bundle savedInstanceState) {
+        mInstance = this;
         initTopBarForLeft("检测单详情", getString(R.string.tx_back));
         vp_paper = findViewById(R.id.vpItemLeftPaper);
         vp_paper.setOffscreenPageLimit(1);
@@ -73,6 +82,21 @@ public class CheckDetailActivity extends BaseActivity implements BaseInfoFragmen
     public void onTestBegin(boolean enable) {
         vp_paper.setSlidingEnable(enable);
         tl_library.setTabClickEnable(enable);
+    }
+
+
+    public synchronized boolean isFinishCheck() {
+        return isFinishCheck;
+    }
+
+    public synchronized void setFinishCheck(boolean finishCheck) {
+        isFinishCheck = finishCheck;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mInstance = null;
     }
 
 }

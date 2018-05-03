@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.ToastUtils;
 import com.check.gf.gfapplication.CustomApplication;
 import com.check.gf.gfapplication.R;
+import com.check.gf.gfapplication.activity.CheckDetailActivity;
 import com.check.gf.gfapplication.base.BaseFragment;
 import com.check.gf.gfapplication.entity.CheckOrderInfo;
 import com.check.gf.gfapplication.network.RxFactory;
@@ -30,14 +31,13 @@ public class BaseInfoFragment extends BaseFragment {
     private static final String BASE_INFO = "base_info";
 
     private TextView tv_equipment_no_second;
+    private TextView tv_equipment_no;
     private TextView mPurchaseIdTv;
     private TextView mSupplierTv;
     private TextView mMaterialCodeTv;
     private TextView mMaterialIdTv;
     private TextView mMaterialNameTv;
-    //private TextView mQMNOTv;
     private TextView mIncomeCountTv;
-    //private TextView mSamplePlanTv;
     private TextView mInspectorTv;
     private TextView mStartTimeTv;
     private TextView mEndTimeTv;
@@ -45,6 +45,7 @@ public class BaseInfoFragment extends BaseFragment {
     private TextView mDimensionTv;
     private TextView mPerformanceTv;
     private TextView mStartCheckBt;
+    private TextView mEndCheckBt;
 
     private CheckOrderInfo mCheckOrderInfo;
     private OnTestBeginListener mCallback;
@@ -89,9 +90,7 @@ public class BaseInfoFragment extends BaseFragment {
         mMaterialCodeTv = parentView.findViewById(R.id.tv_material_code);
         mMaterialIdTv = parentView.findViewById(R.id.tv_material_id);
         mMaterialNameTv = parentView.findViewById(R.id.tv_material_name);
-        //mQMNOTv = parentView.findViewById(R.id.tv_qm_no);
         mIncomeCountTv = parentView.findViewById(R.id.tv_income_count);
-        //mSamplePlanTv = parentView.findViewById(R.id.tv_sample_plan);
         mInspectorTv = parentView.findViewById(R.id.tv_inspector);
         mStartTimeTv = parentView.findViewById(R.id.tv_start_time);
         mEndTimeTv = parentView.findViewById(R.id.tv_end_time);
@@ -101,7 +100,7 @@ public class BaseInfoFragment extends BaseFragment {
         mStartCheckBt = parentView.findViewById(R.id.tv_start_check);
 
         tv_equipment_no_second = parentView.findViewById(R.id.tv_equipment_no_second);
-
+        tv_equipment_no = parentView.findViewById(R.id.tv_equipment_no);
         mRealName = CustomApplication.getInstance().getSpHelper().getRealname();
 
         mStartCheckBt.setOnClickListener(v -> {
@@ -109,6 +108,15 @@ public class BaseInfoFragment extends BaseFragment {
                 ToastUtils.showShort("已经开始检测，请勿重复检查！");
             } else {
                 queryStartCheck(mCheckOrderInfo.getEquipmentNo(), mCheckOrderInfo.getMaterialCode(), mCheckOrderInfo.getEquipmentNoSecond());
+            }
+        });
+        mEndCheckBt = parentView.findViewById(R.id.tv_end_check);
+        mEndCheckBt.setOnClickListener(v -> {
+            if (mStartTimeTv.getText() != null && mStartTimeTv.getText().equals("")) {
+                ToastUtils.showShort("尚未开始检测，请勿结束检查！");
+            } else {
+                queryFinishCheck(mCheckOrderInfo.getEquipmentNo(),
+                        mCheckOrderInfo.getEquipmentNoSecond());
             }
         });
     }
@@ -137,6 +145,29 @@ public class BaseInfoFragment extends BaseFragment {
         Logger.e(desc);
     }
 
+    private void queryFinishCheck(String equipmentNo, String equipmentNoSecond) {
+        toSubscribe(RxFactory.getCheckServiceInstance()
+                        .FinishCheck(equipmentNo, equipmentNoSecond, mRealName),
+                () -> ToastUtils.showShort("请求结束检测..."),
+                checkOrderInfoResult -> {
+                    if (checkOrderInfoResult.getResult() == 0) {
+                        ToastUtils.showShort("结束检测成功!");
+                        String finishCheckTime = checkOrderInfoResult.getData().getFinishCheckTime();
+                        mEndTimeTv.setText(finishCheckTime != null ? finishCheckTime : "");
+                        mEndCheckBt.setEnabled(false);
+                        CheckDetailActivity.getInstance().setFinishCheck(true);
+                    } else {
+                        finishCheckError(checkOrderInfoResult.getDesc());
+                    }
+                },
+                throwable -> finishCheckError(throwable.getMessage()));
+    }
+
+    private void finishCheckError(String desc) {
+        ToastUtils.showShort("结束检测失败");
+        Logger.e(desc);
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -151,6 +182,7 @@ public class BaseInfoFragment extends BaseFragment {
         }
         if (mCheckOrderInfo != null) {
             tv_equipment_no_second.setText(mCheckOrderInfo.getEquipmentNoSecond());
+            tv_equipment_no.setText(mCheckOrderInfo.getEquipmentNo());
             mPurchaseIdTv.setText(mCheckOrderInfo.getCustomerCode());
             mSupplierTv.setText(mCheckOrderInfo.getCustomerName());
             mMaterialCodeTv.setText(mCheckOrderInfo.getMaterialCode());
@@ -170,7 +202,14 @@ public class BaseInfoFragment extends BaseFragment {
                 mCallback.onTestBegin(true);
                 mStartTimeTv.setText(mCheckOrderInfo.getStartCheckTime());
             }
-            mEndTimeTv.setText(mCheckOrderInfo.getFinishCheckTime());
+            String finishCheckTime = mCheckOrderInfo.getFinishCheckTime();
+            if (TextUtils.isEmpty(finishCheckTime)) {
+                mEndCheckBt.setEnabled(true);
+            } else {
+                mEndCheckBt.setEnabled(false);
+                mEndTimeTv.setText(finishCheckTime);
+                CheckDetailActivity.getInstance().setFinishCheck(true);
+            }
             List<CheckOrderInfo.CheckDataBean> checkDataBeans = mCheckOrderInfo.getCheckData();
             if (checkDataBeans != null && checkDataBeans.size() != 0) {
                 for (int i = 0; i < checkDataBeans.size(); i++) {

@@ -5,7 +5,8 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin">
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:scrollbars="none">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,18 +22,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:paddingTop="16dp"
-                android:text="设备号"
+                android:paddingTop="10dp"
+                android:text="原设备号"
                 android:textColor="@color/black"
                 android:textSize="@dimen/ts_bigger" />
 
             <TextView
-                android:id="@+id/tv_equipment_no_second"
+                android:id="@+id/tv_equipment_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
-                android:paddingTop="16dp"
+                android:paddingTop="10dp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/ts_bigger" />
         </LinearLayout>
@@ -46,6 +47,32 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:paddingTop="8dp"
+                android:text="设备号"
+                android:textColor="@color/black"
+                android:textSize="@dimen/ts_bigger" />
+
+            <TextView
+                android:id="@+id/tv_equipment_no_second"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:paddingTop="8dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/ts_bigger" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingTop="8dp"
                 android:text="@string/purchase_order"
                 android:textColor="@color/black"
                 android:textSize="@dimen/ts_bigger" />
@@ -56,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
-                android:paddingTop="16dp"
+                android:paddingTop="8dp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/ts_bigger" />
         </LinearLayout>
@@ -341,12 +368,14 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="horizontal"
-            android:paddingTop="20dp">
+            android:paddingTop="10dp">
 
             <TextView
                 android:id="@+id/tv_start_check"
                 android:layout_width="100dp"
                 android:layout_height="50dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/global_blue_clickable_selector"
                 android:enabled="false"
@@ -357,6 +386,20 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/ts_big" />
 
+            <TextView
+                android:id="@+id/tv_end_check"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/global_blue_clickable_selector"
+                android:gravity="center"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp"
+                android:text="确认完成"
+                android:textColor="@color/white"
+                android:textSize="@dimen/ts_big" />
         </LinearLayout>
     </LinearLayout>
 

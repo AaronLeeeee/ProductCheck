@@ -29,6 +29,7 @@ public class CheckOrder implements Parcelable {
     private String id;
     private String docNo;
     private String equipmentNo;
+    private String equipmentNoSecond;
     private String materialCode;
     private String itemCode;
     private String itemName;
@@ -153,6 +154,17 @@ public class CheckOrder implements Parcelable {
         this.materialCode = materialCode;
     }
 
+    public CheckOrder() {
+    }
+
+    public String getEquipmentNoSecond() {
+        return equipmentNoSecond;
+    }
+
+    public void setEquipmentNoSecond(String equipmentNoSecond) {
+        this.equipmentNoSecond = equipmentNoSecond;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -163,6 +175,7 @@ public class CheckOrder implements Parcelable {
         dest.writeString(this.id);
         dest.writeString(this.docNo);
         dest.writeString(this.equipmentNo);
+        dest.writeString(this.equipmentNoSecond);
         dest.writeString(this.materialCode);
         dest.writeString(this.itemCode);
         dest.writeString(this.itemName);
@@ -176,13 +189,11 @@ public class CheckOrder implements Parcelable {
         dest.writeInt(this.finishState);
     }
 
-    public CheckOrder() {
-    }
-
     protected CheckOrder(Parcel in) {
         this.id = in.readString();
         this.docNo = in.readString();
         this.equipmentNo = in.readString();
+        this.equipmentNoSecond = in.readString();
         this.materialCode = in.readString();
         this.itemCode = in.readString();
         this.itemName = in.readString();

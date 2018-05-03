@@ -16,7 +16,6 @@ public class InspectItemDetail implements Parcelable {
      * itemCode : 001
      * itemName : 表面不能有破损，摩察系数不能太大
      * checkResult : 0
-     * materialCode
      * checkContent1 : 检验结果备注1
      * checkContent2 : 检验结果备注2
      * checkContent3 : 检验结果备注3
@@ -27,7 +26,6 @@ public class InspectItemDetail implements Parcelable {
 
     private String itemCode;
     private String itemName;
-    private String materialCode;
     private int checkResult;
     private String checkContent1;
     private String checkContent2;
@@ -108,14 +106,6 @@ public class InspectItemDetail implements Parcelable {
         this.pictures = pictures;
     }
 
-    public String getMaterialCode() {
-        return materialCode;
-    }
-
-    public void setMaterialCode(String materialCode) {
-        this.materialCode = materialCode;
-    }
-
     public static class PicturesBean implements Parcelable {
         /**
          * url : http://h.hiphotos.baidu.com/image/pic/item/e824b899a9014c0899ee068a067b02087af4f4cc.jpg
@@ -173,7 +163,6 @@ public class InspectItemDetail implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.itemCode);
         dest.writeString(this.itemName);
-        dest.writeString(this.materialCode);
         dest.writeInt(this.checkResult);
         dest.writeString(this.checkContent1);
         dest.writeString(this.checkContent2);
@@ -186,7 +175,6 @@ public class InspectItemDetail implements Parcelable {
     protected InspectItemDetail(Parcel in) {
         this.itemCode = in.readString();
         this.itemName = in.readString();
-        this.materialCode = in.readString();
         this.checkResult = in.readInt();
         this.checkContent1 = in.readString();
         this.checkContent2 = in.readString();

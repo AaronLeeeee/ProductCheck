@@ -199,7 +199,7 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
                 dialog.show();
                 dialog.setCanceledOnTouchOutside(true);
             } else {
-                queryCheckOrderInfo(checkOrder, "");
+                queryCheckOrderInfo(checkOrder, checkOrder.getEquipmentNoSecond());
             }
         });
         // 一行代码搞定（默认为渐显效果）
@@ -247,7 +247,20 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
     @Override
     public void onStartQueryEquipmentListener(int position, String equipmentNoSecond) {
         CheckOrder checkOrder = mCheckOrders.get(position);
-        queryCheckOrderInfo(checkOrder, equipmentNoSecond);
+        toSubscribe(RxFactory.getCheckServiceInstance()
+                        .QueryEquipmentNoCheck(checkOrder.getEquipmentNo(), equipmentNoSecond),
+                () -> showLoading("查询是否已经检验完成..."),
+                result -> {
+                    if (result.getResult() == 0) {
+                        hideLoading();
+                        queryCheckOrderInfo(checkOrder, equipmentNoSecond);
+                    } else if (result.getResult() == -1) {
+                        queryCheckOrderInfoError("此设备已经检验过，不允许重复检验");
+                    } else {
+                        queryCheckOrderInfoError(result.getDesc());
+                    }
+                },
+                throwable -> queryCheckOrderInfoError(throwable.getMessage()));
     }
 
 }

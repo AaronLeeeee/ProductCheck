@@ -2,6 +2,7 @@ package com.check.gf.gfapplication.network;
 
 import com.check.gf.gfapplication.entity.CheckOrder;
 import com.check.gf.gfapplication.entity.CheckOrderInfo;
+import com.check.gf.gfapplication.entity.FinishCheckResult;
 import com.check.gf.gfapplication.entity.ImageUploadResult;
 import com.check.gf.gfapplication.entity.InspectItem;
 import com.check.gf.gfapplication.entity.InspectItemDetail;
@@ -145,5 +146,27 @@ public interface CheckApi {
      */
     @GET("Check/ItemDetailQuery")
     Observable<ResultObject<InspectItemDetail>> ItemDetailQuery(@Query("inspectCode") String inspectCode, @Query("equipmentNo") String equipmentNo, @Query("materialCode") String materialCode, @Query("itemCode") String itemCode, @Query("userRealName") String userRealName, @Query("equipmentNoSecond") String equipmentNoSecond);
+
+    /**
+     * 开始检查接口
+     *
+     * @param equipmentNo       是		string	检验类别编码
+     * @param equipmentNoSecond 是	string	次要检验单号
+     * @param userRealName      是	string	登录用户名字，中文名
+     * @return 返回时间信息
+     */
+    @GET("Check/FinishCheck")
+    Observable<ResultObject<FinishCheckResult>> FinishCheck(@Query("equipmentNo") String equipmentNo, @Query("equipmentNoSecond") String equipmentNoSecond, @Query("userRealName") String userRealName);
+
+
+    /**
+     * 查询设备是否检查接口
+     *
+     * @param equipmentNo       是		string	检验类别编码
+     * @param equipmentNoSecond 是	string	次要检验单号
+     * @return 返回时间信息
+     */
+    @GET("Check/QueryEquipmentNoCheck")
+    Observable<ResultObject> QueryEquipmentNoCheck(@Query("equipmentNo") String equipmentNo, @Query("equipmentNoSecond") String equipmentNoSecond);
 
 }
