@@ -41,7 +41,6 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
 
     private String mInspectCode;
     private String mEquipmentNo;
-    private String mMaterialCode;
 
     private List<InspectItem> inspectItems;
 
@@ -53,12 +52,11 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
     private String mEquipmentNoSecond;
     private String mRealName;
 
-    public static InspectListFragment newInstance(String inspectCode, String equipmentNo, String materialCode, String equipmentNoSecond) {
+    public static InspectListFragment newInstance(String inspectCode, String equipmentNo, String equipmentNoSecond) {
         Bundle bundle = new Bundle();
         InspectListFragment fragment = new InspectListFragment();
         bundle.putString(INSPECT_CODE, inspectCode);
         bundle.putString(EQUIPMENT_NO, equipmentNo);
-        bundle.putString(MATERIAL_CODE, materialCode);
         bundle.putString(EQUIPMENT_NO_SECOND, equipmentNoSecond);
         fragment.setArguments(bundle);
         return fragment;
@@ -129,7 +127,6 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
         if (bundle != null) {
             mInspectCode = bundle.getString(INSPECT_CODE);
             mEquipmentNo = bundle.getString(EQUIPMENT_NO);
-            mMaterialCode = bundle.getString(MATERIAL_CODE);
             mEquipmentNoSecond = bundle.getString(EQUIPMENT_NO_SECOND);
         }
         mQuickAdapter = new InspectListAdapter(new ArrayList<>());
@@ -140,7 +137,8 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
         // mQuickAdapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
         mQuickAdapter.setOnItemClickListener((adapter, view, position) -> {
             String itemCode = inspectItems.get(position).getItemCode();
-            queryInspectItemDetail(itemCode, mMaterialCode);
+            String materialCode = inspectItems.get(position).getMaterialCode();
+            queryInspectItemDetail(itemCode, materialCode);
         });
         addHeadView();
     }
@@ -156,7 +154,7 @@ public class InspectListFragment extends BaseFragment implements BaseQuickAdapte
 
     private void queryInspectItemDetail(String itemCode, String materialCode) {
         toSubscribe(RxFactory.getCheckServiceInstance()
-                        .ItemDetailQuery(mInspectCode, mEquipmentNo, mMaterialCode, itemCode, mRealName, mEquipmentNoSecond),
+                        .ItemDetailQuery(mInspectCode, mEquipmentNo, materialCode, itemCode, mRealName, mEquipmentNoSecond),
                 () -> showLoading("查询详细信息中..."),
                 inspectItemDetailResult -> {
                     if (inspectItemDetailResult.getResult() == 0) {

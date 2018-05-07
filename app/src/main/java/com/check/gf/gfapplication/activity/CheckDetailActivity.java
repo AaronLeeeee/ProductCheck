@@ -61,7 +61,7 @@ public class CheckDetailActivity extends BaseActivity implements BaseInfoFragmen
                 for (int i = 0; i < size; i++) {
                     CheckOrderInfo.CheckDataBean checkDataBean = checkDataBeanList.get(i);
                     if (checkDataBean != null) {
-                        mFragments.add(InspectListFragment.newInstance(checkDataBean.getInspectCode(), mCheckOrderInfo.getEquipmentNo(), mCheckOrderInfo.getMaterialCode(), mCheckOrderInfo.getEquipmentNoSecond()));
+                        mFragments.add(InspectListFragment.newInstance(checkDataBean.getInspectCode(), mCheckOrderInfo.getEquipmentNo(), mCheckOrderInfo.getEquipmentNoSecond()));
                         titles.add(checkDataBean.getTypeName());
                     }
                 }

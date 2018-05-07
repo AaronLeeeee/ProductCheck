@@ -432,27 +432,29 @@ public class CheckDetailItemActivity extends BaseActivity implements TakePhoto.T
 
     private void showPic(List<InspectItemDetail.PicturesBean> picturesBeans) {
         // TODO: 额 这段以后重构 动态添加布局 最多6个
-        for (int i = 0; i < picturesBeans.size(); i++) {
-            String picUrl = picturesBeans.get(i).getUrl();
-            mPaths.add(picUrl);
-            if (i == 0) {
-                riv_pic_1.setVisibility(View.VISIBLE);
-                riv_pic_1.setImageURI(picUrl);
-            } else if (i == 1) {
-                riv_pic_2.setVisibility(View.VISIBLE);
-                riv_pic_2.setImageURI(picUrl);
-            } else if (i == 2) {
-                riv_pic_3.setVisibility(View.VISIBLE);
-                riv_pic_3.setImageURI(picUrl);
-            } else if (i == 3) {
-                riv_pic_4.setVisibility(View.VISIBLE);
-                riv_pic_4.setImageURI(picUrl);
-            } else if (i == 4) {
-                riv_pic_5.setVisibility(View.VISIBLE);
-                riv_pic_5.setImageURI(picUrl);
-            } else if (i == 5) {
-                riv_pic_6.setVisibility(View.VISIBLE);
-                riv_pic_6.setImageURI(picUrl);
+        if (picturesBeans != null && picturesBeans.size() > 0) {
+            for (int i = 0; i < picturesBeans.size(); i++) {
+                String picUrl = picturesBeans.get(i).getUrl();
+                mPaths.add(picUrl);
+                if (i == 0) {
+                    riv_pic_1.setVisibility(View.VISIBLE);
+                    riv_pic_1.setImageURI(picUrl);
+                } else if (i == 1) {
+                    riv_pic_2.setVisibility(View.VISIBLE);
+                    riv_pic_2.setImageURI(picUrl);
+                } else if (i == 2) {
+                    riv_pic_3.setVisibility(View.VISIBLE);
+                    riv_pic_3.setImageURI(picUrl);
+                } else if (i == 3) {
+                    riv_pic_4.setVisibility(View.VISIBLE);
+                    riv_pic_4.setImageURI(picUrl);
+                } else if (i == 4) {
+                    riv_pic_5.setVisibility(View.VISIBLE);
+                    riv_pic_5.setImageURI(picUrl);
+                } else if (i == 5) {
+                    riv_pic_6.setVisibility(View.VISIBLE);
+                    riv_pic_6.setImageURI(picUrl);
+                }
             }
         }
     }
