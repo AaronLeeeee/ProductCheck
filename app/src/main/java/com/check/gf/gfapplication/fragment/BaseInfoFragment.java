@@ -107,7 +107,7 @@ public class BaseInfoFragment extends BaseFragment {
             if (mStartTimeTv.getText() != null && !mStartTimeTv.getText().equals("")) {
                 ToastUtils.showShort("已经开始检测，请勿重复检查！");
             } else {
-                queryStartCheck(mCheckOrderInfo.getEquipmentNo(), mCheckOrderInfo.getMaterialCode(), mCheckOrderInfo.getEquipmentNoSecond());
+                queryStartCheck(mCheckOrderInfo.getEquipmentNo(), mCheckOrderInfo.getMaterialCode(), mCheckOrderInfo.getEquipmentNoSecond(), mCheckOrderInfo.getDocNo());
             }
         });
         mEndCheckBt = parentView.findViewById(R.id.tv_end_check);
@@ -121,9 +121,9 @@ public class BaseInfoFragment extends BaseFragment {
         });
     }
 
-    private void queryStartCheck(String equipmentNo, String materialCode, String equipmentNoSecond) {
+    private void queryStartCheck(String equipmentNo, String materialCode, String equipmentNoSecond, String docNo) {
         toSubscribe(RxFactory.getCheckServiceInstance()
-                        .StartCheck(equipmentNo, materialCode, equipmentNoSecond, mRealName),
+                        .StartCheck(equipmentNo, materialCode, equipmentNoSecond, mRealName, docNo),
                 () -> ToastUtils.showShort("请求开始检测..."),
                 checkOrderInfoResult -> {
                     if (checkOrderInfoResult.getResult() == 0) {

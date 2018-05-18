@@ -72,10 +72,11 @@ public interface CheckApi {
      * @param materialCode      否	string	物料型号
      * @param equipmentNoSecond 是	string	次要检验单号
      * @param userRealName      是	string	登录用户名字，中文名
+     * @param docNo             是	string	出货计划单号
      * @return 返回时间信息
      */
     @GET("Check/StartCheck")
-    Observable<ResultObject<StartCheckResult>> StartCheck(@Query("equipmentNo") String equipmentNo, @Query("materialCode") String materialCode, @Query("equipmentNoSecond") String equipmentNoSecond, @Query("userRealName") String userRealName);
+    Observable<ResultObject<StartCheckResult>> StartCheck(@Query("equipmentNo") String equipmentNo, @Query("materialCode") String materialCode, @Query("equipmentNoSecond") String equipmentNoSecond, @Query("userRealName") String userRealName, @Query("docNo") String docNo);
 
 
     /**
