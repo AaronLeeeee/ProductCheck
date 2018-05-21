@@ -210,7 +210,7 @@ public class CheckListActivity extends BaseActivity implements BaseQuickAdapter.
 
     private void queryCheckOrderInfo(CheckOrder checkOrder, String equipmentNoSecond) {
         toSubscribe(RxFactory.getCheckServiceInstance()
-                        .CheckOrderInfoQuery(checkOrder.getEquipmentNo(), checkOrder.getMaterialCode(), equipmentNoSecond),
+                        .CheckOrderInfoQuery(checkOrder.getEquipmentNo(), checkOrder.getMaterialCode(), equipmentNoSecond, checkOrder.getDocNo()),
                 () -> showLoading("查询详情中..."),
                 checkOrderInfoResult -> {
                     if (checkOrderInfoResult.getResult() == 0) {

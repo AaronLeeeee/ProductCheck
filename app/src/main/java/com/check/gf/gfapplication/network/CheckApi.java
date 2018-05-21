@@ -47,10 +47,11 @@ public interface CheckApi {
      * @param equipmentNo       是		string	检验单号
      * @param materialCode      否	string	物料型号
      * @param equipmentNoSecond 否	string	次要检验单号，从筛选那里过来为空
+     * @param docNo             否	string	出货计划单
      * @return 检验单详情
      */
     @GET("Check/CheckOrderInfoQuery")
-    Observable<ResultObject<CheckOrderInfo>> CheckOrderInfoQuery(@Query("equipmentNo") String equipmentNo, @Query("materialCode") String materialCode, @Query("equipmentNoSecond") String equipmentNoSecond);
+    Observable<ResultObject<CheckOrderInfo>> CheckOrderInfoQuery(@Query("equipmentNo") String equipmentNo, @Query("materialCode") String materialCode, @Query("equipmentNoSecond") String equipmentNoSecond, @Query("docNo") String docNo);
 
 
     /**
