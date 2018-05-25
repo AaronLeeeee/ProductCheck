@@ -46,6 +46,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    flavorDimensions "url"
+    productFlavors {
+        offline {
+            dimension "url"
+            buildConfigField "String", "SERVER_HOST_URL", "\"http://malazi.xintianrong.cn/\""
+        }
+        online {
+            dimension "url"
+            buildConfigField "String", "SERVER_HOST_URL", "\"http://10.0.0.242:88/\""
+        }
+
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8

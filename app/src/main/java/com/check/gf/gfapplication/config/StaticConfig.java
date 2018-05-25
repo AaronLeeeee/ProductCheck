@@ -2,6 +2,7 @@ package com.check.gf.gfapplication.config;
 
 import android.content.Context;
 
+import com.check.gf.gfapplication.BuildConfig;
 import com.facebook.cache.disk.DiskCacheConfig;
 import com.facebook.common.internal.Sets;
 import com.facebook.common.util.ByteConstants;
@@ -19,9 +20,7 @@ import okhttp3.OkHttpClient;
  * @author nEdAy
  */
 public final class StaticConfig {
-    public static final String SERVER_HOST_URL = "http://malazi.xintianrong.cn/";
-
-    //public static final String SERVER_HOST_URL = "http://10.0.0.242:88/";
+    public static final String SERVER_HOST_URL = BuildConfig.SERVER_HOST_URL;
 
     // Bugly APP ID
     public static final String BUGLY_APP_ID = "a4415edc26";
